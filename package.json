@@ -40,7 +40,7 @@
     "prepublish": "npm run build && npm run gates",
     "npm:publish": "npm publish --no-git-checks",
     "postinstall": "npm run link",
-    "link": "./scripts/link-modules.sh arrmatura arrmatura-web ultimus"
+    "link": "./scripts/link-modules.sh arrmatura arrmatura-web arrmatura-markdown ultimus"
   },
   "devDependencies": {
     "@types/node": "^26.6.2",
@@ -50,5 +50,8 @@
     "arrmatura": "^6.5.0",
     "arrmatura-web": "^9.1.1",
     "ultimus": "^2.3.0"
+  },
+  "dependencies": {
+    "arrmatura-markdown": "file:../arrmatura-markdown"
   }
 }

@@ -7,8 +7,9 @@ not repeated here.
 ## Summary
 
 `arrmatura-books` is the docs-site kit: an `App` shell, `DocsTree`, `Quiz`, three services and
-four overrides of `arrmatura-web/md`'s `MD*` components. It was the `modules/books` module of
-`arrmatura-web` until 2026-09-26, when it moved here as its own package. A site registers it as
+four overrides of `arrmatura-markdown`'s `MD*` components. It was the `modules/books` module of
+`arrmatura-web` until 2026-09-26, when it moved here as its own package, the same day the markdown
+kit left for `arrmatura-markdown`. A site registers it as
 the app's own `components`:
 
 ```ts
@@ -16,7 +17,8 @@ import { components } from "arrmatura-books";
 launchPlatformApp({ components });
 ```
 
-⚠️ `components` is `Object.values(registry)`. Handing the module namespace over instead registers
+⚠️ `components` is the markdown kit's array followed by `Object.values(registry)`. Handing the
+module namespace over instead registers
 each file's raw source under its export name — `createRegisterTypes` reads a plain object as
 `{ tag: template }` and only walks an array element-wise.
 
@@ -25,8 +27,8 @@ Consumer: the `almaat` site (`~/Projects/almaat`).
 ## Layout
 
 ```
-index.ts        # hand-written barrel: `export * from "./registry"`, the `components` array for
-                #   launchPlatformApp, plus the siteTree helpers and types
+index.ts        # hand-written barrel: re-export of arrmatura-markdown and `./registry`, the
+                #   `components` array for launchPlatformApp, plus the siteTree helpers and types
 registry.ts     # GENERATED — one named re-export per component; registered as Object.values()
 catalog.json    # GENERATED — component signatures for the CML tooling
 cml/            # App.xml, components/ (DocsSidebar, DocsTree*, Quiz), extensions/ (MD* overrides)
@@ -39,8 +41,13 @@ the shared generator with `moduleDir: "."`.
 
 ## Dependencies
 
-`arrmatura-web`, `arrmatura` and `ultimus` are peers, linked from the sibling checkouts by
-`postinstall` (`scripts/link-modules.sh`). Services extend `WebClientService` from
+`arrmatura-web`, `arrmatura` and `ultimus` are peers; `arrmatura-markdown` is a real dependency,
+since `App` and `Quiz` render `<MarkdownView>` and this kit overrides four of its components. All
+are linked from the sibling checkouts by `postinstall` (`scripts/link-modules.sh`).
+
+`index.ts` re-exports `arrmatura-markdown` and puts its components first in `components`, so a
+docs site needs one import. The local `components` declaration shadows the star-exported one by
+ESM rule; keep it declared locally or a site silently gets the markdown half alone. Services extend `WebClientService` from
 `arrmatura-web/core` — the lean platform barrel — never from the root `arrmatura-web`, which
 pulls in every `.xml`, mermaid and highlight.js. Everything the CML uses (`Bar`, `Btn`, `Icon`,
 `MarkdownView`, `LocalStorage`, `NavigationService`, the plugins) comes from the platform bundle

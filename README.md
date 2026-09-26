@@ -2,7 +2,7 @@
 
 The docs-site kit for Arrmatura: everything needed to turn a folder of markdown into a browsable
 site — a root `App` shell, a collapsible file tree, a self-check quiz, and docs-flavoured
-overrides of the `MD*` components from `arrmatura-web/md`.
+overrides of the `MD*` components from `arrmatura-markdown`, which it re-exports.
 
 It is one flat kit over `arrmatura-web`, in the same shape as that package's own modules: `cml/`
 and `src/` beside a generated `registry.ts`, registered as `Object.values(books)`.
@@ -13,7 +13,8 @@ and `src/` beside a generated `registry.ts`, registered as `Object.values(books)
 npm install arrmatura-books arrmatura-web
 ```
 
-`arrmatura-web`, `arrmatura` and `ultimus` are peer dependencies.
+`arrmatura-web`, `arrmatura` and `ultimus` are peer dependencies. `arrmatura-markdown` comes as a
+dependency and is re-exported, so registering this kit registers the markdown one too.
 
 ## Usage
 
@@ -26,13 +27,15 @@ import { launchPlatformApp } from "arrmatura-web";
 launchPlatformApp({ components });
 ```
 
-Pass the exported `components` array, not the module namespace: the registry reads a plain object
-as `{ tag: template }`, which would register each file's whole source under its export name.
+`components` carries the markdown kit first, then this kit's own. Pass that array, not the
+module namespace: the registry reads a plain object as `{ tag: template }`, which would register
+each file's whole source under its export name.
 
 Tailwind must see this kit's markup too, or its classes are purged:
 
 ```css
 @source "./node_modules/arrmatura-web/**/*.xml";
+@source "./node_modules/arrmatura-markdown/**/*.xml";
 @source "./node_modules/arrmatura-books/**/*.xml";
 ```
 
@@ -44,7 +47,7 @@ Tailwind must see this kit's markup too, or its classes are purged:
 | `DocsTree`, `.Dir`, `.File` | File-tree navigator over `@bookIndex`; mounts `BookIndexTreeService`; selecting a file sets the `doc` nav param |
 | `DocsSidebar` | Declared, not implemented — `App` lays out the sidebar itself |
 | `Quiz` | Graded drill over a question set, filterable by topic and tag |
-| `MDDocument.Book`, `MDLink.Book`, `MDSection.Book`, `MDCheckbox.Book` | Prefix-scoped overrides of the `md` defaults — see below |
+| `MDDocument.Book`, `MDLink.Book`, `MDSection.Book`, `MDCheckbox.Book` | Prefix-scoped overrides of the `arrmatura-markdown` defaults — see below |
 | `BookIndexTreeService` | Loads the site-tree index; open path, node lookup and in-document link following (`gotoLocalLink`) |
 | `DocsService` | Loads the selected document through `resolveUrlPattern` |
 | `QuizService` | Quiz state: spaced repetition, progress, score |
@@ -66,6 +69,8 @@ Tailwind must see this kit's markup too, or its classes are purged:
 tags. The Arrmatura registry falls back through dotted prefixes (`MDCode.Book` → `MDCode`), so
 only the components this kit declares change:
 
+Every `MD*` component comes from `arrmatura-markdown`; this kit changes four of them.
+
 | Override | Effect |
 | --- | --- |
 | `MDDocument.Book` | Document header with expand-all / collapse-all, portalled into `#docHeader` |
@@ -74,7 +79,8 @@ only the components this kit declares change:
 | `MDCheckbox.Book` | Task boxes toggle read progress |
 
 Every override is scoped to the `Book` prefix, so a `MarkdownView` without it — the quiz's
-question text, for one — keeps the plain `md` rendering, and registration order plays no part.
+question text, for one — keeps the plain `arrmatura-markdown` rendering, and registration order
+plays no part.
 
 ## Two things that are easy to get wrong
 
@@ -90,7 +96,7 @@ extension, opens in a new tab.
 ## Development
 
 ```bash
-npm install        # also links ../arrmatura, ../arrmatura-web and ../ultimus into node_modules
+npm install        # also links ../arrmatura, ../arrmatura-web, ../arrmatura-markdown and ../ultimus
 npm run codegen    # registry.ts + catalog.json — both generated, never hand-edited
 npm run build      # dist/index.cjs, the `require` condition
 npm run gates      # typecheck + lint
