@@ -1,0 +1,5 @@
+<Component id="DocsSidebar">
+  <Signature purpose="Collapsible docs navigation sidebar — wraps DocsTree with toggle control"
+    group="Books">
+  </Signature>
+</Component>

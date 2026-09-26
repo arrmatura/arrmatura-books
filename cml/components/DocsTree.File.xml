@@ -1,0 +1,26 @@
+<Component id="DocsTree.File">
+  <Signature purpose="Clickable file leaf — highlights when its id matches nav doc param"
+    group="Books">
+    <Prop id="id" type="string" required="true" />
+    <Prop id="name" type="string" required="true" />
+  </Signature>
+
+  <button
+    class="flex items-center gap-2 w-full text-left px-3 py-1 rounded-md transition-colors
+     {@nav.params.doc == id ? 
+     'bg-primary/10 text-primary font-semibold' 
+     : 'text-base-content/70 hover:bg-base-200 hover:text-base-content'}"
+    >
+    <span class="truncate cursor-pointer {@treeState.data[id]?'text-success font-bold':''}"
+      click="-> @treeState.assign(id, !@treeState.data[id])"
+      >
+      <Icon icon="{@treeState.data[id] ? 'square-check' : (icon ?? 'square')}" size="13"
+        class="shrink-0 opacity-50"
+        />
+    </span>
+    <span class="flex-1 truncate cursor-pointer {@treeState.data[id]?'italic':''}"
+      click="-> @nav.updateParam('doc=' + id)">
+      {name}
+    </span>
+  </button>
+</Component>

@@ -1,0 +1,64 @@
+<Component id="App">
+  <Signature purpose="Root shell of a book site"
+    description="The whole book-site application in one component"
+    group="Books" />
+  <LocalStorage Ref="localStorage" />
+  <StoredData Ref="treeState" />
+  <NavigationService Ref="nav" />
+  <BrowserService Ref="browser" />
+  <DropdownsPlugin />
+  <PortalsPlugin />
+
+  <div class="flex flex-col h-screen" If="{@nav.isReady}">
+    <DocsService Ref="docs"
+      doc="{@nav.params.doc??'index.md'}" />
+
+    <div
+      class="flex items-center px-2 py-2 border-b border-base-300">
+      <Bar>
+        <IBtn
+          icon="{@localStorage.collapsed ? 'panel-left-open' : 'panel-left-close'}"
+          size="sm"
+          click="-> @localStorage.collapsed = !@localStorage.collapsed" />
+        <a href="/#/">
+          <Bar
+            class="text-xs font-semibold text-base-content/40 uppercase tracking-wider px-1">
+            <img class="w-6 h-6" If="{R.app.logo}" src="{R.app.logo}" />
+            <span>{R.app.name|capitalize}</span>
+          </Bar>
+        </a>
+      </Bar>
+      <div id="docHeader" class="flex-1"></div>
+    </div>
+
+    <div class="relative flex flex-row flex-1 min-h-0">
+      <aside
+        class="top-0 left-0 z-20 flex flex-col bg-base-200 border-base-300 transition-all duration-200 overflow-hidden
+      {@localStorage.collapsed 
+          ? 'relative w-0 h-auto border-b md:h-full md:border-b-0 md:border-r' 
+          : 'absolute md:relative w-64 min-w-64 h-full border-r'}">
+        <div class="flex-1 overflow-y-auto py-2 px-1">
+          <DocsTree docId="{@docs.doc}" If="{!@localStorage.collapsed}" />
+        </div>
+      </aside>
+
+      <main class="flex-1 overflow-y-auto min-h-0 bg-base-100">
+        <Skeleton If="{@docs.loading}" />
+        <div class="flex-1">
+          <ErrorMessage
+            If="@docs.error"
+            error="@docs.error"
+            class="m-4 truncate"
+            close2="-> @docs.error=false" />
+        </div>
+        <MarkdownView
+          If="{!@docs.loading}"
+          prefix="Book"
+          persistence="local"
+          text="{@docs.text}"
+          key="{@nav.params.doc??'index.md'}"
+          class="p-6 max-w-4xl mx-auto" />
+      </main>
+    </div>
+  </div>
+</Component>

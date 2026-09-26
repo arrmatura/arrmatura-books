@@ -1,0 +1,23 @@
+<Component id="BookIndexTreeService">
+  <Signature kind="service" purpose="Loads a book's site-tree index and navigates it"
+    description="Fetches the site-tree index from indexUrl (narrowed to scope) and resolves documents and links against it for the open docId: which folders to keep open, which node a document id or a clicked link lands on. DocsTree and MDLink bind it by the literal name `bookIndex`, so it must be mounted as Ref=&quot;bookIndex&quot;."
+    group="Books">
+    <Prop id="indexUrl" type="string"
+      description="Site-tree index endpoint; writing it reloads the tree — write-only" />
+    <Prop id="docId" type="string"
+      description="Id of the open document — the base for the open path and relative links" />
+    <Prop id="scope" type="string" default=""
+      description="Site-tree path prefix this instance serves, stripped from the node ids" />
+    <State id="nodes" type="array" description="Top-level nodes of the scoped site tree" />
+    <State id="openPath" type="object"
+      description="Ancestor directory ids of the open document, so the tree reveals it" />
+    <State id="loading" type="boolean" description="True while the index is loading" />
+    <State id="error" type="string" description="Last load failure" />
+    <Method id="gotoLocalLink" args="href"
+      description="Follows a link from a rendered document: in-app for docs and routes, a new tab only for genuinely external targets" />
+    <Method id="findNodeById" args="id" description="Tree node for a document id" />
+    <Method id="findNodeByFileName" args="fileName"
+      description="Tree node by file name — ambiguous, a last resort" />
+  </Signature>
+  <p class="error">Service BookIndexTreeService is not imported</p>
+</Component>

@@ -1,0 +1,58 @@
+<Component id="MDSection.Book">
+  <Signature purpose="Docs-site heading section with expand state and read progress"
+    description="Docs-site override of the default MDSection: the H1 section carries expand-all and collapse-all controls, while H2 and H3 sections open and close through DocsService and collapse to a single button once the reader marks them as read."
+    group="Books">
+    <Prop id="level" type="number" enum="1,2,3" description="Heading level this section was built from" />
+    <Prop id="key" type="string" description="Stable section key used for the opened and progress state in DocsService" />
+    <Prop id="icon" type="string" description="Optional icon shown before the heading of a level 2 or 3 section" />
+    <Slot name="title" description="Inline content of the heading" />
+    <Slot name="default" description="Block content belonging to the section" />
+  </Signature>
+  <Fragment If="level == 1">
+    <div class="mb-3 rounded-xl overflow-hidden">
+      <div
+        class="flex items-center gap-3 px-4 py-3">
+        <span
+          class="text-2xl font-semibold flex-1">
+          <Slot Key="title" />
+        </span>
+      </div>
+      <div class="py-4 bg-base-100">
+        <Slot />
+      </div>
+    </div>
+    <Else>
+      <Fragment If="!@mdService.progress[key]">
+        <div class="mb-3 rounded-xl overflow-hidden">
+          <div
+            class="flex card-hover group items-center gap-3 px-4 py-3 cursor-pointer 
+            {level==2?'py-3 bg-base-300/60 hover:bg-base-300 text-base-300-content':'py-2 bg-base-200/60 hover:bg-base-200'}
+            hover:border-brand/30 transition-colors">
+            <Icon icon="{icon}" class="text-base-content/50 shrink-0" size="18" />
+            <span
+              class="{level==2?'text-xl':''} {( @mdService.expandedAll OR @mdService.opened[key]  )?'font-semibold':''} flex-1"
+              click="-> @mdService.toggleOpened(key)">
+              <Slot Key="title" />
+            </span>
+            <Checkbox
+              value="false"
+              change="-> @mdService.toggleProgress(key)"
+              />
+            <Icon icon="chevron-right"
+              class="text-base-content/40 transition-transform group-hover:translate-x-1  details-chevron shrink-0 {(@mdService.opened[key] ?? @mdService.expandedAll)?'rotate-90':''}"
+              size="16" />
+          </div>
+          <div class="pl-4 py-4 bg-base-100" If="@mdService.expandedAll OR @mdService.opened[key]">
+            <Slot />
+          </div>
+        </div>
+        <Else>
+          <Btn type="outline" size="xs" class="m-1"
+            action="-> @mdService.toggleProgress(key)">
+            <Slot Key="title" />
+          </Btn>
+        </Else>
+      </Fragment>
+    </Else>
+  </Fragment>
+</Component>

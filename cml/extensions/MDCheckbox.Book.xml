@@ -1,0 +1,11 @@
+<Component id="MDCheckbox.Book">
+  <Signature purpose="Docs-site task checkbox backed by reading progress"
+    description="Docs-site override of the default MDCheckbox: instead of a read-only marker it shows the reader's own progress for this item and toggles it in DocsService when clicked."
+    group="Books">
+    <Prop id="key" type="string" description="Stable hash of the task item's text, used as the progress key" />
+  </Signature>
+  <Checkbox class="pr-1 py-1 align-middle"
+    value="{@mdService.progress[key]}"
+    change="-> @mdService.toggleProgress(key)"
+    />
+</Component>

@@ -1,0 +1,54 @@
+{
+  "name": "arrmatura-books",
+  "version": "1.0.0",
+  "description": "Arrmatura docs-site kit: the App shell, docs tree, quiz and the docs-flavoured overrides of the markdown components",
+  "author": "alitskevich",
+  "license": "ISC",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./index.ts",
+      "import": "./index.ts",
+      "require": "./dist/index.cjs"
+    },
+    "./catalog": {
+      "default": "./catalog.json"
+    }
+  },
+  "esbuild": {
+    "entryPoints": {
+      "index": "index.ts"
+    },
+    "outdir": "dist",
+    "format": "cjs",
+    "outExtension": {
+      ".js": ".cjs"
+    },
+    "packages": "external",
+    "target": "es2021"
+  },
+  "scripts": {
+    "prebuild": "npm run codegen",
+    "build": "bun ./scripts/build.ts",
+    "codegen": "npx --yes npm-run-all codegen:*",
+    "postcodegen": "biome format --write registry.ts catalog.json",
+    "codegen:registry": "bun ./scripts/index-module.ts",
+    "codegen:cml-catalog": "bun ./scripts/generate-catalog.ts cml,src",
+    "gates": "npx --yes npm-run-all --parallel typecheck lint",
+    "lint": "biome check .",
+    "typecheck": "tsc",
+    "prepublish": "npm run build && npm run gates",
+    "npm:publish": "npm publish --no-git-checks",
+    "postinstall": "npm run link",
+    "link": "./scripts/link-modules.sh arrmatura arrmatura-web ultimus"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.2",
+    "esbuild": "^0.28.2"
+  },
+  "peerDependencies": {
+    "arrmatura": "^6.5.0",
+    "arrmatura-web": "^9.1.1",
+    "ultimus": "^2.3.0"
+  }
+}

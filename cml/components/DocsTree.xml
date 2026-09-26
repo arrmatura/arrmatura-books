@@ -1,0 +1,16 @@
+<Component id="DocsTree">
+  <Signature
+    purpose="Docs file-tree navigator — renders nested dir/file structure and updates nav doc param on selection"
+    description="Walks `@bookIndex.nodes`, dispatching each entry to DocsTree.Dir or DocsTree.File by its `type`. Open state comes from `@bookIndex.openPath` and the persisted `@treeState`, so it needs a BookIndexTreeService mounted as Ref=&quot;bookIndex&quot; above it."
+    group="Books" />
+
+  <BookIndexTreeService Ref="bookIndex"
+    indexUrl="/index.json"
+    docId="{docId}" />
+
+  <nav class="flex flex-col text-sm select-none">
+    <Dynamic As="DocsTree.{capitalize(item.type)}" Props="{item}"
+      open="{@bookIndex.openPath[item.id] || @treeState.data[item.id]}"
+      Each="item of @bookIndex.nodes" />
+  </nav>
+</Component>

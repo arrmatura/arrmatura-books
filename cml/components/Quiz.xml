@@ -1,0 +1,169 @@
+<Component id="Quiz">
+  <Signature purpose="Self-check quiz over a set of questions"
+    description="Drop into a docs page to turn a question set into a graded drill: it tracks mastered and failed questions, filters by topic and tag, and ends on a score screen."
+    group="Books">
+    <Prop id="data" type="object" description="Question set handed to the quiz service" />
+    <Prop id="name" type="string" description="Prefix for the quiz's stored progress key, so several quizzes keep separate state" />
+  </Signature>
+  <QuizService Ref="service"
+    name="{name||''}Quiz"
+    quiz="{data}"
+    activeDomain="{@nav.params.id || '1'}" />
+
+  <Container class="">
+
+    <View
+      If="!@service.quizDone AND @service.totalQuestions == 0"
+      align="center"
+      class="my-12 gap-3 py-12">
+      <div class="text-4xl opacity-40">🔍</div>
+      <div class="text-base text-base-content/70">No Match</div>
+      <Btn type="primary" mode="outline" text="Clear Filters"
+        click="-> @service.clearFilters()" />
+    </View>
+
+    <Quiz-Results
+      If="@service.quizDone"
+      score="{@service.quizScore}"
+      total="{@service.totalQuestions}"
+      attempts="{@service.attemptsCount}"
+      accuracyPercent="{@service.accuracyPercent}"
+    />
+
+    <Fragment If="!@service.quizDone AND @service.currentQuestion">
+
+      <Connector trigger="1" change="-> @service.nextQuestion()" />
+
+      <View class="mb-6 gap-2">
+        <Bar justify="between" align="center">
+          <Bar wrap="true" class="gap-2 text-sm">
+            <span class="text-base-content font-medium">
+              {@service.quizScore} / {@service.totalQuestions} mastered
+            </span>
+            <span If="@service.failedCount" class="text-base-content/30">·</span>
+            <span If="@service.failedCount" class="text-warning">
+              {@service.failedCount} To Retry
+            </span>
+            <span If="@service.attemptsCount" class="text-base-content/30">·</span>
+            <span If="@service.attemptsCount" class="text-base-content/60">
+              {@service.accuracyPercent}% accuracy
+            </span>
+          </Bar>
+          <Bar wrap="true" class="gap-4">
+            <Dropdown options="{@service.availableTopics}" size="xs"
+              value="{@service.selectedTopic||'**'}"
+              change="-> @service.selectTopic(event.value)" />
+            <Dropdown If="{@service.availableTags.length}"
+              options="{@service.availableTags}" size="xs"
+              value="{@service.selectedTag||'**'}"
+              change="-> @service.selectTag(event.value)" />
+            <Btn type="primary" title="Next" click="-> @service.nextQuestion()" />
+          </Bar>
+        </Bar>
+        <div class="w-full h-2 rounded-full bg-base-300 overflow-hidden flex">
+          <div class="h-full bg-success shrink-0 transition-all"
+            style="width:{@service.masteredPercent}%"></div>
+          <div class="h-full bg-warning shrink-0 transition-all"
+            style="width:{@service.failedPercent}%"></div>
+        </div>
+      </View>
+
+      <Quiz-Question
+        data="{@service.currentQuestion}"
+        selectedId="{@service.selectedAnswerId}"
+      />
+
+    </Fragment>
+
+  </Container>
+
+  <Subcomponent id="Question">
+    <Signature purpose="Single question card with answer choices and next button">
+      <Prop id="data" type="object" required="true" />
+      <Prop id="selectedId" type="string?" />
+    </Signature>
+
+    <Card class="mb-2 bg-base-200 border border-base-300">
+      <MarkdownView text="{data.question}" />
+      <View class="gap-3">
+        <Quiz-Answer
+          Each="answer of data.answers"
+          Props="{answer}"
+          selectedId="{selectedId}"
+        />
+      </View>
+    </Card>
+    <Bar wrap="true" align="center" class="gap-2">
+      <Btn mode="outline" size="sm" Each="t of data.topics" text="{t.name}"
+        click="-> @service.selectTopic(t.id)" />
+      <Badge If="data.failedCount" type="warning" mode="soft" size="sm"
+        text="failed {data.failedCount}×" />
+    </Bar>
+    <!-- <Bar If="data.links.length" wrap="true" class="gap-1.5 mt-1">
+      <Quiz-Link Each="s of data.links" Props="{s}" />
+    </Bar> -->
+  </Subcomponent>
+
+  <Subcomponent id="Link">
+    <Btn size="xs" mode="ghost"
+      title="{(type=='doc'?'📄 ':'🌐 ') + (quote || ref)}"
+      alt="{ref}"
+      class="font-mono"
+      click="-> @service.openLink(objectFrom('type', type, 'ref', ref))" />
+
+  </Subcomponent>
+
+  <Subcomponent id="Answer">
+    <Signature
+      purpose="Single answer option — highlights correct/wrong after selection, shows explanation">
+      <Prop id="id" type="string" required="true" />
+      <Prop id="text" type="string" required="true" />
+      <Prop id="isCorrect" type="boolean" required="true" />
+      <Prop id="hint" type="string" />
+      <Prop id="explanation" type="string" />
+      <Prop id="selectedId" type="string?" />
+    </Signature>
+
+    <Bar align="start"
+      class="gap-3 p-4 rounded-xl border border-base-300 cursor-pointer hover:bg-base-300 transition-colors 
+      {selectedId AND isCorrect ? 'answer--correct' : ''}
+      {selectedId AND !isCorrect AND id == selectedId ? 'answer--wrong' : ''}
+      "
+      click="-> @service.selectAnswer(id)">
+      <Badge mode="outline" size="sm" text="{id}" class="font-mono shrink-0 mt-0.5" />
+      <View class="flex-1 gap-1">
+        <div class="text-sm">{text}</div>
+        <div class="text-xs text-error"
+          If="selectedId AND !isCorrect AND id == selectedId">{hint||'wrong'}</div>
+        <div class="text-xs text-success"
+          If="selectedId AND isCorrect">
+          <MarkdownView text="{explanation}" />
+        </div>
+      </View>
+    </Bar>
+  </Subcomponent>
+
+  <Subcomponent id="Results">
+    <Signature purpose="Final score screen shown after all questions are mastered">
+      <Prop id="score" type="number" required="true" />
+      <Prop id="total" type="number" required="true" />
+      <Prop id="attempts" type="number" required="true" />
+      <Prop id="accuracy" type="number" required="true" />
+    </Signature>
+
+    <View align="center" class="mb-10 gap-4 py-12">
+      <div class="text-5xl">🎯</div>
+      <div class="text-4xl font-bold">{score} / {total}</div>
+      <div class="text-base text-base-content/80">Complete</div>
+      <div class="text-sm text-base-content/60">
+        Mastered {accuracyPercent}% accuracy
+      </div>
+      <Btn type="primary" mode="outline" text="Clear Filters"
+        click="-> @service.clearFilters()" If="@service.filtersActive" />
+
+      <Btn type="primary" text="Retry" click="-> @service.restartQuiz()"
+        If="!@service.filtersActive" />
+    </View>
+  </Subcomponent>
+
+</Component>

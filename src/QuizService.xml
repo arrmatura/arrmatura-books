@@ -1,0 +1,36 @@
+<Component id="QuizService">
+  <Signature kind="service" purpose="Spaced-repetition quiz over a question set, with topic and tag filters"
+    description="Picks the next question by priority — failed first, then unanswered, then already correct, each group shuffled — and skips anything shown within the last hour unless nothing else is left. A question is answered once: the first pick is recorded and further taps ignored. Progress, failure counts, last-shown times and the active filters all persist, so the session survives a reload. The quiz is done only when every filtered question stands at ok."
+    group="Books">
+    <Prop id="quiz" type="array" description="Questions as { id, topics, tags, answers: [{ id, isCorrect }] }" />
+    <State id="currentQuestion" type="object" description="Question on screen, enriched with status and failedCount" />
+    <State id="filteredQuiz" type="array" description="Questions matching the active topic and tag" />
+    <State id="availableTopics" type="array" description="Topics with counts, prefixed by an All entry" />
+    <State id="availableTags" type="array" description="Tags with counts, prefixed by an All entry" />
+    <State id="selectedTopic" type="string" description="Active topic filter; persisted" />
+    <State id="selectedTag" type="string" description="Active tag filter; persisted" />
+    <State id="filtersActive" type="boolean" description="True while either filter is set" />
+    <State id="selectedAnswerId" type="string" description="Answer picked for the current question, null until answered" />
+    <State id="questionNumber" type="number" description="How many questions this session has shown" />
+    <State id="attemptsCount" type="number" description="How many answers this session has recorded" />
+    <State id="quizDone" type="boolean" description="True once every filtered question is correct" />
+    <State id="answerStatuses" type="object" description="Per-question 'ok' or 'fail'; persisted" />
+    <State id="failedCounts" type="object" description="Per-question failure tally; persisted" />
+    <State id="totalQuestions" type="number" description="Size of the filtered set" />
+    <State id="answeredCount" type="number" description="How many of them have a status" />
+    <State id="quizScore" type="number" description="How many stand at ok" />
+    <State id="failedCount" type="number" description="How many stand at fail" />
+    <State id="masteredPercent" type="number" description="Correct share of the whole set" />
+    <State id="failedPercent" type="number" description="Failed share of the whole set" />
+    <State id="accuracyPercent" type="number" description="Correct share of what was answered" />
+    <Method id="selectAnswer" args="answerId" description="Records the answer; ignored once the question is answered" />
+    <Method id="nextQuestion" description="Moves to the next question by priority and cooldown" />
+    <Method id="selectTopic" args="topic" description="Sets the topic filter and restarts the session" />
+    <Method id="selectTag" args="tag" description="Sets the tag filter and restarts the session" />
+    <Method id="clearFilters" description="Drops both filters and restarts the session" />
+    <Method id="resetFilteredSession" description="Restarts the session, keeping the recorded progress" />
+    <Method id="restartQuiz" description="Clears all progress and starts over" />
+    <Method id="openLink" args="src" description="Follows a source link: in-app for a doc, a new tab otherwise" />
+  </Signature>
+  <p class="error">Service QuizService is not imported</p>
+</Component>

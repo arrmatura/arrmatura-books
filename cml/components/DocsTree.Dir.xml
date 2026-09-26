@@ -1,0 +1,50 @@
+<Component id="DocsTree.Dir">
+  <Signature
+    purpose="Collapsible directory node — icons toggle children; the name opens the folder's own index.md when it has one, otherwise toggles too"
+    group="Books">
+    <Prop id="name" type="string" required="true" />
+    <Prop id="nodes" type="array" />
+    <Prop id="doc" type="string" description="Id of the folder's index.md, hidden from the children" />
+    <Prop id="open" type="boolean" description="Expanded state — stored toggle, or forced by the current document's path" />
+  </Signature>
+
+  <div class="mb-0.5">
+    <button
+      class="flex items-center gap-2 w-full text-left px-3 py-1.5 
+      cursor-pointer
+      rounded-md transition-colors font-medium 
+      {open ? 'text-base-content' : 'text-base-content/60 '}
+      hover:bg-base-200 hover:text-base-content/80">
+      <span class="flex items-center gap-2 shrink-0 cursor-pointer"
+        click="-> @treeState.assign(id, !open)">
+        <Icon icon="{open ? 'chevron-down' : 'chevron-right'}" size="13"
+          class="shrink-0 transition-transform" />
+        <Icon icon="{open ? 'folder-open' : 'folder'}" size="13" class="shrink-0 text-primary/50" />
+      </span>
+
+      <Fragment If="doc">
+        <Then>
+          <span class="flex-1 truncate cursor-pointer
+            {@nav.params.doc == doc ? 'text-primary font-semibold' : ''}"
+            click="-> @nav.updateParam('doc=' + doc); @treeState.assign(id, true)">
+            {name}
+          </span>
+        </Then>
+        <Else>
+          <span class="flex-1 truncate cursor-pointer"
+            click="-> @treeState.assign(id, !open)">
+            {name}
+          </span>
+        </Else>
+      </Fragment>
+    </button>
+
+    <div class="pl-3 border-l border-base-300 ml-3.5 flex flex-col gap-0.5 mt-0.5"
+      If="open">
+      <Dynamic As="DocsTree.{capitalize(item.type)}"
+        Props="{item}"
+        open="{@bookIndex.openPath[item.id] || @treeState.data[item.id]}"
+        Each="item of nodes" />
+    </div>
+  </div>
+</Component>

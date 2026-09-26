@@ -1,0 +1,25 @@
+<Component id="MDLink.Book">
+  <Signature purpose="Docs-site link that separates in-repo from external targets"
+    description="Docs-site override of the default MDLink: a link with a host opens in a new tab and is badged as external, while a link without one is resolved inside the site through BookIndexTreeService instead of leaving the page."
+    group="Books">
+    <Prop id="href" type="string" description="Link target as written in the document" />
+    <Prop id="text" type="string" description="Visible link label" />
+    <Prop id="host" type="string" description="Host parsed out of the target; empty for an in-repo link" />
+  </Signature>
+  <Fragment If="host">
+    <Then>
+      <a class="inline-block mx-1 px-1 font-bold link link-primary"
+        href="{href}" target="_blank" 
+        rel="noopener noreferrer">
+        <span>{text}</span>
+        <span class="ml-1 icon icon-external-link"></span>
+      </a>
+    </Then>
+    <Else>
+      <b class="inline-block mx-1 px-1 link link-primary"
+        click="-> @bookIndex.gotoLocalLink(href)">
+        {text}
+      </b>
+    </Else>
+  </Fragment>
+</Component>

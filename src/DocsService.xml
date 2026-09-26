@@ -1,0 +1,15 @@
+<Component id="DocsService">
+  <Signature kind="service" purpose="Loads the selected document of a markdown docs corpus"
+    description="Fetches the selected document through resolveUrlPattern. The site tree lives in BookIndexTreeService. Apps subclass it to add their own state; the books kit registers it as-is."
+    group="Books">
+    <Prop id="doc" type="string"
+      description="Document id to show; writing it loads that document — write-only" />
+    <Prop id="resolveUrlPattern" type="string" default="/docs/*"
+      description="URL template for one document, '*' substituted" />
+    <State id="text" type="string" description="Markdown source of the loaded document" />
+    <State id="docId" type="string" description="Id of the loaded document" />
+    <State id="loading" type="boolean"
+      description="True while the document is loading" />
+    <State id="error" type="string" description="Last load failure" />
+  </Signature>
+</Component>
