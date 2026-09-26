@@ -13,8 +13,8 @@
     <DocsService Ref="docs"
       doc="{@nav.params.doc??'index.md'}" />
 
-    <div
-      class="flex items-center px-2 py-2 border-b border-base-300">
+    <header
+      class="flex items-center h-10 px-2 py-2 border-b border-base-300">
       <Bar>
         <IBtn
           icon="{@localStorage.collapsed ? 'panel-left-open' : 'panel-left-close'}"
@@ -28,8 +28,8 @@
           </Bar>
         </a>
       </Bar>
-      <div id="docHeader" class="flex-1"></div>
-    </div>
+      <div id="docHeader" class="flex flex-row flex-1 h-10"></div>
+    </header>
 
     <div class="relative flex flex-row flex-1 min-h-0">
       <aside

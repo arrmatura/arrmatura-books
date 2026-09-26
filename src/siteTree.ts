@@ -61,8 +61,8 @@ export function docIdOf(node: TreeNode): string | undefined {
 
 export function prettifyName(path: string): string {
   const tail = path.split("/").pop() ?? path;
-  const base = tail.replace(/\.[^.]+$/, "");
-  const cleaned = base.replace(/^\d+[-_.]?/, "").replaceAll(/[_]/g, " ");
+  const [base] = tail.split(".");
+  const cleaned = base.replace(/^.\d*-/, "").replaceAll(/[_]/g, " ");
   if (!cleaned) return base;
   return cleaned.charAt(0).toUpperCase() + cleaned.slice(1);
 }
