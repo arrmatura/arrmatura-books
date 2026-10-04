@@ -192,7 +192,11 @@
       {
         "id": "level",
         "type": "number",
-        "enum": ["1", "2", "3"],
+        "enum": [
+          "1",
+          "2",
+          "3"
+        ],
         "description": "Heading level this section was built from",
         "name": "level",
         "required": false

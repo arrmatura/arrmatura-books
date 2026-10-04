@@ -1,4 +1,5 @@
 // import { arrmaturaTemplatePlugin } from "./arrmaturaTemplatePlugin";
+import cmlPlugin from "arrmatura-web/esbuild";
 import type { BuildOptions } from "esbuild";
 
 export function getEsbuildOptions({
@@ -17,11 +18,11 @@ export function getEsbuildOptions({
     // "external" emits the .map file but omits the `//# sourceMappingURL=` comment, so a
     // deployed bundle carries no pointer to its sourcemap. serve.ts opts dev builds back
     // into "linked" so devtools resolve original sources automatically.
-    sourcemap: "external",
+    // sourcemap: "external",
     target: "esnext",
     minify: true,
     keepNames: true,
-    plugins: [...plugins], //arrmaturaTemplatePlugin,
+    plugins: [...plugins, cmlPlugin], //arrmaturaTemplatePlugin,
     loader: {
       ".xml": "text",
       ".md": "text",

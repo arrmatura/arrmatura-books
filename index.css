@@ -1,0 +1,156 @@
+@import "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap";
+@import "tailwindcss";
+
+@source "./node_modules/arrmatura-web/**/*.xml";
+@source "./cml/**/*.xml";
+
+@plugin "daisyui" {
+  themes:
+    lofi --default,
+    corporate,
+    caramellatte,
+    bumblebee,
+    winter;
+}
+
+@layer base {
+  :root,
+  :host {
+    --font-sans: "IBM Plex Sans", system-ui, sans-serif;
+    --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+    /* Domain accent palette — vivid on light */
+    --d1: #5b4fe8;
+    --d2: #0d9e6f;
+    --d3: #1470d6;
+    --d4: #d08000;
+    --d5: #cc2c2c;
+
+    /* Surface colors — cool engineering white */
+    --surf: #f7f8fc;
+    --surf2: #eceef4;
+    --code-bg: #edf0f5;
+    --border-faint: rgba(15, 22, 58, 0.07);
+    --border-soft: rgba(15, 22, 58, 0.13);
+    --muted: #64748b;
+    --text-primary: #0f1520;
+    --text-body: #2c3348;
+  }
+
+  html,
+  body {
+    background: #f2f4f9;
+    color: var(--text-body);
+  }
+
+  /* DaisyUI success/error on light bg — enforce readable contrast */
+  .text-success {
+    color: #146c37 !important;
+  }
+
+  .text-error {
+    color: #b91820 !important;
+  }
+}
+
+@layer components {
+  /* ── DIAGRAM ── */
+  .diagram-wrap {
+    background: #ffffff;
+    border: 1px solid var(--border-soft);
+    border-radius: 8px;
+    padding: 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(15, 22, 58, 0.04);
+  }
+
+  .diagram-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 16px;
+  }
+
+  /* ── CODE BLOCK ── */
+  .code-wrap {
+    background: var(--code-bg);
+    border: 1px solid var(--border-soft);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(15, 22, 58, 0.06);
+  }
+
+  .code-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border-faint);
+    background: rgba(15, 22, 58, 0.03);
+  }
+
+  .code-filename {
+    font-size: 12px;
+    font-family: var(--font-mono);
+    color: var(--muted);
+  }
+
+  .code-lang {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .code-body {
+    padding: 20px;
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    line-height: 1.7;
+    color: var(--text-body);
+    white-space: pre;
+  }
+
+  /* ── Syntax tokens — light bg palette ── */
+  .kw {
+    color: #6a3fc8;
+  }
+
+  /* keywords   – deep violet */
+  .str {
+    color: #2a7a44;
+  }
+
+  /* strings    – forest green */
+  .cm {
+    color: #8a97a8;
+    font-style: italic;
+  }
+
+  /* comments   – cool gray */
+  .fn {
+    color: #1060c8;
+  }
+
+  /* functions  – blueprint blue */
+  .num {
+    color: #c05a10;
+  }
+
+  /* numbers    – burnt orange */
+  .typ {
+    color: #9a6200;
+  }
+
+  /* types      – dark amber */
+  .op {
+    color: #1488a0;
+  }
+
+  /* operators  – teal */
+}

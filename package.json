@@ -1,6 +1,6 @@
 {
   "name": "arrmatura-books",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Arrmatura docs-site kit: the App shell, docs tree, quiz and the docs-flavoured overrides of the markdown components",
   "author": "alitskevich",
   "license": "ISC",
@@ -20,16 +20,17 @@
       "index": "index.ts"
     },
     "outdir": "dist",
-    "format": "cjs",
+    "format": "esm",
     "outExtension": {
-      ".js": ".cjs"
+      ".js": ".js"
     },
-    "packages": "external",
     "target": "es2021"
   },
   "scripts": {
     "prebuild": "npm run codegen",
-    "build": "bun ./scripts/build.ts",
+    "build": "npx --yes npm-run-all --parallel build:*",
+    "build:ts": "bun ./scripts/build.ts",
+    "build:css": "npx --yes @tailwindcss/cli -i index.css -o \"dist/index.css\"",
     "codegen": "npx --yes npm-run-all codegen:*",
     "postcodegen": "biome format --write registry.ts catalog.json",
     "codegen:registry": "bun ./scripts/index-module.ts",
@@ -44,14 +45,13 @@
   },
   "devDependencies": {
     "@types/node": "^26.6.2",
-    "esbuild": "^0.28.2"
+    "daisyui": "^5.7.47",
+    "esbuild": "^0.28.2",
+    "tailwindcss": "^4.3.3"
   },
   "peerDependencies": {
-    "arrmatura": "^6.5.0",
+    "arrmatura-markdown": "file:../arrmatura-markdown",
     "arrmatura-web": "^9.1.1",
     "ultimus": "^2.3.0"
-  },
-  "dependencies": {
-    "arrmatura-markdown": "file:../arrmatura-markdown"
   }
 }
