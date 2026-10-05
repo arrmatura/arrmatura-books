@@ -1,12 +1,5 @@
 import { WebClientService } from "arrmatura-web/core";
-import {
-  ancestorDirIds,
-  docIdOf,
-  type SiteTreeResponse,
-  scopeSiteTree,
-  type TreeNode,
-} from "./siteTree";
-import { classifyDocHref } from "./utils/resolveDocHref";
+import { ancestorDirIds, docIdOf, type SiteTreeResponse, scopeSiteTree, type TreeNode } from "./siteTree";
 
 /**
  * Loads a book's site-tree index (`indexUrl`, scoped by `scope`) and answers questions
@@ -46,37 +39,6 @@ export class BookIndexTreeService extends WebClientService {
   }
 
   /**
-   * Follows a link clicked inside a rendered document (see `MDLink`).
-   *
-   * Cross-document `.md` links are resolved against the current document and
-   * matched against the site tree, then followed in-app via the `doc` nav param.
-   * Anything genuinely outside the app opens in a new tab; a link that stays
-   * inside it never does, since that would only ever open a dead tab.
-   */
-  gotoLocalLink(href: string) {
-    const link = classifyDocHref(href, this.docId);
-    switch (link.kind) {
-      case "ignore":
-        return;
-      case "route":
-        window.location.href = link.hash;
-        return;
-      case "external":
-        window.open(href);
-        return;
-      case "doc": {
-        // Exact resolution first; fall back to the file name for docs whose
-        // relative depth does not match where the file actually sits.
-        const node =
-          this.findNodeById(link.id) ?? this.findNodeByFileName(link.fileName);
-        const docId = node && docIdOf(node);
-        if (docId) window.location.href = `#/?doc=${docId}`;
-        else console.warn(`No such document: ${href} (from ${this.docId})`);
-      }
-    }
-  }
-
-  /**
    * Finds the node that opens a document id (docs-root-relative path, extension
    * kept) — a file leaf, or the directory a hidden `index.md` was hoisted onto.
    */
@@ -86,10 +48,7 @@ export class BookIndexTreeService extends WebClientService {
 
   /** Finds a node by file name alone — ambiguous across directories, so a last resort. */
   findNodeByFileName(fileName: string, nodes = this.nodes): any {
-    return this.findNode(
-      (node) => docIdOf(node)?.split("/").at(-1) === fileName,
-      nodes,
-    );
+    return this.findNode((node) => docIdOf(node)?.split("/").at(-1) === fileName, nodes);
   }
 
   findNode(match: (node: TreeNode) => boolean, nodes = this.nodes): any {

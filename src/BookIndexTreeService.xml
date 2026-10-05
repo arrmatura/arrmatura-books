@@ -13,8 +13,6 @@
       description="Ancestor directory ids of the open document, so the tree reveals it" />
     <State id="loading" type="boolean" description="True while the index is loading" />
     <State id="error" type="string" description="Last load failure" />
-    <Method id="gotoLocalLink" args="href"
-      description="Follows a link from a rendered document: in-app for docs and routes, a new tab only for genuinely external targets" />
     <Method id="findNodeById" args="id" description="Tree node for a document id" />
     <Method id="findNodeByFileName" args="fileName"
       description="Tree node by file name — ambiguous, a last resort" />
