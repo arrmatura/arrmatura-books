@@ -17,7 +17,7 @@
     </Then>
     <Else>
       <b class="inline-block mx-1 px-1 link link-primary"
-        click="-> @bookIndex.gotoLocalLink(href)">
+        click="-> @browser.goto(href)">
         {text}
       </b>
     </Else>

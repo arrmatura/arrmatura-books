@@ -10,7 +10,7 @@
       class="flex flex-1  items-center gap-3 px-2 py-3">
       <span
         class="text-xl font-semibold flex-1 truncate">
-        {name??title}
+        {name || title || R.app.name}
       </span>
       <IBtn icon="chevrons-down" size="sm" title="Expand all"
         click="-> @mdService.expandAll()" disabled="{@mdService.expandedAll}" />

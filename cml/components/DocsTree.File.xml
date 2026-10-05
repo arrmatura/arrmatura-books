@@ -7,7 +7,7 @@
 
   <button
     class="flex items-center gap-2 w-full text-left px-3 py-1 rounded-md transition-colors
-     {@nav.params.doc == id ? 
+     {@browser.path == id ? 
      'bg-primary/10 text-primary font-semibold' 
      : 'text-base-content/70 hover:bg-base-200 hover:text-base-content'}"
     >
@@ -19,7 +19,7 @@
         />
     </span>
     <span class="flex-1 truncate cursor-pointer {@treeState.data[id]?'italic':''}"
-      click="-> @nav.updateParam('doc=' + id)">
+      click="-> @browser.goto('/'+id)">
       {name}
     </span>
   </button>
