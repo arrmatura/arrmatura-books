@@ -1,8 +1,9 @@
 import { WebClientService } from "arrmatura-web/core";
+import { cached } from "./sessionCache";
 
 /**
  * Loads the currently selected document of a markdown docs corpus (`doc`, resolved
- * through `resolveUrlPattern`). The site tree it belongs to is `BookIndexTreeService`'s.
+ * through `docUrl`). The site tree it belongs to is `BookIndexTreeService`'s.
  *
  * Apps subclass this to add their own state; the kit registers it as-is.
  */
@@ -12,15 +13,19 @@ export class DocsService extends WebClientService {
   error = "";
   /** Id of the currently loaded document. */
   docId = "";
-  resolveUrlPattern = "/docs/*";
+  docUrl = "/docs/*";
 
   set doc(id: string) {
     if (!id) return;
+    const url = this.docUrl.replace("*", id);
     this.up({ loading: true, error: "", docId: id });
-    this.fetch(this.resolveUrlPattern.replace("*", id))
+    cached(url, () => this.fetch(url))
       .then((text) => ({ text }))
       .catch((err) => ({ error: String(err), text: "" }))
       .then((patch) => {
+        // A slow response for a document the reader has already navigated away from must
+        // not land: `docId` names the current selection, and the newer load clears `loading`.
+        if (this.docId !== id) return;
         this.up({ ...patch, loading: false });
       });
   }

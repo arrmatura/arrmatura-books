@@ -192,11 +192,7 @@
       {
         "id": "level",
         "type": "number",
-        "enum": [
-          "1",
-          "2",
-          "3"
-        ],
+        "enum": ["1", "2", "3"],
         "description": "Heading level this section was built from",
         "name": "level",
         "required": false
@@ -222,7 +218,7 @@
   {
     "id": "BookIndexTreeService",
     "kind": "service",
-    "description": "Fetches the site-tree index from indexUrl (narrowed to scope) and resolves documents and links against it for the open docId: which folders to keep open, which node a document id or a clicked link lands on. DocsTree and MDLink bind it by the literal name `bookIndex`, so it must be mounted as Ref=\"bookIndex\".",
+    "description": "Fetches the jsDelivr package listing from indexUrl (narrowed to scope), through a page-session cache, and resolves documents and links against it for the open docId: which folders to keep open, which node a document id or a clicked link lands on. DocsTree and MDLink bind it by the literal name `bookIndex`, so it must be mounted as Ref=\"bookIndex\".",
     "purpose": "Loads a book's site-tree index and navigates it",
     "name": "BookIndexTreeService",
     "group": "Books",
@@ -230,7 +226,7 @@
       {
         "id": "indexUrl",
         "type": "string",
-        "description": "Site-tree index endpoint; writing it reloads the tree — write-only",
+        "description": "jsDelivr package listing endpoint (?structure=tree); writing it reloads the tree — write-only",
         "name": "indexUrl",
         "required": false
       },
@@ -245,7 +241,7 @@
         "id": "scope",
         "type": "string",
         "default": "",
-        "description": "Site-tree path prefix this instance serves, stripped from the node ids",
+        "description": "Directory of the listing this instance serves, dropped from the node ids",
         "name": "scope",
         "required": false
       }
@@ -256,7 +252,7 @@
   {
     "id": "DocsService",
     "kind": "service",
-    "description": "Fetches the selected document through resolveUrlPattern. The site tree lives in BookIndexTreeService. Apps subclass it to add their own state; the books kit registers it as-is.",
+    "description": "Fetches the selected document through docUrl, via a page-session cache, so a document already read is shown again without a request. The site tree lives in BookIndexTreeService. Apps subclass it to add their own state; the books kit registers it as-is.",
     "purpose": "Loads the selected document of a markdown docs corpus",
     "name": "DocsService",
     "group": "Books",
@@ -269,11 +265,11 @@
         "required": false
       },
       {
-        "id": "resolveUrlPattern",
+        "id": "docUrl",
         "type": "string",
         "default": "/docs/*",
         "description": "URL template for one document, '*' substituted",
-        "name": "resolveUrlPattern",
+        "name": "docUrl",
         "required": false
       }
     ],

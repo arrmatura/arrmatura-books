@@ -1,16 +1,18 @@
-/** One index entry: GitHub's git-tree shape (`blob` / `tree` / `commit`) or the static `file` / `dir`. */
+/**
+ * One node of a jsDelivr package listing fetched with `?structure=tree` — already a
+ * tree, so `name` is a single path segment and a directory carries its children:
+ * `https://data.jsdelivr.com/v1/packages/gh/<owner>/<repo>@<version>?structure=tree`
+ */
 export interface SiteTreeEntry {
-  path: string;
-  type: "blob" | "tree" | "commit" | "file" | "dir";
+  type: "file" | "directory";
+  name: string;
+  /** Directories only. */
+  files?: SiteTreeEntry[];
 }
 
 export interface SiteTreeResponse {
-  tree: SiteTreeEntry[];
-  truncated?: boolean;
+  files?: SiteTreeEntry[];
 }
-
-const isDirEntry = (entry: SiteTreeEntry) =>
-  entry.type === "tree" || entry.type === "dir";
 
 export interface TreeNode {
   id: string;
@@ -25,21 +27,30 @@ export interface TreeNode {
 const INDEX_FILE = "index.md";
 
 /**
+ * Entries the tree never shows: agent and generator bookkeeping, anything a `_` marks
+ * as a draft, and the dotfiles jsDelivr lists alongside the content.
+ */
+const HIDDEN = new Set(["CLAUDE.md", "INDEX.md"]);
+const isHidden = (name: string) => HIDDEN.has(name) || name[0] === "_" || name[0] === ".";
+
+/** Directories first, then files, each alphabetical — jsDelivr returns neither ordered. */
+const byKind = (a: SiteTreeEntry, b: SiteTreeEntry) =>
+  (a.type === "directory" ? "0" : "1")
+    .concat(a.name)
+    .localeCompare((b.type === "directory" ? "0" : "1").concat(b.name));
+
+/**
  * Lifts a directory's own `index.md` onto the directory node as `doc` and drops it
  * from the children, so the tree shows one clickable folder instead of a folder
  * plus a redundant leaf. A root-level `index.md` has no folder to hang on and is
  * left as a normal leaf.
  */
 function hoistIndexDoc(dir: TreeNode) {
-  if (!dir.nodes) return;
-  const index = dir.nodes.find(
-    (node) => node.type === "file" && node.path.split("/").pop() === INDEX_FILE,
-  );
+  const index = dir.nodes?.find((node) => node.type === "file" && node.path.split("/").pop() === INDEX_FILE);
   if (index) {
     dir.doc = index.id;
-    dir.nodes = dir.nodes.filter((node) => node !== index);
+    dir.nodes = dir.nodes?.filter((node) => node !== index);
   }
-  dir.nodes.forEach(hoistIndexDoc);
 }
 
 /**
@@ -49,9 +60,7 @@ function hoistIndexDoc(dir: TreeNode) {
  */
 export function ancestorDirIds(docId: string): Record<string, boolean> {
   const dirs = (docId ?? "").split("/").slice(0, -1);
-  return Object.fromEntries(
-    dirs.map((_, i) => [dirs.slice(0, i + 1).join("/"), true]),
-  );
+  return Object.fromEntries(dirs.map((_, i) => [dirs.slice(0, i + 1).join("/"), true]));
 }
 
 /** The document a node opens: a file's own id, or a directory's hoisted `index.md`. */
@@ -67,53 +76,46 @@ export function prettifyName(path: string): string {
   return cleaned.charAt(0).toUpperCase() + cleaned.slice(1);
 }
 
-export function buildTree(entries: SiteTreeEntry[]): TreeNode[] {
-  const nodeMap = new Map<string, TreeNode>();
-  const roots: TreeNode[] = [];
-  const sorted = [...entries].sort((a, b) =>
-    ((isDirEntry(a) ? "0" : "1") + a.path).localeCompare(
-      (isDirEntry(b) ? "0" : "1") + b.path,
-    ),
-  );
-
-  for (const entry of sorted) {
-    if (entry.type === "commit") continue;
-
-    const tail = entry.path.split("/").pop() ?? entry.path;
-    if (tail === "CLAUDE.md") continue;
-    if (tail === "INDEX.md") continue;
-    if (tail[0] === "_") continue;
-
-    const isDir = isDirEntry(entry);
-    const node: TreeNode = {
-      id: entry.path,
-      name: prettifyName(entry.path),
-      type: isDir ? "dir" : "file",
-      path: entry.path,
-      ...(isDir ? { nodes: [] } : {}),
-    };
-    nodeMap.set(entry.path, node);
-
-    const slashIdx = entry.path.lastIndexOf("/");
-    if (slashIdx === -1) {
-      roots.push(node);
-    } else {
-      const parent = nodeMap.get(entry.path.slice(0, slashIdx));
-      if (parent?.nodes) parent.nodes.push(node);
-      else roots.push(node);
-    }
-  }
-  roots.forEach(hoistIndexDoc);
-  return roots;
+/**
+ * Turns one level of the listing into tree nodes, recursing into the directories.
+ * Node ids are paths built from `parentPath` down, so they stay relative to whatever
+ * level the walk started at — the scope root, not the package root.
+ */
+export function buildTree(entries: SiteTreeEntry[], parentPath = ""): TreeNode[] {
+  return (entries ?? [])
+    .filter((entry) => !isHidden(entry.name))
+    .sort(byKind)
+    .map((entry) => {
+      const path = parentPath ? `${parentPath}/${entry.name}` : entry.name;
+      const node: TreeNode = {
+        id: path,
+        name: prettifyName(entry.name),
+        type: entry.type === "directory" ? "dir" : "file",
+        path,
+      };
+      if (entry.type === "directory") {
+        node.nodes = buildTree(entry.files ?? [], path);
+        hoistIndexDoc(node);
+      }
+      return node;
+    });
 }
 
-export function scopeSiteTree(
-  data: SiteTreeResponse,
-  scope: string,
-): TreeNode[] {
-  if (data.truncated) console.warn("Site tree truncated — index incomplete");
-  const scoped = (data.tree ?? [])
-    .filter((e) => e.path.startsWith(scope))
-    .map((e) => ({ ...e, path: e.path.slice(scope.length) }));
-  return buildTree(scoped);
+/**
+ * Narrows the listing to one directory and builds the tree under it. `scope` is a
+ * `/`-separated path from the package root (`"docs"`), and it is dropped from the
+ * node ids rather than carried in them. An empty scope serves the whole package; a
+ * scope naming no directory yields an empty tree.
+ */
+export function scopeSiteTree(data: SiteTreeResponse, scope: string): TreeNode[] {
+  let files = data?.files ?? [];
+  for (const segment of (scope ?? "").split("/").filter(Boolean)) {
+    const dir = files.find((entry) => entry.type === "directory" && entry.name === segment);
+    if (!dir) {
+      console.warn(`Site tree: no "${scope}" directory in the index`);
+      return [];
+    }
+    files = dir.files ?? [];
+  }
+  return buildTree(files);
 }

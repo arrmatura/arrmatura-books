@@ -1,13 +1,13 @@
 <Component id="BookIndexTreeService">
   <Signature kind="service" purpose="Loads a book's site-tree index and navigates it"
-    description="Fetches the site-tree index from indexUrl (narrowed to scope) and resolves documents and links against it for the open docId: which folders to keep open, which node a document id or a clicked link lands on. DocsTree and MDLink bind it by the literal name `bookIndex`, so it must be mounted as Ref=&quot;bookIndex&quot;."
+    description="Fetches the jsDelivr package listing from indexUrl (narrowed to scope), through a page-session cache, and resolves documents and links against it for the open docId: which folders to keep open, which node a document id or a clicked link lands on. DocsTree and MDLink bind it by the literal name `bookIndex`, so it must be mounted as Ref=&quot;bookIndex&quot;."
     group="Books">
     <Prop id="indexUrl" type="string"
-      description="Site-tree index endpoint; writing it reloads the tree — write-only" />
+      description="jsDelivr package listing endpoint (?structure=tree); writing it reloads the tree — write-only" />
     <Prop id="docId" type="string"
       description="Id of the open document — the base for the open path and relative links" />
     <Prop id="scope" type="string" default=""
-      description="Site-tree path prefix this instance serves, stripped from the node ids" />
+      description="Directory of the listing this instance serves, dropped from the node ids" />
     <State id="nodes" type="array" description="Top-level nodes of the scoped site tree" />
     <State id="openPath" type="object"
       description="Ancestor directory ids of the open document, so the tree reveals it" />

@@ -1,8 +1,9 @@
 import { WebClientService } from "arrmatura-web/core";
+import { cached } from "./sessionCache";
 import { ancestorDirIds, docIdOf, type SiteTreeResponse, scopeSiteTree, type TreeNode } from "./siteTree";
 
 /**
- * Loads a book's site-tree index (`indexUrl`, scoped by `scope`) and answers questions
+ * Loads a book's jsDelivr package listing (`indexUrl`, narrowed to `scope`) and answers questions
  * against it for the currently open document (`docId`): which folders to keep open, which
  * node a document id or a clicked link lands on.
  */
@@ -11,7 +12,8 @@ export class BookIndexTreeService extends WebClientService {
   error = "";
   /** Id of the currently open document — the base relative links resolve against. */
   docId = "";
-  /** Prefix of the site-tree paths this instance serves; stripped from the node ids. */
+  /** Directory of the index this instance serves, as a path from the package root;
+   * dropped from the node ids, so `"docs"` makes them docs-root-relative. */
   scope = "";
   /** Top-level nodes of the scoped site tree. */
   nodes: TreeNode[] = [];
@@ -19,7 +21,7 @@ export class BookIndexTreeService extends WebClientService {
   set indexUrl(url: string) {
     if (!url) return;
     this.up({ loading: true, error: "" });
-    this.fetchJson<SiteTreeResponse>(url)
+    cached(url, () => this.fetchJson<SiteTreeResponse>(url))
       .then((data) => ({ nodes: scopeSiteTree(data, this.scope) }))
       .catch((err) => ({ error: String(err) }))
       .then((patch) => {

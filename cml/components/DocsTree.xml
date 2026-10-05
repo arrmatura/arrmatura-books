@@ -5,8 +5,8 @@
     group="Books" />
 
   <BookIndexTreeService Ref="bookIndex"
-    indexUrl="/index.json"
-    docId="{docId}" />
+    Props="{R.book}"
+    docId="{@docs.doc}" />
 
   <nav class="flex flex-col text-sm select-none">
     <Dynamic As="DocsTree.{capitalize(item.type)}" Props="{item}"
