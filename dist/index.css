@@ -27,6 +27,7 @@
     --color-green-500: oklch(72.3% 0.219 149.579);
     --color-green-600: oklch(62.7% 0.194 149.214);
     --color-green-700: oklch(52.7% 0.154 150.069);
+    --color-green-800: oklch(44.8% 0.119 151.328);
     --color-blue-50: oklch(97% 0.014 254.604);
     --color-blue-200: oklch(88.2% 0.059 254.128);
     --color-blue-400: oklch(70.7% 0.165 254.624);
@@ -34,6 +35,7 @@
     --color-blue-700: oklch(48.8% 0.243 264.376);
     --color-blue-800: oklch(42.4% 0.199 265.638);
     --color-blue-900: oklch(37.9% 0.146 265.522);
+    --color-violet-400: oklch(70.2% 0.183 293.541);
     --color-purple-400: oklch(71.4% 0.203 305.504);
     --color-purple-700: oklch(49.6% 0.265 301.924);
     --color-pink-400: oklch(71.8% 0.202 349.761);
@@ -77,6 +79,7 @@
     --font-weight-semibold: 600;
     --font-weight-bold: 700;
     --tracking-wider: 0.05em;
+    --leading-relaxed: 1.625;
     --radius-xs: 0.125rem;
     --radius-sm: 0.25rem;
     --radius-md: 0.375rem;
@@ -346,6 +349,83 @@
     .range:disabled {
       cursor: not-allowed;
       opacity: 30%;
+    }
+  }
+  @layer daisyui.l1.l2 {
+    .diff {
+      position: relative;
+      display: grid;
+      width: 100%;
+      overflow: hidden;
+      webkit-user-select: none;
+      user-select: none;
+      align-items: normal;
+      grid-template-rows: 1fr 1.8rem 1fr;
+      direction: ltr;
+      container-type: inline-size;
+      grid-template-columns: auto 1fr;
+    }
+    .diff:focus-visible {
+      outline-style: var(--tw-outline-style);
+      outline-width: 2px;
+      outline-offset: 1px;
+      outline-color: var(--color-base-content);
+    }
+    .diff:has(.diff-item-1:focus-visible) {
+      outline-style: var(--tw-outline-style);
+      outline-width: 2px;
+      outline-offset: 1px;
+      outline-color: var(--color-base-content);
+    }
+    .diff:focus-visible {
+      outline-style: var(--tw-outline-style);
+      outline-width: 2px;
+      outline-offset: 1px;
+      outline-color: var(--color-base-content);
+    }
+    .diff:focus-visible .diff-resizer {
+      min-width: 95cqi;
+      max-width: 95cqi;
+    }
+    .diff:has(.diff-item-1:focus-visible) {
+      outline-style: var(--tw-outline-style);
+      outline-width: 2px;
+      outline-offset: 1px;
+    }
+    .diff:has(.diff-item-1:focus-visible) .diff-resizer {
+      min-width: 5cqi;
+      max-width: 5cqi;
+    }
+    .diff:hover .diff-item-2::after {
+      height: 2.4rem;
+    }
+    @supports (-webkit-overflow-scrolling: touch) and (overflow: -webkit-paged-x) {
+      .diff:focus .diff-resizer {
+        min-width: 5cqi;
+        max-width: 5cqi;
+      }
+    }
+    @supports (-moz-appearance: none) {
+      @media (hover: none) and (pointer: coarse) {
+        .diff:focus .diff-resizer {
+          min-width: 5cqi;
+          max-width: 5cqi;
+        }
+      }
+    }
+    @supports (-webkit-overflow-scrolling: touch) and (overflow: -webkit-paged-x) {
+      .diff:has(.diff-item-1:focus) .diff-resizer {
+        min-width: 95cqi;
+        max-width: 95cqi;
+      }
+    }
+    @supports (-moz-appearance: none) {
+      @media (hover: none) and (pointer: coarse) {
+        .diff:has(.diff-item-1:focus) .diff-resizer {
+          min-width: 95cqi;
+          max-width: 95cqi;
+        }
+      }
     }
   }
   .\@container {
@@ -1184,6 +1264,2558 @@
     .tab:is(.tabs > .tab)[disabled] {
       pointer-events: none;
       opacity: 40%;
+    }
+    .vc {
+      position: relative;
+      box-sizing: border-box;
+      display: inline-flex;
+      min-width: 286px;
+      flex-direction: column;
+      border-radius: var(--radius-box);
+      border: var(--border) solid var(--color-base-200);
+      background-color: var(--color-base-100);
+      color: var(--color-base-content);
+      padding: 1rem;
+      opacity: 1;
+      transition-property: opacity;
+      transition-duration: 0.2s;
+      user-select: none;
+    }
+    .vc:focus-visible {
+      border-radius: var(--radius-field);
+      outline: 1px solid var(--color-primary);
+      outline-offset: -1px;
+    }
+    .vc button:focus-visible {
+      border-radius: var(--radius-field);
+      outline: 1px solid var(--color-primary);
+      outline-offset: -1px;
+    }
+    .vc [tabindex="0"]:focus-visible {
+      border-radius: var(--radius-field);
+      outline: 1px solid var(--color-primary);
+      outline-offset: -1px;
+    }
+    .vc[data-vc-calendar-hidden] {
+      pointer-events: none;
+      opacity: 0;
+    }
+    .vc[data-vc-calendar-hidden] * {
+      pointer-events: none !important;
+    }
+    .vc[data-vc-input] {
+      position: absolute;
+      box-shadow: 0 9px 20px var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      .vc[data-vc-input] {
+        box-shadow: 0 9px 20px color-mix(in oklab, var(--color-base-content) 10%, transparent);
+      }
+    }
+    .vc[data-vc-input][data-vc-position="bottom"] {
+      margin-top: 0.25rem;
+    }
+    .vc[data-vc-input][data-vc-position="top"] {
+      margin-top: -0.25rem;
+    }
+    .vc [data-vc="controls"] {
+      pointer-events: none;
+      position: absolute;
+      inset-inline: 0;
+      inset-block-start: 0;
+      z-index: 20;
+      box-sizing: content-box;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 1rem 0;
+    }
+    .vc [data-vc-arrow] {
+      pointer-events: auto;
+      position: relative;
+      display: block;
+      height: 1.5rem;
+      width: 1.5rem;
+      cursor: pointer;
+      border: 0;
+      border-radius: var(--radius-field);
+      background-color: transparent;
+      color: var(--color-base-content);
+    }
+    .vc [data-vc-arrow]:hover {
+      background-color: var(--color-base-200);
+    }
+    .vc [data-vc-arrow]:hover::before {
+      opacity: 0.6;
+    }
+    .vc [data-vc-arrow]::before {
+      content: "";
+      position: absolute;
+      inset-inline-start: 50%;
+      inset-block-start: 50%;
+      height: 0.5rem;
+      width: 0.5rem;
+      border-color: currentColor;
+      border-style: solid;
+      border-width: 0 2px 2px 0;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+    .vc [data-vc-arrow][data-vc-arrow="prev"]::before {
+      transform: translate(-35%, -50%) rotate(135deg);
+    }
+    .vc [data-vc-arrow][data-vc-arrow="next"]::before {
+      transform: translate(-65%, -50%) rotate(-45deg);
+    }
+    .vc .vc-arrow {
+      pointer-events: auto;
+      position: relative;
+      display: block;
+      height: 1.5rem;
+      width: 1.5rem;
+      cursor: pointer;
+      border: 0;
+      border-radius: var(--radius-field);
+      background-color: transparent;
+      color: var(--color-base-content);
+    }
+    .vc .vc-arrow:hover {
+      background-color: var(--color-base-200);
+    }
+    .vc .vc-arrow:hover::before {
+      opacity: 0.6;
+    }
+    .vc .vc-arrow::before {
+      content: "";
+      position: absolute;
+      inset-inline-start: 50%;
+      inset-block-start: 50%;
+      height: 0.5rem;
+      width: 0.5rem;
+      border-color: currentColor;
+      border-style: solid;
+      border-width: 0 2px 2px 0;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+    .vc .vc-arrow[data-vc-arrow="prev"]::before {
+      transform: translate(-35%, -50%) rotate(135deg);
+    }
+    .vc .vc-arrow[data-vc-arrow="next"]::before {
+      transform: translate(-65%, -50%) rotate(-45deg);
+    }
+    .vc [data-vc="grid"] {
+      display: flex;
+      flex-grow: 1;
+      flex-wrap: wrap;
+      gap: 1.75rem;
+    }
+    .vc [data-vc="grid"][data-vc-grid="hidden"] [data-vc="column"] {
+      pointer-events: none;
+      opacity: 0.3;
+    }
+    .vc [data-vc="grid"][data-vc-grid="hidden"] [data-vc="column"][data-vc-column="month"], .vc [data-vc="grid"][data-vc-grid="hidden"]  [data-vc="column"][data-vc-column="year"] {
+      pointer-events: auto;
+      opacity: 1;
+    }
+    .vc [data-vc="column"] {
+      display: flex;
+      min-width: 240px;
+      flex-grow: 1;
+      flex-direction: column;
+    }
+    .vc [data-vc="header"] {
+      position: relative;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+    }
+    .vc [data-vc-header="content"] {
+      color: var(--color-base-content);
+    }
+    .vc .vc-header__content {
+      color: var(--color-base-content);
+    }
+    .vc [data-vc-header="content"] {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: max-content;
+      flex-grow: 1;
+      align-items: center;
+      justify-content: center;
+      padding-inline: 1rem;
+      white-space: pre-wrap;
+    }
+    .vc [data-vc="month"] {
+      color: var(--color-base-content);
+    }
+    .vc [data-vc="month"]:hover {
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    .vc [data-vc="month"]:disabled {
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 30%, transparent);
+      }
+    }
+    .vc [data-vc="year"] {
+      color: var(--color-base-content);
+    }
+    .vc [data-vc="year"]:hover {
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    .vc [data-vc="year"]:disabled {
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 30%, transparent);
+      }
+    }
+    .vc .vc-month {
+      color: var(--color-base-content);
+    }
+    .vc .vc-month:hover {
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    .vc .vc-month:disabled {
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 30%, transparent);
+      }
+    }
+    .vc .vc-year {
+      color: var(--color-base-content);
+    }
+    .vc .vc-year:hover {
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    .vc .vc-year:disabled {
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 30%, transparent);
+      }
+    }
+    .vc [data-vc="month"] {
+      cursor: pointer;
+      border: 0;
+      border-radius: var(--radius-field);
+      background-color: transparent;
+      padding: 0.25rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+    }
+    .vc [data-vc="month"]:hover {
+      background-color: var(--color-base-200);
+    }
+    .vc [data-vc="month"]:disabled {
+      pointer-events: none;
+      opacity: 0.4;
+    }
+    .vc [data-vc="year"] {
+      cursor: pointer;
+      border: 0;
+      border-radius: var(--radius-field);
+      background-color: transparent;
+      padding: 0.25rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+    }
+    .vc [data-vc="year"]:hover {
+      background-color: var(--color-base-200);
+    }
+    .vc [data-vc="year"]:disabled {
+      pointer-events: none;
+      opacity: 0.4;
+    }
+    .vc [data-vc="wrapper"] {
+      display: flex;
+      flex-grow: 1;
+    }
+    .vc [data-vc="content"] {
+      display: flex;
+      flex-grow: 1;
+      flex-direction: column;
+    }
+    .vc [data-vc="months"] {
+      display: grid;
+      flex-grow: 1;
+      align-items: center;
+      gap: 1rem 0.25rem;
+    }
+    .vc [data-vc="years"] {
+      display: grid;
+      flex-grow: 1;
+      align-items: center;
+      gap: 1rem 0.25rem;
+    }
+    .vc [data-vc="months"] {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+    .vc [data-vc="years"] {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+    .vc [data-vc-months-month] {
+      background-color: var(--color-base-100);
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      .vc [data-vc-months-month] {
+        color: color-mix(in oklab, var(--color-base-content) 70%, transparent);
+      }
+    }
+    .vc [data-vc-months-month]:hover {
+      background-color: var(--color-base-200);
+      color: var(--color-base-content);
+    }
+    .vc [data-vc-months-month]:disabled {
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 30%, transparent);
+      }
+      opacity: 0.8;
+      &:hover {
+        color: var(--color-base-content);
+        @supports (color: color-mix(in lab, red, red)) {
+          color: color-mix(in oklab, var(--color-base-content) 30%, transparent);
+        }
+      }
+    }
+    .vc [data-vc-months-month][data-vc-months-month-selected], .vc [data-vc-months-month][data-vc-years-year-selected] {
+      background-color: var(--color-primary);
+      color: var(--color-primary-content);
+      &:hover {
+        background-color: var(--color-primary);
+        color: var(--color-primary-content);
+      }
+    }
+    .vc [data-vc-years-year] {
+      background-color: var(--color-base-100);
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      .vc [data-vc-years-year] {
+        color: color-mix(in oklab, var(--color-base-content) 70%, transparent);
+      }
+    }
+    .vc [data-vc-years-year]:hover {
+      background-color: var(--color-base-200);
+      color: var(--color-base-content);
+    }
+    .vc [data-vc-years-year]:disabled {
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 30%, transparent);
+      }
+      opacity: 0.8;
+      &:hover {
+        color: var(--color-base-content);
+        @supports (color: color-mix(in lab, red, red)) {
+          color: color-mix(in oklab, var(--color-base-content) 30%, transparent);
+        }
+      }
+    }
+    .vc [data-vc-years-year][data-vc-months-month-selected], .vc [data-vc-years-year][data-vc-years-year-selected] {
+      background-color: var(--color-primary);
+      color: var(--color-primary-content);
+      &:hover {
+        background-color: var(--color-primary);
+        color: var(--color-primary-content);
+      }
+    }
+    .vc .vc-months__month {
+      background-color: var(--color-base-100);
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      .vc .vc-months__month {
+        color: color-mix(in oklab, var(--color-base-content) 70%, transparent);
+      }
+    }
+    .vc .vc-months__month:hover {
+      background-color: var(--color-base-200);
+      color: var(--color-base-content);
+    }
+    .vc .vc-months__month:disabled {
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 30%, transparent);
+      }
+      opacity: 0.8;
+      &:hover {
+        color: var(--color-base-content);
+        @supports (color: color-mix(in lab, red, red)) {
+          color: color-mix(in oklab, var(--color-base-content) 30%, transparent);
+        }
+      }
+    }
+    .vc .vc-months__month[data-vc-months-month-selected], .vc .vc-months__month[data-vc-years-year-selected] {
+      background-color: var(--color-primary);
+      color: var(--color-primary-content);
+      &:hover {
+        background-color: var(--color-primary);
+        color: var(--color-primary-content);
+      }
+    }
+    .vc .vc-years__year {
+      background-color: var(--color-base-100);
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      .vc .vc-years__year {
+        color: color-mix(in oklab, var(--color-base-content) 70%, transparent);
+      }
+    }
+    .vc .vc-years__year:hover {
+      background-color: var(--color-base-200);
+      color: var(--color-base-content);
+    }
+    .vc .vc-years__year:disabled {
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 30%, transparent);
+      }
+      opacity: 0.8;
+      &:hover {
+        color: var(--color-base-content);
+        @supports (color: color-mix(in lab, red, red)) {
+          color: color-mix(in oklab, var(--color-base-content) 30%, transparent);
+        }
+      }
+    }
+    .vc .vc-years__year[data-vc-months-month-selected], .vc .vc-years__year[data-vc-years-year-selected] {
+      background-color: var(--color-primary);
+      color: var(--color-primary-content);
+      &:hover {
+        background-color: var(--color-primary);
+        color: var(--color-primary-content);
+      }
+    }
+    .vc [data-vc-months-month] {
+      display: flex;
+      height: 2.5rem;
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+      overflow-wrap: anywhere;
+      border: 0;
+      border-radius: var(--radius-field);
+      padding: 0.25rem;
+      text-align: center;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .vc [data-vc-months-month]:disabled {
+      pointer-events: none;
+      opacity: 0.4;
+    }
+    .vc [data-vc-years-year] {
+      display: flex;
+      height: 2.5rem;
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+      overflow-wrap: anywhere;
+      border: 0;
+      border-radius: var(--radius-field);
+      padding: 0.25rem;
+      text-align: center;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .vc [data-vc-years-year]:disabled {
+      pointer-events: none;
+      opacity: 0.4;
+    }
+    .vc [data-vc-week="numbers"] {
+      display: flex;
+      flex-direction: column;
+    }
+    .vc [data-vc-week-numbers="title"] {
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      .vc [data-vc-week-numbers="title"] {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    .vc .vc-week-numbers__title {
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      .vc .vc-week-numbers__title {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    .vc [data-vc-week-numbers="title"] {
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+    .vc [data-vc-week-numbers="content"] {
+      display: grid;
+      grid-auto-flow: row;
+      align-items: center;
+      justify-items: center;
+      row-gap: 0.25rem;
+    }
+    .vc [data-vc-week-number] {
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      .vc [data-vc-week-number] {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    .vc [data-vc-week-number]:hover {
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 80%, transparent);
+      }
+    }
+    .vc .vc-week-number {
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      .vc .vc-week-number {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    .vc .vc-week-number:hover {
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 80%, transparent);
+      }
+    }
+    .vc [data-vc-week-number] {
+      margin: 0;
+      display: flex;
+      min-height: 1.875rem;
+      min-width: 1.875rem;
+      width: 100%;
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+      border: 0;
+      background-color: transparent;
+      padding: 0;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .vc [data-vc="week"] {
+      margin-bottom: 0.5rem;
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      justify-items: center;
+    }
+    .vc [data-vc-week-day] {
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      .vc [data-vc-week-day] {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    .vc .vc-week__day {
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      .vc .vc-week__day {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    .vc [data-vc-week-day] {
+      margin: 0;
+      display: flex;
+      min-width: 1.875rem;
+      width: 100%;
+      align-items: center;
+      justify-content: center;
+      border: 0;
+      background-color: transparent;
+      padding: 0;
+      font-size: 0.75rem;
+      font-weight: normal;
+    }
+    .vc button[data-vc-week-day] {
+      cursor: pointer;
+    }
+    .vc button[data-vc-week-day]:hover {
+      color: var(--color-base-content);
+    }
+    .vc button.vc-week__day {
+      cursor: pointer;
+    }
+    .vc button.vc-week__day:hover {
+      color: var(--color-base-content);
+    }
+    .vc [data-vc="dates"] {
+      pointer-events: none;
+      display: grid;
+      flex-grow: 1;
+      grid-template-columns: 1fr;
+      grid-template-rows: auto;
+      align-items: center;
+      justify-items: center;
+    }
+    .vc [data-vc="dates"][data-vc-dates-disabled] [data-vc-date-btn] {
+      cursor: default;
+    }
+    .vc[data-vc-type="multiple"] [data-vc="dates"] {
+      flex-grow: 0;
+    }
+    .vc [data-vc-dates="row"] {
+      display: grid;
+      width: 100%;
+      grid-template-columns: repeat(7, 1fr);
+      align-items: center;
+      justify-items: center;
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-month="next"]) [data-vc-date-btn] {
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-month="next"]) [data-vc-date-btn] {
+        color: color-mix(in oklab, var(--color-base-content) 40%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-month="next"]) [data-vc-date-btn] {
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-month="next"]) [data-vc-date-btn] {
+        color: color-mix(in oklab, var(--color-base-content) 40%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-month="next"]) [data-vc-date-btn] {
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-month="next"]) [data-vc-date-btn] {
+        color: color-mix(in oklab, var(--color-base-content) 40%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-month="next"]) [data-vc-date-btn] {
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-month="next"]) [data-vc-date-btn] {
+        color: color-mix(in oklab, var(--color-base-content) 40%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-month="next"]) .vc-date__btn {
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-month="next"]) .vc-date__btn {
+        color: color-mix(in oklab, var(--color-base-content) 40%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-month="next"]) .vc-date__btn {
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-month="next"]) .vc-date__btn {
+        color: color-mix(in oklab, var(--color-base-content) 40%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-month="next"]) .vc-date__btn {
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-month="next"]) .vc-date__btn {
+        color: color-mix(in oklab, var(--color-base-content) 40%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-month="next"]) .vc-date__btn {
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-month="next"]) .vc-date__btn {
+        color: color-mix(in oklab, var(--color-base-content) 40%, transparent);
+      }
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-disabled] {
+      pointer-events: none;
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-disabled] [data-vc-date-btn], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-disabled]  .vc-date__btn {
+      pointer-events: none;
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 30%, transparent);
+      }
+      opacity: 0.8;
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-disabled] {
+      pointer-events: none;
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-disabled] [data-vc-date-btn], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-disabled]  .vc-date__btn {
+      pointer-events: none;
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 30%, transparent);
+      }
+      opacity: 0.8;
+    }
+    :is(.vc [data-vc-date], .vc .vc-date):not(:has([data-vc-date-btn])) {
+      pointer-events: none;
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-hover] [data-vc-date-btn] {
+      border-radius: 0;
+      background-color: var(--color-base-200);
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-hover] .vc-date__btn {
+      background-color: var(--color-base-200);
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-hover][data-vc-date-hover="first"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-hover][data-vc-date-hover="last"]) [data-vc-date-btn] {
+      background-color: var(--color-base-300);
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-hover][data-vc-date-hover="first"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-hover][data-vc-date-hover="last"]) [data-vc-date-btn]:hover {
+      background-color: var(--color-base-300);
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-hover][data-vc-date-hover="first"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-hover][data-vc-date-hover="last"]) [data-vc-date-btn] {
+      background-color: var(--color-base-300);
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-hover][data-vc-date-hover="first"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-hover][data-vc-date-hover="last"]) [data-vc-date-btn]:hover {
+      background-color: var(--color-base-300);
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-hover][data-vc-date-hover="first"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-hover][data-vc-date-hover="last"]) [data-vc-date-btn] {
+      background-color: var(--color-base-300);
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-hover][data-vc-date-hover="first"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-hover][data-vc-date-hover="last"]) [data-vc-date-btn]:hover {
+      background-color: var(--color-base-300);
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-hover][data-vc-date-hover="first"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-hover][data-vc-date-hover="last"]) [data-vc-date-btn] {
+      background-color: var(--color-base-300);
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-hover][data-vc-date-hover="first"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-hover][data-vc-date-hover="last"]) [data-vc-date-btn]:hover {
+      background-color: var(--color-base-300);
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-hover][data-vc-date-hover="first"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-hover][data-vc-date-hover="last"]) .vc-date__btn {
+      background-color: var(--color-base-300);
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-hover][data-vc-date-hover="first"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-hover][data-vc-date-hover="last"]) .vc-date__btn:hover {
+      background-color: var(--color-base-300);
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-hover][data-vc-date-hover="first"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-hover][data-vc-date-hover="last"]) .vc-date__btn {
+      background-color: var(--color-base-300);
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-hover][data-vc-date-hover="first"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-hover][data-vc-date-hover="last"]) .vc-date__btn:hover {
+      background-color: var(--color-base-300);
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-hover][data-vc-date-hover="first"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-hover][data-vc-date-hover="last"]) .vc-date__btn {
+      background-color: var(--color-base-300);
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-hover][data-vc-date-hover="first"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-hover][data-vc-date-hover="last"]) .vc-date__btn:hover {
+      background-color: var(--color-base-300);
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-hover][data-vc-date-hover="first"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-hover][data-vc-date-hover="last"]) .vc-date__btn {
+      background-color: var(--color-base-300);
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-hover][data-vc-date-hover="first"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-hover][data-vc-date-hover="last"]) .vc-date__btn:hover {
+      background-color: var(--color-base-300);
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-hover][data-vc-date-hover="first"] [data-vc-date-btn] {
+      border-start-start-radius: var(--radius-field);
+      border-end-start-radius: var(--radius-field);
+      border-start-end-radius: 0;
+      border-end-end-radius: 0;
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-hover][data-vc-date-hover="last"] [data-vc-date-btn] {
+      border-start-start-radius: 0;
+      border-end-start-radius: 0;
+      border-start-end-radius: var(--radius-field);
+      border-end-end-radius: var(--radius-field);
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-hover][data-vc-date-hover="first-and-last"] [data-vc-date-btn] {
+      border-radius: var(--radius-field);
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-hover][data-vc-date-selected][data-vc-date-hover="first"] [data-vc-date-btn] {
+      border-start-start-radius: var(--radius-field);
+      border-end-start-radius: var(--radius-field);
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-hover][data-vc-date-selected][data-vc-date-hover="last"] [data-vc-date-btn] {
+      border-start-end-radius: var(--radius-field);
+      border-end-end-radius: var(--radius-field);
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-hover]:has( + [data-vc-date-disabled]) [data-vc-date-btn] {
+      border-start-end-radius: var(--radius-field);
+      border-end-end-radius: var(--radius-field);
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected] [data-vc-date-btn] {
+      background-color: var(--color-base-content);
+      color: var(--color-base-100);
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected] [data-vc-date-btn]:hover {
+      background-color: var(--color-base-content);
+      color: var(--color-base-100);
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected] [data-vc-date-btn] {
+      background-color: var(--color-base-content);
+      color: var(--color-base-100);
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected] [data-vc-date-btn]:hover {
+      background-color: var(--color-base-content);
+      color: var(--color-base-100);
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected] .vc-date__btn {
+      background-color: var(--color-base-content);
+      color: var(--color-base-100);
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected] .vc-date__btn:hover {
+      background-color: var(--color-base-content);
+      color: var(--color-base-100);
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected] .vc-date__btn {
+      background-color: var(--color-base-content);
+      color: var(--color-base-100);
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected] .vc-date__btn:hover {
+      background-color: var(--color-base-content);
+      color: var(--color-base-100);
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected]:has( + [data-vc-date-disabled]) [data-vc-date-btn] {
+      border-start-end-radius: var(--radius-field);
+      border-end-end-radius: var(--radius-field);
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-selected="first"] [data-vc-date-btn] {
+      border-start-start-radius: var(--radius-field);
+      border-end-start-radius: var(--radius-field);
+      border-start-end-radius: 0;
+      border-end-end-radius: 0;
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-selected="last"] [data-vc-date-btn] {
+      border-start-start-radius: 0;
+      border-end-start-radius: 0;
+      border-start-end-radius: var(--radius-field);
+      border-end-end-radius: var(--radius-field);
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-selected="first-and-last"] [data-vc-date-btn] {
+      border-start-start-radius: var(--radius-field);
+      border-start-end-radius: var(--radius-field);
+      border-end-start-radius: var(--radius-field);
+      border-end-end-radius: var(--radius-field);
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-selected="middle"] [data-vc-date-btn] {
+      border-radius: 0;
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-month="next"]) [data-vc-date-btn] {
+      background-color: var(--color-base-300);
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-month="next"]) [data-vc-date-btn] {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-month="next"]) [data-vc-date-btn]:hover {
+      background-color: var(--color-base-300);
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-month="next"]) [data-vc-date-btn] {
+      background-color: var(--color-base-300);
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-month="next"]) [data-vc-date-btn] {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-month="next"]) [data-vc-date-btn]:hover {
+      background-color: var(--color-base-300);
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-month="next"]) [data-vc-date-btn] {
+      background-color: var(--color-base-300);
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-month="next"]) [data-vc-date-btn] {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-month="next"]) [data-vc-date-btn]:hover {
+      background-color: var(--color-base-300);
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-month="next"]) [data-vc-date-btn] {
+      background-color: var(--color-base-300);
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-month="next"]) [data-vc-date-btn] {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-month="next"]) [data-vc-date-btn]:hover {
+      background-color: var(--color-base-300);
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-month="next"]) .vc-date__btn {
+      background-color: var(--color-base-300);
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-month="next"]) .vc-date__btn {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-month="next"]) .vc-date__btn:hover {
+      background-color: var(--color-base-300);
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-month="next"]) .vc-date__btn {
+      background-color: var(--color-base-300);
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-month="next"]) .vc-date__btn {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-month="next"]) .vc-date__btn:hover {
+      background-color: var(--color-base-300);
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-month="next"]) .vc-date__btn {
+      background-color: var(--color-base-300);
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-month="next"]) .vc-date__btn {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-month="next"]) .vc-date__btn:hover {
+      background-color: var(--color-base-300);
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-month="next"]) .vc-date__btn {
+      background-color: var(--color-base-300);
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-month="next"]) .vc-date__btn {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-month="next"]) .vc-date__btn:hover {
+      background-color: var(--color-base-300);
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="next"]) [data-vc-date-btn] {
+      background-color: var(--color-base-200);
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="next"]) [data-vc-date-btn] {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="next"]) [data-vc-date-btn]:hover {
+      background-color: var(--color-base-200);
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="next"]) [data-vc-date-btn] {
+      background-color: var(--color-base-200);
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="next"]) [data-vc-date-btn] {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="next"]) [data-vc-date-btn]:hover {
+      background-color: var(--color-base-200);
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="next"]) [data-vc-date-btn] {
+      background-color: var(--color-base-200);
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="next"]) [data-vc-date-btn] {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="next"]) [data-vc-date-btn]:hover {
+      background-color: var(--color-base-200);
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="next"]) [data-vc-date-btn] {
+      background-color: var(--color-base-200);
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="next"]) [data-vc-date-btn] {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="next"]) [data-vc-date-btn]:hover {
+      background-color: var(--color-base-200);
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="next"]) .vc-date__btn {
+      background-color: var(--color-base-200);
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="next"]) .vc-date__btn {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="next"]) .vc-date__btn:hover {
+      background-color: var(--color-base-200);
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="next"]) .vc-date__btn {
+      background-color: var(--color-base-200);
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="next"]) .vc-date__btn {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="next"]) .vc-date__btn:hover {
+      background-color: var(--color-base-200);
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="next"]) .vc-date__btn {
+      background-color: var(--color-base-200);
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="next"]) .vc-date__btn {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="next"]) .vc-date__btn:hover {
+      background-color: var(--color-base-200);
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="next"]) .vc-date__btn {
+      background-color: var(--color-base-200);
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="next"]) .vc-date__btn {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="next"]) .vc-date__btn:hover {
+      background-color: var(--color-base-200);
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-today] [data-vc-date-btn] {
+      background-color: var(--color-primary);
+      color: var(--color-primary-content);
+      font-weight: 700;
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-today] [data-vc-date-btn]:hover {
+      color: var(--color-primary-content);
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-today] [data-vc-date-btn] {
+      background-color: var(--color-primary);
+      color: var(--color-primary-content);
+      font-weight: 700;
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-today] [data-vc-date-btn]:hover {
+      color: var(--color-primary-content);
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-today] .vc-date__btn {
+      background-color: var(--color-primary);
+      color: var(--color-primary-content);
+      font-weight: 700;
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-today] .vc-date__btn:hover {
+      color: var(--color-primary-content);
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-today] .vc-date__btn {
+      background-color: var(--color-primary);
+      color: var(--color-primary-content);
+      font-weight: 700;
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-today] .vc-date__btn:hover {
+      color: var(--color-primary-content);
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-today][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-today][data-vc-date-month="next"]) [data-vc-date-btn] {
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-today][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-today][data-vc-date-month="next"]) [data-vc-date-btn] {
+        color: color-mix(in oklab, var(--color-base-content) 50%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-today][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-today][data-vc-date-month="next"]) [data-vc-date-btn] {
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-today][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-today][data-vc-date-month="next"]) [data-vc-date-btn] {
+        color: color-mix(in oklab, var(--color-base-content) 50%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-today][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-today][data-vc-date-month="next"]) [data-vc-date-btn] {
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-today][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-today][data-vc-date-month="next"]) [data-vc-date-btn] {
+        color: color-mix(in oklab, var(--color-base-content) 50%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-today][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-today][data-vc-date-month="next"]) [data-vc-date-btn] {
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-today][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-today][data-vc-date-month="next"]) [data-vc-date-btn] {
+        color: color-mix(in oklab, var(--color-base-content) 50%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-today][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-today][data-vc-date-month="next"]) .vc-date__btn {
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-today][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-today][data-vc-date-month="next"]) .vc-date__btn {
+        color: color-mix(in oklab, var(--color-base-content) 50%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-today][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-today][data-vc-date-month="next"]) .vc-date__btn {
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-today][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-today][data-vc-date-month="next"]) .vc-date__btn {
+        color: color-mix(in oklab, var(--color-base-content) 50%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-today][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-today][data-vc-date-month="next"]) .vc-date__btn {
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-today][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-today][data-vc-date-month="next"]) .vc-date__btn {
+        color: color-mix(in oklab, var(--color-base-content) 50%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-today][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-today][data-vc-date-month="next"]) .vc-date__btn {
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-today][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-today][data-vc-date-month="next"]) .vc-date__btn {
+        color: color-mix(in oklab, var(--color-base-content) 50%, transparent);
+      }
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday] [data-vc-date-btn] {
+      color: var(--color-error);
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday] [data-vc-date-btn]:hover {
+      background-color: var(--color-error);
+      @supports (color: color-mix(in lab, red, red)) {
+        background-color: color-mix(in oklab, var(--color-error) 10%, transparent);
+      }
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday] [data-vc-date-btn] {
+      color: var(--color-error);
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday] [data-vc-date-btn]:hover {
+      background-color: var(--color-error);
+      @supports (color: color-mix(in lab, red, red)) {
+        background-color: color-mix(in oklab, var(--color-error) 10%, transparent);
+      }
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday] .vc-date__btn {
+      color: var(--color-error);
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday] .vc-date__btn:hover {
+      background-color: var(--color-error);
+      @supports (color: color-mix(in lab, red, red)) {
+        background-color: color-mix(in oklab, var(--color-error) 10%, transparent);
+      }
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday] .vc-date__btn {
+      color: var(--color-error);
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday] .vc-date__btn:hover {
+      background-color: var(--color-error);
+      @supports (color: color-mix(in lab, red, red)) {
+        background-color: color-mix(in oklab, var(--color-error) 10%, transparent);
+      }
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover] [data-vc-date-btn] {
+      background-color: var(--color-error);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover] [data-vc-date-btn] {
+        background-color: color-mix(in oklab, var(--color-error) 10%, transparent);
+      }
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover] [data-vc-date-btn] {
+      background-color: var(--color-error);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover] [data-vc-date-btn] {
+        background-color: color-mix(in oklab, var(--color-error) 10%, transparent);
+      }
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover] .vc-date__btn {
+      background-color: var(--color-error);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover] .vc-date__btn {
+        background-color: color-mix(in oklab, var(--color-error) 10%, transparent);
+      }
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover] .vc-date__btn {
+      background-color: var(--color-error);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover] .vc-date__btn {
+        background-color: color-mix(in oklab, var(--color-error) 10%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover][data-vc-date-hover="first"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover][data-vc-date-hover="last"]) [data-vc-date-btn] {
+      background-color: var(--color-error);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover][data-vc-date-hover="first"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover][data-vc-date-hover="last"]) [data-vc-date-btn] {
+        background-color: color-mix(in oklab, var(--color-error) 20%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover][data-vc-date-hover="first"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover][data-vc-date-hover="last"]) [data-vc-date-btn]:hover {
+      background-color: var(--color-error);
+      @supports (color: color-mix(in lab, red, red)) {
+        background-color: color-mix(in oklab, var(--color-error) 20%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover][data-vc-date-hover="first"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover][data-vc-date-hover="last"]) [data-vc-date-btn] {
+      background-color: var(--color-error);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover][data-vc-date-hover="first"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover][data-vc-date-hover="last"]) [data-vc-date-btn] {
+        background-color: color-mix(in oklab, var(--color-error) 20%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover][data-vc-date-hover="first"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover][data-vc-date-hover="last"]) [data-vc-date-btn]:hover {
+      background-color: var(--color-error);
+      @supports (color: color-mix(in lab, red, red)) {
+        background-color: color-mix(in oklab, var(--color-error) 20%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover][data-vc-date-hover="first"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover][data-vc-date-hover="last"]) [data-vc-date-btn] {
+      background-color: var(--color-error);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover][data-vc-date-hover="first"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover][data-vc-date-hover="last"]) [data-vc-date-btn] {
+        background-color: color-mix(in oklab, var(--color-error) 20%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover][data-vc-date-hover="first"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover][data-vc-date-hover="last"]) [data-vc-date-btn]:hover {
+      background-color: var(--color-error);
+      @supports (color: color-mix(in lab, red, red)) {
+        background-color: color-mix(in oklab, var(--color-error) 20%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover][data-vc-date-hover="first"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover][data-vc-date-hover="last"]) [data-vc-date-btn] {
+      background-color: var(--color-error);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover][data-vc-date-hover="first"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover][data-vc-date-hover="last"]) [data-vc-date-btn] {
+        background-color: color-mix(in oklab, var(--color-error) 20%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover][data-vc-date-hover="first"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover][data-vc-date-hover="last"]) [data-vc-date-btn]:hover {
+      background-color: var(--color-error);
+      @supports (color: color-mix(in lab, red, red)) {
+        background-color: color-mix(in oklab, var(--color-error) 20%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover][data-vc-date-hover="first"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover][data-vc-date-hover="last"]) .vc-date__btn {
+      background-color: var(--color-error);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover][data-vc-date-hover="first"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover][data-vc-date-hover="last"]) .vc-date__btn {
+        background-color: color-mix(in oklab, var(--color-error) 20%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover][data-vc-date-hover="first"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover][data-vc-date-hover="last"]) .vc-date__btn:hover {
+      background-color: var(--color-error);
+      @supports (color: color-mix(in lab, red, red)) {
+        background-color: color-mix(in oklab, var(--color-error) 20%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover][data-vc-date-hover="first"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover][data-vc-date-hover="last"]) .vc-date__btn {
+      background-color: var(--color-error);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover][data-vc-date-hover="first"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover][data-vc-date-hover="last"]) .vc-date__btn {
+        background-color: color-mix(in oklab, var(--color-error) 20%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover][data-vc-date-hover="first"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover][data-vc-date-hover="last"]) .vc-date__btn:hover {
+      background-color: var(--color-error);
+      @supports (color: color-mix(in lab, red, red)) {
+        background-color: color-mix(in oklab, var(--color-error) 20%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover][data-vc-date-hover="first"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover][data-vc-date-hover="last"]) .vc-date__btn {
+      background-color: var(--color-error);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover][data-vc-date-hover="first"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover][data-vc-date-hover="last"]) .vc-date__btn {
+        background-color: color-mix(in oklab, var(--color-error) 20%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover][data-vc-date-hover="first"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover][data-vc-date-hover="last"]) .vc-date__btn:hover {
+      background-color: var(--color-error);
+      @supports (color: color-mix(in lab, red, red)) {
+        background-color: color-mix(in oklab, var(--color-error) 20%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover][data-vc-date-hover="first"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover][data-vc-date-hover="last"]) .vc-date__btn {
+      background-color: var(--color-error);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover][data-vc-date-hover="first"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover][data-vc-date-hover="last"]) .vc-date__btn {
+        background-color: color-mix(in oklab, var(--color-error) 20%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover][data-vc-date-hover="first"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover][data-vc-date-hover="last"]) .vc-date__btn:hover {
+      background-color: var(--color-error);
+      @supports (color: color-mix(in lab, red, red)) {
+        background-color: color-mix(in oklab, var(--color-error) 20%, transparent);
+      }
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-disabled] [data-vc-date-btn] {
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-disabled] [data-vc-date-btn] {
+        color: color-mix(in oklab, var(--color-base-content) 30%, transparent);
+      }
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-disabled] [data-vc-date-btn] {
+      opacity: 0.8;
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-disabled] [data-vc-date-btn] {
+        color: color-mix(in oklab, var(--color-base-content) 30%, transparent);
+      }
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-disabled] [data-vc-date-btn] {
+      opacity: 0.8;
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-disabled] .vc-date__btn {
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-disabled] .vc-date__btn {
+        color: color-mix(in oklab, var(--color-base-content) 30%, transparent);
+      }
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-disabled] .vc-date__btn {
+      opacity: 0.8;
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-disabled] .vc-date__btn {
+        color: color-mix(in oklab, var(--color-base-content) 30%, transparent);
+      }
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-disabled] .vc-date__btn {
+      opacity: 0.8;
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-today] [data-vc-date-btn] {
+      background-color: var(--color-error);
+      color: var(--color-error-content);
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-today] .vc-date__btn {
+      background-color: var(--color-error);
+      color: var(--color-error-content);
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-today][data-vc-date-disabled] [data-vc-date-btn] {
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-today][data-vc-date-disabled] [data-vc-date-btn] {
+        color: color-mix(in oklab, var(--color-base-content) 30%, transparent);
+      }
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-today][data-vc-date-disabled] [data-vc-date-btn] {
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-today][data-vc-date-disabled] [data-vc-date-btn] {
+        color: color-mix(in oklab, var(--color-base-content) 30%, transparent);
+      }
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-today][data-vc-date-disabled] .vc-date__btn {
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-today][data-vc-date-disabled] .vc-date__btn {
+        color: color-mix(in oklab, var(--color-base-content) 30%, transparent);
+      }
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-today][data-vc-date-disabled] .vc-date__btn {
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-today][data-vc-date-disabled] .vc-date__btn {
+        color: color-mix(in oklab, var(--color-base-content) 30%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-today][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-today][data-vc-date-month="next"]) [data-vc-date-btn] {
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-today][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-today][data-vc-date-month="next"]) [data-vc-date-btn] {
+        color: color-mix(in oklab, var(--color-base-content) 40%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-today][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-today][data-vc-date-month="next"]) [data-vc-date-btn] {
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-today][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-today][data-vc-date-month="next"]) [data-vc-date-btn] {
+        color: color-mix(in oklab, var(--color-base-content) 40%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-today][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-today][data-vc-date-month="next"]) [data-vc-date-btn] {
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-today][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-today][data-vc-date-month="next"]) [data-vc-date-btn] {
+        color: color-mix(in oklab, var(--color-base-content) 40%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-today][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-today][data-vc-date-month="next"]) [data-vc-date-btn] {
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-today][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-today][data-vc-date-month="next"]) [data-vc-date-btn] {
+        color: color-mix(in oklab, var(--color-base-content) 40%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-today][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-today][data-vc-date-month="next"]) .vc-date__btn {
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-today][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-today][data-vc-date-month="next"]) .vc-date__btn {
+        color: color-mix(in oklab, var(--color-base-content) 40%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-today][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-today][data-vc-date-month="next"]) .vc-date__btn {
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-today][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-today][data-vc-date-month="next"]) .vc-date__btn {
+        color: color-mix(in oklab, var(--color-base-content) 40%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-today][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-today][data-vc-date-month="next"]) .vc-date__btn {
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-today][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-today][data-vc-date-month="next"]) .vc-date__btn {
+        color: color-mix(in oklab, var(--color-base-content) 40%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-today][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-today][data-vc-date-month="next"]) .vc-date__btn {
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-today][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-today][data-vc-date-month="next"]) .vc-date__btn {
+        color: color-mix(in oklab, var(--color-base-content) 40%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-month="next"]) [data-vc-date-btn] {
+      background-color: var(--color-base-100);
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-month="next"]) [data-vc-date-btn] {
+        color: color-mix(in oklab, var(--color-base-content) 40%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-month="next"]) [data-vc-date-btn]:hover {
+      background-color: var(--color-base-200);
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-month="next"]) [data-vc-date-btn] {
+      background-color: var(--color-base-100);
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-month="next"]) [data-vc-date-btn] {
+        color: color-mix(in oklab, var(--color-base-content) 40%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-month="next"]) [data-vc-date-btn]:hover {
+      background-color: var(--color-base-200);
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-month="next"]) [data-vc-date-btn] {
+      background-color: var(--color-base-100);
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-month="next"]) [data-vc-date-btn] {
+        color: color-mix(in oklab, var(--color-base-content) 40%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-month="next"]) [data-vc-date-btn]:hover {
+      background-color: var(--color-base-200);
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-month="next"]) [data-vc-date-btn] {
+      background-color: var(--color-base-100);
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-month="next"]) [data-vc-date-btn] {
+        color: color-mix(in oklab, var(--color-base-content) 40%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-month="next"]) [data-vc-date-btn]:hover {
+      background-color: var(--color-base-200);
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-month="next"]) .vc-date__btn {
+      background-color: var(--color-base-100);
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-month="next"]) .vc-date__btn {
+        color: color-mix(in oklab, var(--color-base-content) 40%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-month="next"]) .vc-date__btn:hover {
+      background-color: var(--color-base-200);
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-month="next"]) .vc-date__btn {
+      background-color: var(--color-base-100);
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-month="next"]) .vc-date__btn {
+        color: color-mix(in oklab, var(--color-base-content) 40%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-month="next"]) .vc-date__btn:hover {
+      background-color: var(--color-base-200);
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-month="next"]) .vc-date__btn {
+      background-color: var(--color-base-100);
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-month="next"]) .vc-date__btn {
+        color: color-mix(in oklab, var(--color-base-content) 40%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-month="next"]) .vc-date__btn:hover {
+      background-color: var(--color-base-200);
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-month="next"]) .vc-date__btn {
+      background-color: var(--color-base-100);
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-month="next"]) .vc-date__btn {
+        color: color-mix(in oklab, var(--color-base-content) 40%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-month="next"]) .vc-date__btn:hover {
+      background-color: var(--color-base-200);
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover][data-vc-date-month="next"]) [data-vc-date-btn] {
+      background-color: var(--color-base-200);
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-hover][data-vc-date-month="next"]) .vc-date__btn {
+      background-color: var(--color-base-200);
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-disabled][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-disabled][data-vc-date-month="next"]) [data-vc-date-btn] {
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-disabled][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-disabled][data-vc-date-month="next"]) [data-vc-date-btn] {
+        color: color-mix(in oklab, var(--color-base-content) 30%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-disabled][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-disabled][data-vc-date-month="next"]) [data-vc-date-btn] {
+      opacity: 0.8;
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-disabled][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-disabled][data-vc-date-month="next"]) [data-vc-date-btn] {
+        color: color-mix(in oklab, var(--color-base-content) 30%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-disabled][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-disabled][data-vc-date-month="next"]) [data-vc-date-btn] {
+      opacity: 0.8;
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-disabled][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-disabled][data-vc-date-month="next"]) [data-vc-date-btn] {
+        color: color-mix(in oklab, var(--color-base-content) 30%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-disabled][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-disabled][data-vc-date-month="next"]) [data-vc-date-btn] {
+      opacity: 0.8;
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-disabled][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-disabled][data-vc-date-month="next"]) [data-vc-date-btn] {
+        color: color-mix(in oklab, var(--color-base-content) 30%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-disabled][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-disabled][data-vc-date-month="next"]) [data-vc-date-btn] {
+      opacity: 0.8;
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-disabled][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-disabled][data-vc-date-month="next"]) .vc-date__btn {
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-disabled][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-disabled][data-vc-date-month="next"]) .vc-date__btn {
+        color: color-mix(in oklab, var(--color-base-content) 30%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-disabled][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-disabled][data-vc-date-month="next"]) .vc-date__btn {
+      opacity: 0.8;
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-disabled][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-disabled][data-vc-date-month="next"]) .vc-date__btn {
+        color: color-mix(in oklab, var(--color-base-content) 30%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-disabled][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-disabled][data-vc-date-month="next"]) .vc-date__btn {
+      opacity: 0.8;
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-disabled][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-disabled][data-vc-date-month="next"]) .vc-date__btn {
+        color: color-mix(in oklab, var(--color-base-content) 30%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-disabled][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-disabled][data-vc-date-month="next"]) .vc-date__btn {
+      opacity: 0.8;
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-disabled][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-disabled][data-vc-date-month="next"]) .vc-date__btn {
+        color: color-mix(in oklab, var(--color-base-content) 30%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-disabled][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-disabled][data-vc-date-month="next"]) .vc-date__btn {
+      opacity: 0.8;
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected] [data-vc-date-btn] {
+      background-color: var(--color-error);
+      color: var(--color-error-content);
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected] [data-vc-date-btn]:hover {
+      background-color: var(--color-error);
+      color: var(--color-error-content);
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected] [data-vc-date-btn] {
+      background-color: var(--color-error);
+      color: var(--color-error-content);
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected] [data-vc-date-btn]:hover {
+      background-color: var(--color-error);
+      color: var(--color-error-content);
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected] .vc-date__btn {
+      background-color: var(--color-error);
+      color: var(--color-error-content);
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected] .vc-date__btn:hover {
+      background-color: var(--color-error);
+      color: var(--color-error-content);
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected] .vc-date__btn {
+      background-color: var(--color-error);
+      color: var(--color-error-content);
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected] .vc-date__btn:hover {
+      background-color: var(--color-error);
+      color: var(--color-error-content);
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"] [data-vc-date-btn] {
+      background-color: var(--color-error);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"] [data-vc-date-btn] {
+        background-color: color-mix(in oklab, var(--color-error) 75%, transparent);
+      }
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"] [data-vc-date-btn] {
+      color: var(--color-error-content);
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"] [data-vc-date-btn]:hover {
+      background-color: var(--color-error);
+      @supports (color: color-mix(in lab, red, red)) {
+        background-color: color-mix(in oklab, var(--color-error) 75%, transparent);
+      }
+      color: var(--color-error-content);
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"] [data-vc-date-btn] {
+      background-color: var(--color-error);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"] [data-vc-date-btn] {
+        background-color: color-mix(in oklab, var(--color-error) 75%, transparent);
+      }
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"] [data-vc-date-btn] {
+      color: var(--color-error-content);
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"] [data-vc-date-btn]:hover {
+      background-color: var(--color-error);
+      @supports (color: color-mix(in lab, red, red)) {
+        background-color: color-mix(in oklab, var(--color-error) 75%, transparent);
+      }
+      color: var(--color-error-content);
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"] .vc-date__btn {
+      background-color: var(--color-error);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"] .vc-date__btn {
+        background-color: color-mix(in oklab, var(--color-error) 75%, transparent);
+      }
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"] .vc-date__btn {
+      color: var(--color-error-content);
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"] .vc-date__btn:hover {
+      background-color: var(--color-error);
+      @supports (color: color-mix(in lab, red, red)) {
+        background-color: color-mix(in oklab, var(--color-error) 75%, transparent);
+      }
+      color: var(--color-error-content);
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"] .vc-date__btn {
+      background-color: var(--color-error);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"] .vc-date__btn {
+        background-color: color-mix(in oklab, var(--color-error) 75%, transparent);
+      }
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"] .vc-date__btn {
+      color: var(--color-error-content);
+    }
+    :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"] .vc-date__btn:hover {
+      background-color: var(--color-error);
+      @supports (color: color-mix(in lab, red, red)) {
+        background-color: color-mix(in oklab, var(--color-error) 75%, transparent);
+      }
+      color: var(--color-error-content);
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-month="next"]) [data-vc-date-btn] {
+      background-color: var(--color-base-300);
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-month="next"]) [data-vc-date-btn] {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-month="next"]) [data-vc-date-btn]:hover {
+      background-color: var(--color-base-300);
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-month="next"]) [data-vc-date-btn] {
+      background-color: var(--color-base-300);
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-month="next"]) [data-vc-date-btn] {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-month="next"]) [data-vc-date-btn]:hover {
+      background-color: var(--color-base-300);
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-month="next"]) [data-vc-date-btn] {
+      background-color: var(--color-base-300);
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-month="next"]) [data-vc-date-btn] {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-month="next"]) [data-vc-date-btn]:hover {
+      background-color: var(--color-base-300);
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-month="next"]) [data-vc-date-btn] {
+      background-color: var(--color-base-300);
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-month="next"]) [data-vc-date-btn] {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-month="next"]) [data-vc-date-btn]:hover {
+      background-color: var(--color-base-300);
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-month="next"]) .vc-date__btn {
+      background-color: var(--color-base-300);
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-month="next"]) .vc-date__btn {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-month="next"]) .vc-date__btn:hover {
+      background-color: var(--color-base-300);
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-month="next"]) .vc-date__btn {
+      background-color: var(--color-base-300);
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-month="next"]) .vc-date__btn {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-month="next"]) .vc-date__btn:hover {
+      background-color: var(--color-base-300);
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-month="next"]) .vc-date__btn {
+      background-color: var(--color-base-300);
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-month="next"]) .vc-date__btn {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-month="next"]) .vc-date__btn:hover {
+      background-color: var(--color-base-300);
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-month="next"]) .vc-date__btn {
+      background-color: var(--color-base-300);
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-month="next"]) .vc-date__btn {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-month="next"]) .vc-date__btn:hover {
+      background-color: var(--color-base-300);
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="next"]) [data-vc-date-btn] {
+      background-color: var(--color-base-200);
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="next"]) [data-vc-date-btn] {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="next"]) [data-vc-date-btn]:hover {
+      background-color: var(--color-base-200);
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="next"]) [data-vc-date-btn] {
+      background-color: var(--color-base-200);
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="next"]) [data-vc-date-btn] {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="next"]) [data-vc-date-btn]:hover {
+      background-color: var(--color-base-200);
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="next"]) [data-vc-date-btn] {
+      background-color: var(--color-base-200);
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="next"]) [data-vc-date-btn] {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="next"]) [data-vc-date-btn]:hover {
+      background-color: var(--color-base-200);
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="next"]) [data-vc-date-btn] {
+      background-color: var(--color-base-200);
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="next"]) [data-vc-date-btn] {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="next"]) [data-vc-date-btn]:hover {
+      background-color: var(--color-base-200);
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="next"]) .vc-date__btn {
+      background-color: var(--color-base-200);
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="next"]) .vc-date__btn {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="next"]) .vc-date__btn:hover {
+      background-color: var(--color-base-200);
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="next"]) .vc-date__btn {
+      background-color: var(--color-base-200);
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="next"]) .vc-date__btn {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="next"]) .vc-date__btn:hover {
+      background-color: var(--color-base-200);
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="next"]) .vc-date__btn {
+      background-color: var(--color-base-200);
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="next"]) .vc-date__btn {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="next"]) .vc-date__btn:hover {
+      background-color: var(--color-base-200);
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="next"]) .vc-date__btn {
+      background-color: var(--color-base-200);
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="next"]) .vc-date__btn {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    :is(:is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="prev"], :is(.vc [data-vc-date], .vc .vc-date)[data-vc-date-holiday][data-vc-date-selected][data-vc-date-selected="middle"][data-vc-date-month="next"]) .vc-date__btn:hover {
+      background-color: var(--color-base-200);
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+      }
+    }
+    .vc [data-vc-date] {
+      pointer-events: auto;
+      position: relative;
+      display: flex;
+      width: 100%;
+      align-items: center;
+      justify-content: center;
+      padding-block: 0.125rem;
+    }
+    .vc [data-vc-date][data-vc-date-disabled] + [data-vc-date-selected] [data-vc-date-btn], .vc [data-vc-date][data-vc-date-disabled] + [data-vc-date-hover] [data-vc-date-btn] {
+      border-start-start-radius: var(--radius-field);
+      border-end-start-radius: var(--radius-field);
+    }
+    .vc [data-vc-date-btn] {
+      background-color: var(--color-base-100);
+      color: var(--color-base-content);
+    }
+    .vc [data-vc-date-btn]:hover {
+      background-color: var(--color-base-200);
+    }
+    .vc .vc-date__btn {
+      background-color: var(--color-base-100);
+      color: var(--color-base-content);
+    }
+    .vc .vc-date__btn:hover {
+      background-color: var(--color-base-200);
+    }
+    .vc [data-vc-date-btn] {
+      display: flex;
+      min-height: 1.875rem;
+      min-width: 1.875rem;
+      height: 100%;
+      width: 100%;
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+      border: 0;
+      border-radius: var(--radius-field);
+      padding: 0;
+      font-size: 0.75rem;
+      font-weight: 400;
+      transition-property: color, background-color, border-color, opacity, box-shadow, transform;
+      transition-duration: 75ms;
+    }
+    .vc [data-vc-date-btn]:focus-visible + [data-vc-date-popup] {
+      pointer-events: auto;
+      opacity: 1;
+    }
+    .vc [data-vc-date-btn]:hover + [data-vc-date-popup] {
+      pointer-events: auto;
+      opacity: 1;
+    }
+    .vc [data-vc-date-popup]:focus-visible {
+      pointer-events: auto;
+      opacity: 1;
+    }
+    .vc [data-vc-date-popup]:hover {
+      pointer-events: auto;
+      opacity: 1;
+    }
+    .vc [data-vc-date-popup] {
+      background-color: var(--color-base-100);
+      color: var(--color-base-content);
+      box-shadow: 0 3px 15px var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      .vc [data-vc-date-popup] {
+        box-shadow: 0 3px 15px color-mix(in oklab, var(--color-base-content) 20%, transparent);
+      }
+    }
+    .vc .vc-date__popup {
+      background-color: var(--color-base-100);
+      color: var(--color-base-content);
+      box-shadow: 0 3px 15px var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      .vc .vc-date__popup {
+        box-shadow: 0 3px 15px color-mix(in oklab, var(--color-base-content) 20%, transparent);
+      }
+    }
+    .vc [data-vc-date-popup] {
+      pointer-events: none;
+      position: absolute;
+      z-index: 20;
+      min-width: 5rem;
+      max-width: 9rem;
+      transform: translateX(-50%);
+      border-radius: var(--radius-field);
+      padding: 0.25rem 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 400;
+      opacity: 0;
+      transition-property: opacity;
+      transition-duration: 75ms;
+    }
+    .vc [data-vc-date-popup]:hover {
+      pointer-events: auto;
+      opacity: 1;
+    }
+    .vc [data-vc-date-range-tooltip] {
+      background-color: var(--color-base-200);
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      .vc [data-vc-date-range-tooltip] {
+        color: color-mix(in oklab, var(--color-base-content) 70%, transparent);
+      }
+    }
+    .vc [data-vc-date-range-tooltip] {
+      box-shadow: 0 1px 4px var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      .vc [data-vc-date-range-tooltip] {
+        box-shadow: 0 1px 4px color-mix(in oklab, var(--color-base-content) 20%, transparent);
+      }
+    }
+    .vc .vc-date-range-tooltip {
+      background-color: var(--color-base-200);
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      .vc .vc-date-range-tooltip {
+        color: color-mix(in oklab, var(--color-base-content) 70%, transparent);
+      }
+    }
+    .vc .vc-date-range-tooltip {
+      box-shadow: 0 1px 4px var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      .vc .vc-date-range-tooltip {
+        box-shadow: 0 1px 4px color-mix(in oklab, var(--color-base-content) 20%, transparent);
+      }
+    }
+    .vc [data-vc-date-range-tooltip] {
+      pointer-events: none;
+      position: absolute;
+      z-index: 30;
+      max-width: 9rem;
+      transform: translate(-50%, -100%);
+      border-radius: var(--radius-field);
+      padding: 0.25rem 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 400;
+    }
+    .vc [data-vc-date-range-tooltip][data-vc-date-range-tooltip="hidden"] {
+      opacity: 0;
+    }
+    .vc [data-vc-date-range-tooltip][data-vc-date-range-tooltip="visible"] {
+      opacity: 1;
+    }
+    .vc [data-vc="time"] {
+      border-color: var(--color-base-200);
+    }
+    .vc .vc-time {
+      border-color: var(--color-base-200);
+    }
+    .vc [data-vc="time"] {
+      margin-top: 0.75rem;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0.75rem;
+      border-style: solid;
+      border-width: var(--border) 0 0;
+      padding-top: 0.75rem;
+    }
+    .vc [data-vc-time="content"] {
+      display: grid;
+      grid-auto-flow: column;
+      align-items: center;
+    }
+    :is(.vc [data-vc-time-input="hour"], .vc [data-vc-time-input="minute"], .vc .vc-time__hour, .vc .vc-time__minute)::after {
+      color: var(--color-base-content);
+    }
+    .vc [data-vc-time-input="hour"] {
+      position: relative;
+      margin-right: 0.35rem;
+      width: 1.75rem;
+    }
+    .vc [data-vc-time-input="hour"]::after {
+      --tw-content: ":";
+      content: var(--tw-content);
+      position: absolute;
+      inset-inline-end: -5px;
+      inset-block-start: 50%;
+      display: block;
+      margin-top: calc(-50% + 1px);
+    }
+    .vc [data-vc-time-input="minute"] {
+      width: 1.75rem;
+    }
+    .vc [data-vc-time-input="hour"] input {
+      background-color: var(--color-base-100);
+      color: var(--color-base-content);
+    }
+    .vc [data-vc-time-input="hour"] input:hover, .vc [data-vc-time-input="hour"] input[data-vc-input-focus] {
+      background-color: var(--color-base-200);
+    }
+    .vc [data-vc-time-input="hour"] input:focus-visible {
+      outline-color: var(--color-primary);
+    }
+    .vc [data-vc-time-input="hour"] input[data-vc-input-focus] {
+      background-color: var(--color-base-200);
+    }
+    .vc [data-vc-time-input="minute"] input {
+      background-color: var(--color-base-100);
+      color: var(--color-base-content);
+    }
+    .vc [data-vc-time-input="minute"] input:hover, .vc [data-vc-time-input="minute"] input[data-vc-input-focus] {
+      background-color: var(--color-base-200);
+    }
+    .vc [data-vc-time-input="minute"] input:focus-visible {
+      outline-color: var(--color-primary);
+    }
+    .vc [data-vc-time-input="minute"] input[data-vc-input-focus] {
+      background-color: var(--color-base-200);
+    }
+    .vc .vc-time__hour input {
+      background-color: var(--color-base-100);
+      color: var(--color-base-content);
+    }
+    .vc .vc-time__hour input:hover, .vc .vc-time__hour input[data-vc-input-focus] {
+      background-color: var(--color-base-200);
+    }
+    .vc .vc-time__hour input:focus-visible {
+      outline-color: var(--color-primary);
+    }
+    .vc .vc-time__hour input[data-vc-input-focus] {
+      background-color: var(--color-base-200);
+    }
+    .vc .vc-time__minute input {
+      background-color: var(--color-base-100);
+      color: var(--color-base-content);
+    }
+    .vc .vc-time__minute input:hover, .vc .vc-time__minute input[data-vc-input-focus] {
+      background-color: var(--color-base-200);
+    }
+    .vc .vc-time__minute input:focus-visible {
+      outline-color: var(--color-primary);
+    }
+    .vc .vc-time__minute input[data-vc-input-focus] {
+      background-color: var(--color-base-200);
+    }
+    .vc [data-vc-time-input="hour"] input {
+      position: relative;
+      box-sizing: border-box;
+      margin: 0;
+      display: block;
+      width: 100%;
+      border: 0;
+      border-radius: var(--radius-field);
+      padding: 0.125rem;
+      text-align: center;
+      font-size: 1.125rem;
+      font-weight: 600;
+      line-height: 1.125rem;
+    }
+    .vc [data-vc-time-input="hour"] input:disabled {
+      cursor: default;
+      &:hover {
+        background-color: transparent;
+      }
+    }
+    .vc [data-vc-time-input="hour"] input:focus-visible {
+      outline: 1px solid var(--color-primary);
+    }
+    .vc [data-vc-time-input="minute"] input {
+      position: relative;
+      box-sizing: border-box;
+      margin: 0;
+      display: block;
+      width: 100%;
+      border: 0;
+      border-radius: var(--radius-field);
+      padding: 0.125rem;
+      text-align: center;
+      font-size: 1.125rem;
+      font-weight: 600;
+      line-height: 1.125rem;
+    }
+    .vc [data-vc-time-input="minute"] input:disabled {
+      cursor: default;
+      &:hover {
+        background-color: transparent;
+      }
+    }
+    .vc [data-vc-time-input="minute"] input:focus-visible {
+      outline: 1px solid var(--color-primary);
+    }
+    .vc [data-vc-time="keeping"] {
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      .vc [data-vc-time="keeping"] {
+        color: color-mix(in oklab, var(--color-base-content) 70%, transparent);
+      }
+    }
+    .vc [data-vc-time="keeping"]:hover {
+      background-color: var(--color-base-200);
+      color: var(--color-base-content);
+    }
+    .vc [data-vc-time="keeping"]:focus-visible {
+      outline-color: var(--color-primary);
+    }
+    .vc .vc-time__keeping {
+      color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      .vc .vc-time__keeping {
+        color: color-mix(in oklab, var(--color-base-content) 70%, transparent);
+      }
+    }
+    .vc .vc-time__keeping:hover {
+      background-color: var(--color-base-200);
+      color: var(--color-base-content);
+    }
+    .vc .vc-time__keeping:focus-visible {
+      outline-color: var(--color-primary);
+    }
+    .vc [data-vc-time="keeping"] {
+      margin-top: 0.25rem;
+      margin-left: 1px;
+      width: 22px;
+      cursor: pointer;
+      border: 0;
+      border-radius: var(--radius-field);
+      background-color: transparent;
+      padding: 0;
+      font-size: 0.69rem;
+    }
+    .vc [data-vc-time="keeping"]:disabled {
+      cursor: default;
+      &:hover {
+        background-color: transparent;
+      }
+    }
+    .vc [data-vc-time="keeping"]:focus-visible {
+      outline: 1px solid var(--color-primary);
+    }
+    .vc [data-vc-time="ranges"] {
+      display: grid;
+      grid-auto-flow: row;
+    }
+    :is(.vc [data-vc-time-range], .vc .vc-time__range) input {
+      background-color: var(--color-base-100);
+    }
+    :is(.vc [data-vc-time-range], .vc .vc-time__range) input:focus-visible::-webkit-slider-thumb, :is(.vc [data-vc-time-range], .vc .vc-time__range) input:focus-visible::-moz-range-thumb {
+      border-color: var(--color-primary);
+    }
+    :is(.vc [data-vc-time-range], .vc .vc-time__range) input::-webkit-slider-thumb, :is(.vc [data-vc-time-range], .vc .vc-time__range) input::-moz-range-thumb {
+      border-color: var(--color-base-300);
+      background-color: var(--color-base-100);
+    }
+    :is(.vc [data-vc-time-range], .vc .vc-time__range) input::-webkit-slider-runnable-track, :is(.vc [data-vc-time-range], .vc .vc-time__range) input::-moz-range-track {
+      background-color: var(--color-base-300);
+    }
+    :is(.vc [data-vc-time-range], .vc .vc-time__range) input {
+      background-color: var(--color-base-100);
+    }
+    :is(.vc [data-vc-time-range], .vc .vc-time__range) input:focus-visible::-webkit-slider-thumb, :is(.vc [data-vc-time-range], .vc .vc-time__range) input:focus-visible::-moz-range-thumb {
+      border-color: var(--color-primary);
+    }
+    :is(.vc [data-vc-time-range], .vc .vc-time__range) input::-webkit-slider-thumb, :is(.vc [data-vc-time-range], .vc .vc-time__range) input::-moz-range-thumb {
+      border-color: var(--color-base-300);
+      background-color: var(--color-base-100);
+    }
+    :is(.vc [data-vc-time-range], .vc .vc-time__range) input::-webkit-slider-runnable-track, :is(.vc [data-vc-time-range], .vc .vc-time__range) input::-moz-range-track {
+      background-color: var(--color-base-300);
+    }
+    :is(.vc [data-vc-time-range], .vc .vc-time__range):hover input::-webkit-slider-thumb {
+      border-color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(.vc [data-vc-time-range], .vc .vc-time__range):hover input::-webkit-slider-thumb {
+        border-color: color-mix(in oklab, var(--color-base-content) 40%, transparent);
+      }
+    }
+    :is(.vc [data-vc-time-range], .vc .vc-time__range):hover input::-webkit-slider-thumb {
+      border-color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(.vc [data-vc-time-range], .vc .vc-time__range):hover input::-webkit-slider-thumb {
+        border-color: color-mix(in oklab, var(--color-base-content) 40%, transparent);
+      }
+    }
+    :is(.vc [data-vc-time-range], .vc .vc-time__range):hover input::-moz-range-thumb {
+      border-color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(.vc [data-vc-time-range], .vc .vc-time__range):hover input::-moz-range-thumb {
+        border-color: color-mix(in oklab, var(--color-base-content) 40%, transparent);
+      }
+    }
+    :is(.vc [data-vc-time-range], .vc .vc-time__range):hover input::-moz-range-thumb {
+      border-color: var(--color-base-content);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      :is(.vc [data-vc-time-range], .vc .vc-time__range):hover input::-moz-range-thumb {
+        border-color: color-mix(in oklab, var(--color-base-content) 40%, transparent);
+      }
+    }
+    :is(.vc [data-vc-time-range], .vc .vc-time__range)::before {
+      background-color: var(--color-base-300);
+    }
+    :is(.vc [data-vc-time-range], .vc .vc-time__range)::after {
+      background-color: var(--color-base-300);
+    }
+    .vc [data-vc-time-range] {
+      position: relative;
+      z-index: 10;
+      font-size: 0;
+    }
+    .vc [data-vc-time-range]::before {
+      inset-inline-start: 0;
+    }
+    .vc [data-vc-time-range]::after {
+      inset-inline-end: 0;
+    }
+    .vc [data-vc-time-range]::before, .vc [data-vc-time-range]::after {
+      content: "";
+      pointer-events: none;
+      position: absolute;
+      inset-block-start: 50%;
+      z-index: 10;
+      height: 0.5rem;
+      width: 1px;
+      transform: translateY(-50%);
+    }
+    .vc [data-vc-time-range] input {
+      position: relative;
+      margin: 0;
+      height: 1.25rem;
+      width: 100%;
+      cursor: pointer;
+      appearance: none;
+      outline: 0;
+      &::-webkit-slider-thumb {
+        appearance: none;
+        margin-top: -0.5rem;
+      }
+      &::-webkit-slider-thumb, &::-moz-range-thumb {
+        position: relative;
+        z-index: 20;
+        box-sizing: border-box;
+        height: 1rem;
+        width: 0.75rem;
+        cursor: pointer;
+        border: var(--border) solid var(--color-base-300);
+        border-radius: var(--radius-field);
+        box-shadow: none;
+      }
+      &::-webkit-slider-runnable-track, &::-moz-range-track {
+        box-sizing: border-box;
+        margin-top: 1px;
+        height: 1px;
+        width: 100%;
+        cursor: pointer;
+        box-shadow: none;
+      }
     }
     .menu {
       display: flex;
@@ -3597,6 +6229,50 @@
       opacity: 100%;
       backface-visibility: visible;
     }
+    .swap\! {
+      position: relative !important;
+      display: inline-grid !important;
+      cursor: pointer !important;
+      place-content: center !important;
+      vertical-align: middle !important;
+      webkit-user-select: none !important;
+      user-select: none !important;
+    }
+    .swap\! input {
+      appearance: none !important;
+      border: none !important;
+    }
+    .swap\! > * {
+      grid-column-start: 1 !important;
+      grid-row-start: 1 !important;
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .swap\! > * {
+        transition-property: transform, rotate, opacity !important;
+        transition-duration: 0.2s !important;
+        transition-timing-function: cubic-bezier(0, 0, 0.2, 1) !important;
+      }
+    }
+    .swap\! .swap-on {
+      opacity: 0% !important;
+    }
+    .swap\! .swap-indeterminate {
+      opacity: 0% !important;
+    }
+    .swap\! input:indeterminate ~ .swap-on {
+      opacity: 0% !important;
+    }
+    .swap\! input:is(:checked, :indeterminate) ~ .swap-off {
+      opacity: 0% !important;
+    }
+    .swap\! input:checked ~ .swap-on {
+      opacity: 100% !important;
+      backface-visibility: visible !important;
+    }
+    .swap\! input:indeterminate ~ .swap-indeterminate {
+      opacity: 100% !important;
+      backface-visibility: visible !important;
+    }
   }
   .sr-only {
     position: absolute;
@@ -3892,6 +6568,291 @@
     }
     .select:has( > select[disabled]) > select[disabled] {
       cursor: not-allowed;
+    }
+  }
+  @layer daisyui.l1.l2.l3 {
+    .select\! {
+      position: relative !important;
+      display: inline-flex !important;
+      flex-shrink: 1 !important;
+      appearance: none !important;
+      align-items: center !important;
+      gap: calc(0.25rem * 1.5) !important;
+      background-color: var(--color-base-100) !important;
+      padding-inline-start: calc(0.25rem * 3) !important;
+      padding-inline-end: calc(0.25rem * 7) !important;
+      vertical-align: middle !important;
+      --size: calc(var(--size-field, 0.25rem) * var(--sl-size-mul, 10)) !important;
+      --input-color: var(--color-base-content) !important;
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      .select\! {
+        --input-color: color-mix(in oklab, var(--color-base-content) 20%, #0000) !important;
+      }
+    }
+    .select\! {
+      width: clamp(3rem, 20rem, 100%) !important;
+      height: var(--size) !important;
+      font-size: max(var(--font-size, 0rem), var(--font-size-min, 0.875rem)) !important;
+      touch-action: manipulation !important;
+      border-start-start-radius: var(--join-ss, var(--radius-field)) !important;
+      border-start-end-radius: var(--join-se, var(--radius-field)) !important;
+      border-end-start-radius: var(--join-es, var(--radius-field)) !important;
+      border-end-end-radius: var(--join-ee, var(--radius-field)) !important;
+      background-image: linear-gradient(45deg, #0000 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, #0000 50%) !important;
+      background-position: calc(100% - 20px) calc(1px + 50%), calc(100% - 16.1px) calc(1px + 50%) !important;
+      background-size: 4px 4px, 4px 4px !important;
+      background-repeat: no-repeat !important;
+      white-space: nowrap !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+      border: var(--border) solid var(--input-color, #0000) !important;
+      box-shadow: 0 1px var(--input-color) inset, 0 -1px oklch(100% 0 0 / calc(var(--depth) * 0.1)) inset !important;
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      .select\! {
+        box-shadow: 0 1px color-mix(in oklab, var(--input-color) calc(var(--depth) * 10%), #0000) inset, 0 -1px oklch(100% 0 0 / calc(var(--depth) * 0.1)) inset !important;
+      }
+    }
+    [dir="rtl"] .select\! {
+      background-position: calc(0% + 12px) calc(1px + 50%), calc(0% + 16px) calc(1px + 50%) !important;
+    }
+    .select\![multiple] {
+      height: auto !important;
+      overflow: auto !important;
+      padding-block: calc(0.25rem * 3) !important;
+      padding-inline-end: calc(0.25rem * 3) !important;
+      background-image: none !important;
+    }
+    .select\! select {
+      margin-inline-start: calc(0.25rem * -3) !important;
+      margin-inline-end: calc(0.25rem * -7) !important;
+      width: calc(100% + 2.75rem) !important;
+      appearance: none !important;
+      padding-inline-start: calc(0.25rem * 3) !important;
+      padding-inline-end: calc(0.25rem * 7) !important;
+      height: calc(100% - calc(var(--border) * 2)) !important;
+      align-items: center !important;
+      background: inherit !important;
+      border-radius: inherit !important;
+      border-style: none !important;
+    }
+    .select\! select::placeholder {
+      color: var(--color-base-content) !important;
+      opacity: 50% !important;
+    }
+    .select\! select:focus, .select\! select:focus-within {
+      --tw-outline-style: none !important;
+      outline-style: none !important;
+      @media (forced-colors: active) {
+        outline: 2px solid transparent !important;
+        outline-offset: 2px !important;
+      }
+    }
+    .select\! select:not(:last-child) {
+      margin-inline-end: calc(0.25rem * -5.5) !important;
+      background-image: none !important;
+    }
+    .select\!:focus {
+      --input-color: var(--color-base-content) !important;
+      box-shadow: 0 1px var(--input-color) !important;
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      .select\!:focus {
+        box-shadow: 0 1px color-mix(in oklab, var(--input-color) calc(var(--depth) * 10%), #0000) !important;
+      }
+    }
+    .select\!:focus {
+      outline: 2px solid var(--input-color) !important;
+      outline-offset: 2px !important;
+    }
+    .select\!:focus-within {
+      --input-color: var(--color-base-content) !important;
+      box-shadow: 0 1px var(--input-color) !important;
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      .select\!:focus-within {
+        box-shadow: 0 1px color-mix(in oklab, var(--input-color) calc(var(--depth) * 10%), #0000) !important;
+      }
+    }
+    .select\!:focus-within {
+      outline: 2px solid var(--input-color) !important;
+      outline-offset: 2px !important;
+    }
+    .select\!:open {
+      --input-color: var(--color-base-content) !important;
+      box-shadow: 0 1px var(--input-color) !important;
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      .select\!:open {
+        box-shadow: 0 1px color-mix(in oklab, var(--input-color) calc(var(--depth) * 10%), #0000) !important;
+      }
+    }
+    .select\!:open {
+      outline: 2px solid var(--input-color) !important;
+      outline-offset: 2px !important;
+      background-image: linear-gradient(135deg, #0000 50%, currentColor 50%), linear-gradient(45deg, currentColor 50%, #0000 50%) !important;
+    }
+    @supports (appearance: base-select) {
+      :is(:is(.select\!), .select\! select) {
+        appearance: base-select !important;
+      }
+      :is(:is(.select\!), .select\! select)::picker(select) {
+        appearance: base-select !important;
+      }
+    }
+    :is(:is(.select\!), .select\! select)::picker(select) {
+      color: inherit !important;
+      max-height: min(24rem, 70dvh) !important;
+      margin-inline: 0.5rem !important;
+      translate: -0.5rem 0 !important;
+      border: var(--border) solid var(--color-base-200) !important;
+      margin-block: calc(0.25rem * 2) !important;
+      border-radius: var(--radius-box) !important;
+      padding: calc(0.25rem * 2) !important;
+      background-color: inherit !important;
+      box-shadow: 0 2px calc(var(--depth) * 3px) -2px oklch(0% 0 0/0.2) !important;
+      box-shadow: 0 20px 25px -5px rgb(0 0 0 / calc(var(--depth) * 0.1)), 0 8px 10px -6px rgb(0 0 0 / calc(var(--depth) * 0.1)) !important;
+    }
+    :is(:is(.select\!), .select\! select)::picker-icon {
+      display: none !important;
+    }
+    :is(:is(.select\!), .select\! select) selectedcontent {
+      width: 100% !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+      white-space: nowrap !important;
+    }
+    :is(:is(.select\!), .select\! select) optgroup {
+      padding-top: 0.5em !important;
+    }
+    :is(:is(.select\!), .select\! select) optgroup option:nth-child(1) {
+      margin-top: 0.5em !important;
+    }
+    :is(:is(.select\!), .select\! select) optgroup {
+      padding-top: 0.5em !important;
+    }
+    :is(:is(.select\!), .select\! select) optgroup option:nth-child(1) {
+      margin-top: 0.5em !important;
+    }
+    :is(:is(.select\!), .select\! select) option {
+      border-radius: var(--radius-field) !important;
+      padding-block: calc(0.25rem * 1.5) !important;
+      padding-inline: calc(0.25rem * var(--option-px, 3)) !important;
+      transition-property: color, background-color !important;
+      transition-duration: 0.2s !important;
+      transition-timing-function: cubic-bezier(0, 0, 0.2, 1) !important;
+      white-space: normal !important;
+    }
+    :is(:is(.select\!), .select\! select) option:not(:disabled):hover, :is(:is(.select\!), .select\! select) option:not(:disabled):focus-visible {
+      cursor: pointer !important;
+      background-color: var(--color-base-content) !important;
+      @supports (color: color-mix(in lab, red, red)) {
+        background-color: color-mix(in oklab, var(--color-base-content) 10%, transparent) !important;
+      }
+      --tw-outline-style: none !important;
+      outline-style: none !important;
+      @media (forced-colors: active) {
+        outline: 2px solid transparent !important;
+        outline-offset: 2px !important;
+      }
+    }
+    :is(:is(.select\!), .select\! select) option:not(:disabled):active {
+      background-color: var(--color-neutral) !important;
+      color: var(--color-neutral-content) !important;
+      box-shadow: 0 2px calc(var(--depth) * 3px) -2px var(--color-neutral) !important;
+    }
+    :is(:is(.select\!), .select\! select) option {
+      border-radius: var(--radius-field) !important;
+      padding-block: calc(0.25rem * 1.5) !important;
+      padding-inline: calc(0.25rem * var(--option-px, 3)) !important;
+      transition-property: color, background-color !important;
+      transition-duration: 0.2s !important;
+      transition-timing-function: cubic-bezier(0, 0, 0.2, 1) !important;
+      white-space: normal !important;
+    }
+    :is(:is(.select\!), .select\! select) option:not(:disabled):hover, :is(:is(.select\!), .select\! select) option:not(:disabled):focus-visible {
+      cursor: pointer !important;
+      background-color: var(--color-base-content) !important;
+      @supports (color: color-mix(in lab, red, red)) {
+        background-color: color-mix(in oklab, var(--color-base-content) 10%, transparent) !important;
+      }
+      --tw-outline-style: none !important;
+      outline-style: none !important;
+      @media (forced-colors: active) {
+        outline: 2px solid transparent !important;
+        outline-offset: 2px !important;
+      }
+    }
+    :is(:is(.select\!), .select\! select) option:not(:disabled):active {
+      background-color: var(--color-neutral) !important;
+      color: var(--color-neutral-content) !important;
+      box-shadow: 0 2px calc(var(--depth) * 3px) -2px var(--color-neutral) !important;
+    }
+    [dir="rtl"] .select\!::picker(select) {
+      translate: 0.5rem 0 !important;
+    }
+    [dir="rtl"] .select\! select::picker(select) {
+      translate: 0.5rem 0 !important;
+    }
+  }
+  @layer daisyui.l1.l2 {
+    .select\!:has( > select[disabled]) {
+      cursor: not-allowed !important;
+      border-color: var(--color-base-200) !important;
+      background-color: var(--color-base-200) !important;
+    }
+    .select\!:has( > select[disabled]):is(select), .select\!:has( > select[disabled])  :is(select) {
+      color: var(--color-base-content) !important;
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 40%, transparent) !important;
+      }
+    }
+    .select\!:has( > select[disabled]) {
+      box-shadow: none !important;
+    }
+    .select\!:has( > select[disabled])::placeholder, .select\!:has( > select[disabled])  ::placeholder {
+      color: var(--color-base-content) !important;
+      opacity: 20% !important;
+    }
+    .select\!:is(:disabled, [disabled]) {
+      cursor: not-allowed !important;
+      border-color: var(--color-base-200) !important;
+      background-color: var(--color-base-200) !important;
+    }
+    .select\!:is(:disabled, [disabled]):is(select), .select\!:is(:disabled, [disabled])  :is(select) {
+      color: var(--color-base-content) !important;
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 40%, transparent) !important;
+      }
+    }
+    .select\!:is(:disabled, [disabled]) {
+      box-shadow: none !important;
+    }
+    .select\!:is(:disabled, [disabled])::placeholder, .select\!:is(:disabled, [disabled])  ::placeholder {
+      color: var(--color-base-content) !important;
+      opacity: 20% !important;
+    }
+    fieldset:disabled .select\! {
+      cursor: not-allowed !important;
+      border-color: var(--color-base-200) !important;
+      background-color: var(--color-base-200) !important;
+    }
+    fieldset:disabled .select\!:is(select), fieldset:disabled .select\!  :is(select) {
+      color: var(--color-base-content) !important;
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 40%, transparent) !important;
+      }
+    }
+    fieldset:disabled .select\! {
+      box-shadow: none !important;
+    }
+    fieldset:disabled .select\!::placeholder, fieldset:disabled .select\!  ::placeholder {
+      color: var(--color-base-content) !important;
+      opacity: 20% !important;
+    }
+    .select\!:has( > select[disabled]) > select[disabled] {
+      cursor: not-allowed !important;
     }
   }
   @layer daisyui.l1.l2.l3 {
@@ -5623,8 +8584,23 @@
   .mx-auto {
     margin-inline: auto;
   }
+  .mx-px {
+    margin-inline: 1px;
+  }
+  .my-1 {
+    margin-block: var(--spacing);
+  }
   .my-2 {
     margin-block: calc(var(--spacing) * 2);
+  }
+  .my-3 {
+    margin-block: calc(var(--spacing) * 3);
+  }
+  .my-4 {
+    margin-block: calc(var(--spacing) * 4);
+  }
+  .my-6 {
+    margin-block: calc(var(--spacing) * 6);
   }
   .my-12 {
     margin-block: calc(var(--spacing) * 12);
@@ -5873,6 +8849,30 @@
         border-inline-start: var(--border) solid color-mix(in oklab, currentColor 10%, #0000);
       }
     }
+    .label:is(.input > *, .select\! > *) {
+      display: flex !important;
+      height: calc(100% - 0.5rem) !important;
+      align-items: center !important;
+      padding-inline: calc(0.25rem * 3) !important;
+      white-space: nowrap !important;
+      font-size: inherit !important;
+    }
+    .label:is(.input > *, .select\! > *):first-child {
+      margin-inline-start: calc(0.25rem * -3) !important;
+      margin-inline-end: calc(0.25rem * 3) !important;
+      border-inline-end: var(--border) solid currentColor !important;
+      @supports (color: color-mix(in lab, red, red)) {
+        border-inline-end: var(--border) solid color-mix(in oklab, currentColor 10%, #0000) !important;
+      }
+    }
+    .label:is(.input > *, .select\! > *):last-child {
+      margin-inline-start: calc(0.25rem * 3) !important;
+      margin-inline-end: calc(0.25rem * -3) !important;
+      border-inline-start: var(--border) solid currentColor !important;
+      @supports (color: color-mix(in lab, red, red)) {
+        border-inline-start: var(--border) solid color-mix(in oklab, currentColor 10%, #0000) !important;
+      }
+    }
   }
   .join-item {
     @layer daisyui.l1.l2.l3.l4 {
@@ -5916,8 +8916,20 @@
   .mt-2 {
     margin-top: calc(var(--spacing) * 2);
   }
+  .mt-3 {
+    margin-top: calc(var(--spacing) * 3);
+  }
   .mt-4 {
     margin-top: calc(var(--spacing) * 4);
+  }
+  .mt-6 {
+    margin-top: calc(var(--spacing) * 6);
+  }
+  .mt-8 {
+    margin-top: calc(var(--spacing) * 8);
+  }
+  .mt-10 {
+    margin-top: calc(var(--spacing) * 10);
   }
   .mr-2 {
     margin-right: calc(var(--spacing) * 2);
@@ -6275,6 +9287,15 @@
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 4;
   }
+  @layer daisyui.l1.l2.l3 {
+    .mask {
+      display: inline-block;
+      vertical-align: middle;
+      mask-size: contain;
+      mask-repeat: no-repeat;
+      mask-position: center;
+    }
+  }
   .\!hidden {
     display: none !important;
   }
@@ -6472,6 +9493,9 @@
     .btn-block {
       width: 100%;
     }
+    .loading-xs {
+      width: calc(var(--size-selector, 0.25rem) * 4);
+    }
   }
   .w-0 {
     width: 0px;
@@ -6587,14 +9611,23 @@
   .flex-initial {
     flex: 0 auto;
   }
+  .flex-shrink {
+    flex-shrink: 1;
+  }
   .shrink-0 {
     flex-shrink: 0;
+  }
+  .flex-grow {
+    flex-grow: 1;
   }
   .grow {
     flex-grow: 1;
   }
   .grow-0 {
     flex-grow: 0;
+  }
+  .border-collapse {
+    border-collapse: collapse;
   }
   @layer daisyui.l1.l2.l3 {
     .menu .dropdown:focus-within .menu-dropdown-toggle:after {
@@ -6861,6 +9894,15 @@
   .snap-start {
     scroll-snap-align: start;
   }
+  .list-inside {
+    list-style-position: inside;
+  }
+  .list-decimal {
+    list-style-type: decimal;
+  }
+  .list-disc {
+    list-style-type: disc;
+  }
   @layer daisyui.l1.l2 {
     .alert-horizontal {
       justify-content: start;
@@ -6967,6 +10009,11 @@
   .gap-px {
     gap: 1px;
   }
+  :where(.space-y-1 > :not(:last-child)) {
+    --tw-space-y-reverse: 0;
+    margin-block-start: calc(var(--spacing) * var(--tw-space-y-reverse));
+    margin-block-end: calc(var(--spacing) * calc(1 - var(--tw-space-y-reverse)));
+  }
   :where(.space-y-2 > :not(:last-child)) {
     --tw-space-y-reverse: 0;
     margin-block-start: calc(calc(var(--spacing) * 2) * var(--tw-space-y-reverse));
@@ -7002,6 +10049,9 @@
   }
   .overflow-scroll {
     overflow: scroll;
+  }
+  .overflow-x-auto {
+    overflow-x: auto;
   }
   .overflow-x-hidden {
     overflow-x: hidden;
@@ -7161,8 +10211,17 @@
   .border-base-100 {
     border-color: var(--color-base-100);
   }
+  .border-base-200 {
+    border-color: var(--color-base-200);
+  }
   .border-base-300 {
     border-color: var(--color-base-300);
+  }
+  .border-base-300\/80 {
+    border-color: var(--color-base-300);
+    @supports (color: color-mix(in lab, red, red)) {
+      border-color: color-mix(in oklab, var(--color-base-300) 80%, transparent);
+    }
   }
   .border-base-content\/10 {
     border-color: var(--color-base-content);
@@ -7175,6 +10234,12 @@
   }
   .border-error {
     border-color: var(--color-error);
+  }
+  .border-error\/40 {
+    border-color: var(--color-error);
+    @supports (color: color-mix(in lab, red, red)) {
+      border-color: color-mix(in oklab, var(--color-error) 40%, transparent);
+    }
   }
   .border-primary {
     border-color: var(--color-primary);
@@ -7252,13 +10317,31 @@
   .bg-base-100\! {
     background-color: var(--color-base-100) !important;
   }
+  .bg-base-100\/30 {
+    background-color: var(--color-base-100);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-base-100) 30%, transparent);
+    }
+  }
   .bg-base-200 {
     background-color: var(--color-base-200);
+  }
+  .bg-base-200\/50 {
+    background-color: var(--color-base-200);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-base-200) 50%, transparent);
+    }
   }
   .bg-base-200\/60 {
     background-color: var(--color-base-200);
     @supports (color: color-mix(in lab, red, red)) {
       background-color: color-mix(in oklab, var(--color-base-200) 60%, transparent);
+    }
+  }
+  .bg-base-200\/80 {
+    background-color: var(--color-base-200);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-base-200) 80%, transparent);
     }
   }
   .bg-base-300 {
@@ -7287,6 +10370,12 @@
   }
   .bg-error\! {
     background-color: var(--color-error) !important;
+  }
+  .bg-error\/10 {
+    background-color: var(--color-error);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-error) 10%, transparent);
+    }
   }
   .bg-gray-200 {
     background-color: var(--color-gray-200);
@@ -7365,6 +10454,12 @@
   }
   .bg-success {
     background-color: var(--color-success);
+  }
+  .bg-success\/10 {
+    background-color: var(--color-success);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-success) 10%, transparent);
+    }
   }
   .bg-warning {
     background-color: var(--color-warning);
@@ -7515,6 +10610,9 @@
       }
     }
   }
+  .mask-repeat {
+    mask-repeat: repeat;
+  }
   .fill-current {
     fill: currentcolor;
   }
@@ -7588,6 +10686,13 @@
       padding-inline: calc(0.25rem * 6);
       padding-block: calc(0.25rem * 3);
     }
+    .table-sm :not(thead, tfoot) tr {
+      font-size: 0.75rem;
+    }
+    .table-sm :where(th, td) {
+      padding-inline: calc(0.25rem * 3);
+      padding-block: calc(0.25rem * 2);
+    }
   }
   .px-1 {
     padding-inline: var(--spacing);
@@ -7603,6 +10708,12 @@
   }
   .px-6 {
     padding-inline: calc(var(--spacing) * 6);
+  }
+  .px-px {
+    padding-inline: 1px;
+  }
+  .py-0\! {
+    padding-block: 0px !important;
   }
   .py-1 {
     padding-block: var(--spacing);
@@ -7673,6 +10784,9 @@
   .text-center {
     text-align: center;
   }
+  .text-justify {
+    text-align: justify;
+  }
   .text-left {
     text-align: left;
   }
@@ -7742,6 +10856,10 @@
       --size: calc(var(--size-selector, 0.25rem) * 4);
       font-size: 0.625rem;
     }
+  }
+  .leading-relaxed {
+    --tw-leading: var(--leading-relaxed);
+    line-height: var(--leading-relaxed);
   }
   .font-bold {
     --tw-font-weight: var(--font-weight-bold);
@@ -7904,6 +11022,12 @@
   .text-green-400 {
     color: var(--color-green-400);
   }
+  .text-green-800 {
+    color: var(--color-green-800);
+  }
+  .text-info {
+    color: var(--color-info);
+  }
   .text-orange-100 {
     color: var(--color-orange-100);
   }
@@ -7934,8 +11058,14 @@
   .text-red-500 {
     color: var(--color-red-500);
   }
+  .text-secondary {
+    color: var(--color-secondary);
+  }
   .text-success {
     color: var(--color-success);
+  }
+  .text-violet-400 {
+    color: var(--color-violet-400);
   }
   .text-warning {
     color: var(--color-warning);
@@ -7957,6 +11087,10 @@
   }
   .italic {
     font-style: italic;
+  }
+  .ordinal {
+    --tw-ordinal: ordinal;
+    font-variant-numeric: var(--tw-ordinal,) var(--tw-slashed-zero,) var(--tw-numeric-figure,) var(--tw-numeric-spacing,) var(--tw-numeric-fraction,);
   }
   .underline {
     text-decoration-line: underline;
@@ -8015,6 +11149,10 @@
     --tw-shadow: 0 1px 3px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 1px 2px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
   }
+  .ring {
+    --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
   .ring-transparent {
     --tw-ring-color: transparent;
   }
@@ -8026,11 +11164,19 @@
     --tw-blur: blur(8px);
     filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
   }
+  .invert {
+    --tw-invert: invert(100%);
+    filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
+  }
   .filter {
     filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
   }
   .backdrop-blur {
     --tw-backdrop-blur: blur(8px);
+    -webkit-backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
+    backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
+  }
+  .backdrop-filter {
     -webkit-backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
     backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
   }
@@ -8229,6 +11375,9 @@
     .aura:has( > .btn,  > .input,  > .select) {
       --aura-radius: var(--radius-field);
     }
+    .aura:has( > .btn,  > .input,  > .select\!) {
+      --aura-radius: var(--radius-field) !important;
+    }
     .aura:has( > .checkbox,  > .toggle,  > .badge) {
       --aura-radius: var(--radius-selector);
     }
@@ -8272,6 +11421,11 @@
     .group-hover\/row\:bg-base-200:is(:where(.group\/row):hover *) {
       background-color: var(--color-base-200);
     }
+  }
+  .first\:mt-0:first-child {
+    margin-top: 0px;
+  }
+  @media (hover: hover) {
     .hover\:scale-110:hover {
       --tw-scale-x: 110%;
       --tw-scale-y: 110%;
@@ -8393,6 +11547,9 @@
     .md\:border-b-0 {
       border-bottom-style: var(--tw-border-style);
       border-bottom-width: 0px;
+    }
+    .md\:p-4 {
+      padding: calc(var(--spacing) * 4);
     }
   }
   @media (width >= 64rem) {
@@ -8887,11 +12044,35 @@
   inherits: false;
   initial-value: solid;
 }
+@property --tw-leading {
+  syntax: "*";
+  inherits: false;
+}
 @property --tw-font-weight {
   syntax: "*";
   inherits: false;
 }
 @property --tw-tracking {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-ordinal {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-slashed-zero {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-numeric-figure {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-numeric-spacing {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-numeric-fraction {
   syntax: "*";
   inherits: false;
 }
@@ -9114,8 +12295,14 @@
       --tw-space-x-reverse: 0;
       --tw-divide-y-reverse: 0;
       --tw-border-style: solid;
+      --tw-leading: initial;
       --tw-font-weight: initial;
       --tw-tracking: initial;
+      --tw-ordinal: initial;
+      --tw-slashed-zero: initial;
+      --tw-numeric-figure: initial;
+      --tw-numeric-spacing: initial;
+      --tw-numeric-fraction: initial;
       --tw-shadow: 0 0 #0000;
       --tw-shadow-color: initial;
       --tw-shadow-alpha: 100%;

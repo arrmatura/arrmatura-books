@@ -18,3 +18,7 @@ export const components = [...markdownComponents, ...Object.values(registry)];
 export function launchBook() {
   launchPlatformApp({ components });
 }
+
+if ((window as unknown as { autoLoad: boolean }).autoLoad) {
+  launchBook();
+}
