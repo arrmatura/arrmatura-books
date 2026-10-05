@@ -22,7 +22,7 @@
     "outdir": "dist",
     "format": "esm",
     "outExtension": {
-      ".js": ".js"
+      ".js": ".min.js"
     },
     "target": "es2021"
   },
