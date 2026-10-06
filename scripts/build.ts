@@ -1,5 +1,5 @@
 import * as esbuild from "esbuild";
-import { getEsbuildOptions } from "./getEsbuildOptions";
+import { getEsbuildOptions } from "./utils/getEsbuildOptions";
 import { readFileJsonContent } from "./utils/files";
 
 export async function main() {

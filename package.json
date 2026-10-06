@@ -1,18 +1,15 @@
 {
   "name": "arrmatura-books",
-  "version": "1.1.1",
-  "description": "Arrmatura docs-site kit: the App shell, docs tree, quiz and the docs-flavoured overrides of the markdown components",
-  "author": "alitskevich",
-  "license": "ISC",
+  "version": "1.1.2",
+  "description": "Arrmatura books-site kit",
+  "author": "arrmatura",
+  "license": "MIT",
   "type": "module",
   "exports": {
     ".": {
       "types": "./index.ts",
       "import": "./index.ts",
       "require": "./dist/index.cjs"
-    },
-    "./catalog": {
-      "default": "./catalog.json"
     }
   },
   "esbuild": {
@@ -31,17 +28,14 @@
     "build": "npx --yes npm-run-all --parallel build:*",
     "build:ts": "bun ./scripts/build.ts",
     "build:css": "npx --yes @tailwindcss/cli -i index.css -o \"dist/index.css\"",
-    "codegen": "npx --yes npm-run-all codegen:*",
+    "codegen": "bun ./scripts/index-module.ts",
     "postcodegen": "biome format --write registry.ts",
-    "codegen:registry": "bun ./scripts/index-module.ts",
     "gates": "npx --yes npm-run-all --parallel typecheck lint",
     "lint": "biome check .",
     "typecheck": "tsc",
     "release": "./scripts/release.sh",
     "prepublish": "npm run build && npm run gates",
-    "npm:publish": "npm publish --no-git-checks",
-    "postinstall": "npm run link",
-    "link": "./scripts/link-modules.sh arrmatura arrmatura-web arrmatura-markdown ultimus"
+    "npm:publish": "npm publish --no-git-checks"
   },
   "devDependencies": {
     "@types/node": "^26.6.2",
@@ -49,9 +43,9 @@
     "esbuild": "^0.28.2",
     "tailwindcss": "^4.3.3"
   },
-  "peerDependencies": {
+  "dependencies": {
     "arrmatura-markdown": "file:../arrmatura-markdown",
-    "arrmatura-web": "^9.1.1",
-    "ultimus": "^2.3.0"
+    "arrmatura-web": "file:../arrmatura-web",
+    "ultimus": "file:../ultimus"
   }
 }

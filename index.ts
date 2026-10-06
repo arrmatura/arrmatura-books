@@ -19,6 +19,10 @@ export function launchBook() {
   launchPlatformApp({ components });
 }
 
-if ((window as unknown as { autoLoad: boolean }).autoLoad) {
+const win = window as unknown as { launchBook: unknown; autoLoad: boolean };
+
+win.launchBook = launchBook;
+
+if (win.autoLoad) {
   launchBook();
 }
