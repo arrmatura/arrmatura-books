@@ -5,7 +5,7 @@
     <Prop id="key" type="string" description="Stable hash of the task item's text, used as the progress key" />
   </Signature>
   <Checkbox class="pr-1 py-1 align-middle"
-    value="{@mdService.progress[key]}"
-    change="-> @mdService.toggleProgress(key)"
+    value="{@docs.progress[key]}"
+    change="-> @docs.toggleProgress(key)"
     />
 </Component>

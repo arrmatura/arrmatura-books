@@ -33,7 +33,7 @@
 
     <div class="relative flex flex-row flex-1 min-h-0">
       <aside
-        class="top-0 left-0 z-20 flex flex-col bg-base-200 border-base-300 transition-all duration-200 overflow-hidden
+        class="top-0 left-0 z-20 flex flex-col bg-base-200 border-base-300 md:transition-all md:duration-200 overflow-hidden
       {@localStorage.collapsed 
           ? 'relative w-0 h-auto border-b md:h-full md:border-b-0 md:border-r' 
           : 'absolute md:relative w-64 min-w-64 h-full border-r'}">
@@ -52,13 +52,12 @@
           class="m-4 truncate"
           close2="-> @docs.error=false" />
 
-        <MarkdownView
-          If="{!@docs.loading}"
-          prefix="Book"
-          persistence="local"
-          text="{@docs.text}"
-          key="{@browser.path || 'index.md'}"
-          class="p-6 max-w-4xl mx-auto" />
+        <Fragment
+          If="{!@docs.loading}">
+          <View class="relative p-6 max-w-4xl mx-auto" If="@docs.doc">
+            <Block Nodes="{@docs.nodes}" />
+          </View>
+        </Fragment>
       </main>
     </div>
   </div>

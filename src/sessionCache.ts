@@ -18,6 +18,7 @@
  * Nothing is evicted. A whole book is a few hundred KB of markdown; a size cap is the
  * first thing to add if a much larger corpus ever measures a problem.
  */
+
 const inSession = new Map<string, Promise<unknown>>();
 
 /** Fetches `url` through `load`, or hands back what an earlier call for it already got. */

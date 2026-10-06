@@ -22,7 +22,7 @@
       </div>
     </div>
     <Else>
-      <Fragment If="!@mdService.progress[key]">
+      <Fragment If="!@docs.progress[key]">
         <div class="mb-3 rounded-xl overflow-hidden">
           <div
             class="flex card-hover group items-center gap-3 px-4 py-3 cursor-pointer 
@@ -30,25 +30,25 @@
             hover:border-brand/30 transition-colors">
             <Icon icon="{icon}" class="text-base-content/50 shrink-0" size="18" />
             <span
-              class="{level==2?'text-xl':''} {( @mdService.expandedAll OR @mdService.opened[key]  )?'font-semibold':''} flex-1"
-              click="-> @mdService.toggleOpened(key)">
+              class="{level==2?'text-xl':''} {( @docs.expandedAll OR @docs.opened[key]  )?'font-semibold':''} flex-1"
+              click="-> @docs.toggleOpened(key)">
               <Slot Key="title" />
             </span>
             <Checkbox
               value="false"
-              change="-> @mdService.toggleProgress(key)"
+              change="-> @docs.toggleProgress(key)"
               />
             <Icon icon="chevron-right"
-              class="text-base-content/40 transition-transform group-hover:translate-x-1  details-chevron shrink-0 {(@mdService.opened[key] ?? @mdService.expandedAll)?'rotate-90':''}"
+              class="text-base-content/40 transition-transform group-hover:translate-x-1  details-chevron shrink-0 {(@docs.opened[key] ?? @docs.expandedAll)?'rotate-90':''}"
               size="16" />
           </div>
-          <div class="pl-4 py-4 bg-base-100" If="@mdService.expandedAll OR @mdService.opened[key]">
+          <div class="pl-4 py-4 bg-base-100" If="@docs.expandedAll OR @docs.opened[key]">
             <Slot />
           </div>
         </div>
         <Else>
           <Btn type="outline" size="xs" class="m-1"
-            action="-> @mdService.toggleProgress(key)">
+            action="-> @docs.toggleProgress(key)">
             <Slot Key="title" />
           </Btn>
         </Else>

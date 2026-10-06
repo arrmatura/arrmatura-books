@@ -13,9 +13,9 @@
         {name || title || R.app.name}
       </span>
       <IBtn icon="chevrons-down" size="sm" title="Expand all"
-        click="-> @mdService.expandAll()" disabled="{@mdService.expandedAll}" />
+        click="-> @docs.expandAll()" disabled="{@docs.expandedAll}" />
       <IBtn icon="chevrons-up" size="sm" title="Collapse all"
-        click="-> @mdService.collapseAll()" />
+        click="-> @docs.collapseAll()" />
     </div>
 
     <div class="py-4">
