@@ -199,8 +199,7 @@ export function indexModule({ moduleDir }: { moduleDir: string }) {
 // module: its CML, plus the class of each service, which takes the place of the signature stub
 // standing in for it. Registered as \`Object.values(registry)\`; the \`index.ts\` beside it is
 // where anything hand-written belongs.
-${exports.map(([, line]) => line).join(";\n")};
-`,
+${exports.map(([, line]) => line).join(";\n")};`,
   );
 
   console.log(
