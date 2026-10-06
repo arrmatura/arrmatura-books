@@ -29,7 +29,6 @@
     "build:ts": "bun ./scripts/build.ts",
     "build:css": "npx --yes @tailwindcss/cli -i index.css -o \"dist/index.css\"",
     "codegen": "bun ./scripts/index-module.ts",
-    "postcodegen": "biome format --write registry.ts",
     "gates": "npx --yes npm-run-all --parallel typecheck lint",
     "lint": "biome check .",
     "typecheck": "tsc",
