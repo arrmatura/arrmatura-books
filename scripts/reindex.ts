@@ -11,9 +11,7 @@ const importSpecifier = (indexFile: string, sourceFile: string) => {
 
 /** Compiles a file-name glob (`*` only) into an anchored matcher over the basename. */
 const globMatcher = (glob: string) => {
-  const pattern = glob
-    .replace(/[.+^${}()|[\]\\?]/g, "\\$&")
-    .replace(/\*/g, ".*");
+  const pattern = glob.replace(/[.+^${}()|[\]\\?]/g, "\\$&").replace(/\*/g, ".*");
   return new RegExp(`^${pattern}$`);
 };
 
@@ -43,11 +41,7 @@ type Source = {
 
 /** The ids a CML file registers — `<Component>` and `<Subcomponent>` alike. */
 const componentIds = (file: string) =>
-  [
-    ...readFileSync(file, "utf8").matchAll(
-      /<(?:Sub)?Component\s+id="([^"]+)"/g,
-    ),
-  ].map(([, id]) => id);
+  [...readFileSync(file, "utf8").matchAll(/<(?:Sub)?Component\s+id="([^"]+)"/g)].map(([, id]) => id);
 
 /**
  * Scans directories for `.xml` components, pairing each with its sibling `.ts` implementation.
@@ -88,9 +82,7 @@ function collectSources({
         key: chunks.join("_"),
         name: f.name,
         xml: importSpecifier(indexFile, sourceFile),
-        service: hasService
-          ? importSpecifier(indexFile, `${sourceFile.slice(0, -4)}`)
-          : undefined,
+        service: hasService ? importSpecifier(indexFile, `${sourceFile.slice(0, -4)}`) : undefined,
         stubOnly: hasService && componentIds(sourceFile).join() === base,
       });
     });
@@ -101,10 +93,7 @@ function collectSources({
   const seen = new Map<string, string>();
   for (const { key, xml } of sources) {
     const previous = seen.get(key);
-    if (previous)
-      throw new Error(
-        `Duplicate CML component "${key}": ${previous} and ${xml}`,
-      );
+    if (previous) throw new Error(`Duplicate CML component "${key}": ${previous} and ${xml}`);
     seen.set(key, xml);
   }
 
@@ -119,11 +108,7 @@ function collectSources({
  * (`src/index-cml.ts`) use, where services are registered separately. A kit-structured package
  * wants {@link indexModule} instead.
  */
-export function indexCml(options: {
-  sourceDirs: string[];
-  indexFile: string;
-  filter?: string;
-}) {
+export function indexCml(options: { sourceDirs: string[]; indexFile: string; filter?: string }) {
   const sources = collectSources(options);
 
   writeFileContent(
@@ -137,9 +122,7 @@ export default [
 `,
   );
 
-  console.log(
-    `Reindex CML files: ${options.sourceDirs.join(", ")} -> ${options.indexFile} (${sources.length})`,
-  );
+  console.log(`Reindex CML files: ${options.sourceDirs.join(", ")} -> ${options.indexFile} (${sources.length})`);
 }
 
 /** Where a module keeps its sources — a flat module (`plugins/`) holds them at its own root. */
@@ -170,9 +153,7 @@ export const REGISTRY_FILE = "registry.ts";
 export function indexModule({ moduleDir }: { moduleDir: string }) {
   if (!existsSync(moduleDir)) throw new Error(`${moduleDir}: no such module`);
 
-  const nested = MODULE_DIRS.map((d) => posix.join(moduleDir, d)).filter((d) =>
-    existsSync(d),
-  );
+  const nested = MODULE_DIRS.map((d) => posix.join(moduleDir, d)).filter((d) => existsSync(d));
   const indexFile = posix.join(moduleDir, REGISTRY_FILE);
   const sources = collectSources({
     sourceDirs: nested.length ? nested : [moduleDir],
@@ -187,10 +168,7 @@ export function indexModule({ moduleDir }: { moduleDir: string }) {
       const name = service ? `$${key}` : key;
       return [name, `export { default as ${name} } from "${xml}"`];
     }),
-    ...services.map(({ key, service }): [string, string] => [
-      key,
-      `export { ${key} } from "${service}"`,
-    ]),
+    ...services.map(({ key, service }): [string, string] => [key, `export { ${key} } from "${service}"`]),
   ].sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0));
 
   writeFileContent(
@@ -202,9 +180,7 @@ export function indexModule({ moduleDir }: { moduleDir: string }) {
 ${exports.map(([, line]) => line).join(";\n")};`,
   );
 
-  console.log(
-    `Reindex module: ${moduleDir} -> ${indexFile} (${templates.length} cml, ${services.length} services)`,
-  );
+  console.log(`Reindex module: ${moduleDir} -> ${indexFile} (${templates.length} cml, ${services.length} services)`);
 }
 
 // `bun reindex.ts <dirs> <indexFile> [--filter=<glob>]`, source dirs comma-separated:
@@ -214,9 +190,7 @@ ${exports.map(([, line]) => line).join(";\n")};`,
 // module of a kit-structured package.
 if (import.meta.main) {
   const args = process.argv.slice(2);
-  const filter = args
-    .find((a) => a.startsWith("--filter="))
-    ?.slice("--filter=".length);
+  const filter = args.find((a) => a.startsWith("--filter="))?.slice("--filter=".length);
   const [dirsArg, indexArg] = args.filter((a) => !a.startsWith("--"));
   const sourceDirs = (dirsArg || "./cml")
     .split(",")

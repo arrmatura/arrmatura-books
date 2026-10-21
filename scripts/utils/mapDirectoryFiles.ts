@@ -22,12 +22,6 @@ export const mapDirectoryFiles = <T>(
     .readdirSync(path, { withFileTypes: true, recursive })
     .filter((f: Dirent) => !f.isDirectory())
     .sort((a, b) => a?.name.localeCompare(b.name))
-    .map((f) =>
-      fn(
-        f,
-        f.parentPath === path ? "" : f.parentPath.slice(path.length + 1),
-        path,
-      ),
-    )
+    .map((f) => fn(f, f.parentPath === path ? "" : f.parentPath.slice(path.length + 1), path))
     .filter((f) => f != null);
 };

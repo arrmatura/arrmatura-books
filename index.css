@@ -48,10 +48,12 @@
 
   /* DaisyUI success/error on light bg — enforce readable contrast */
   body:not([data-theme="dark"]) .text-success {
+    /* biome-ignore lint/complexity/noImportantStyles: base layer must beat DaisyUI's utility-layer colour */
     color: #146c37 !important;
   }
 
   body:not([data-theme="dark"]) .text-error {
+    /* biome-ignore lint/complexity/noImportantStyles: base layer must beat DaisyUI's utility-layer colour */
     color: #b91820 !important;
   }
 

@@ -1,8 +1,7 @@
+import { markdownToNodes, parseFrontmatter } from "arrmatura-markdown";
 import { WebClientService } from "arrmatura-web/core";
+import type { XmlNode } from "ultimus";
 import { cached } from "./sessionCache";
-import { markdownToNodes } from "arrmatura-markdown";
-import { XmlNode } from "ultimus";
-import { parseFrontmatter } from "arrmatura-markdown";
 
 /** The GitHub repo a jsDelivr `gh` listing URL serves: `…/packages/gh/<owner>/<repo>@<ref>…`. */
 const repoUrlOf = (indexUrl: string) => {

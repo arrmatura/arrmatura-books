@@ -1,6 +1,6 @@
 import * as esbuild from "esbuild";
-import { getEsbuildOptions } from "./utils/getEsbuildOptions";
 import { readFileJsonContent } from "./utils/files";
+import { getEsbuildOptions } from "./utils/getEsbuildOptions";
 
 export async function main() {
   // The package.json `esbuild` block supplies the WHOLE option set — `format`, `outExtension`,

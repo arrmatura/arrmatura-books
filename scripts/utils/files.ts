@@ -14,8 +14,7 @@ export const fileExists = (f: Path) => fs.existsSync(filePath(f));
 
 export function stringifyJson(x: unknown, indent = 2) {
   if (!x) return str(x);
-  if (Array.isArray(x))
-    return `[\n${x.map((e) => JSON.stringify(e)).join("\n,")}\n]`;
+  if (Array.isArray(x)) return `[\n${x.map((e) => JSON.stringify(e)).join("\n,")}\n]`;
   if (typeof x === "object")
     return (
       "{\n" +
@@ -41,14 +40,13 @@ export function ensurePathForFile(filePath) {
   return filePath;
 }
 
-export const isDirectory = (f: Path) =>
-  fileExists(f) && fs.statSync(filePath(f)).isDirectory();
+export const isDirectory = (f: Path) => fileExists(f) && fs.statSync(filePath(f)).isDirectory();
 
 export const writeFileContent = (f: Path, c: string | Promise<string>) => {
   if (c == null) return;
   if (c instanceof Promise) return c.then((x) => writeFileContent(f, x));
   if (typeof c === "string") {
-    fs.writeFileSync(ensurePathForFile(filePath(f)), str(c).trim(), "utf8");
+    fs.writeFileSync(ensurePathForFile(filePath(f)), `${str(c).trim()}\n`, "utf8");
   }
 };
 
@@ -61,5 +59,4 @@ export const writeFileJsonContent = (f: Path, x: any) => {
 export const readFileContent = (f: Path, def = "") =>
   fileExists(f) ? fs.readFileSync(filePath(f), "utf8").toString() : def;
 
-export const readFileJsonContent = (f: Path, def: any = null) =>
-  parseJson(readFileContent(f), def);
+export const readFileJsonContent = (f: Path, def: any = null) => parseJson(readFileContent(f), def);
