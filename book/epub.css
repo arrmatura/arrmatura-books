@@ -1,0 +1,103 @@
+/* Table rows, separated.
+ *
+ * pandoc's default EPUB stylesheet gives a table one rule, above the header row, and
+ * pads cells by a quarter of an em. This book's tables carry prose in up to four
+ * columns and one of them runs to ninety rows, so rows wrap to several lines each and
+ * without a separator they run together. This matches what the PDF does: a little
+ * breathing room in every cell, a hairline between rows, and a darker rule under the
+ * header so it still reads as a header.
+ *
+ * `tr + tr` rather than `:last-child`: an adjacent-sibling selector puts the rule
+ * between rows only, never below the final one, and it is CSS2, which every EPUB
+ * reader handles. */
+
+table {
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 0.45em 0.6em;
+  vertical-align: top;
+}
+
+thead th {
+  border-bottom: 1px solid #1a1a1a;
+}
+
+tbody tr + tr > th,
+tbody tr + tr > td {
+  border-top: 1px solid #cccccc;
+}
+
+/* Blockquotes as callouts.
+ *
+ * A blockquote in this book is an aside — a rule of thumb, a caution, a line worth
+ * stopping on — and pandoc's default sets it as body text indented by 1.7em, which at
+ * a reader's own margins is barely a signal at all. The same treatment as the PDF: the
+ * chapter banners' warm paper, an amber bar down the left edge, and the indent dropped
+ * so the panel spans the measure.
+ *
+ * The first and last child lose their outer margins, since the panel's own padding
+ * already provides them; without that a one-paragraph callout sits low in its box. */
+
+blockquote {
+  margin: 1.1em 0;
+  padding: 0.7em 1em;
+  border-left: 4px solid #efae16;
+  background-color: #faf4e8;
+}
+
+blockquote > :first-child {
+  margin-top: 0;
+}
+
+blockquote > :last-child {
+  margin-bottom: 0;
+}
+
+/* Every document opens on a new page.
+ *
+ * The book is assembled from one file per document, and each one is meant to start
+ * fresh rather than continue down the page from the last. An EPUB has no pages of its
+ * own, but a reader paginating to a screen honours the break, and pandoc puts a
+ * heading's classes on the <section> it wraps — so the assembler marks each document's
+ * opening heading `.document` and the break hangs on that. `page-break-before` is the
+ * CSS2 name every EPUB reader knows; `break-before` is the current one. */
+
+section.document,
+h2.document {
+  break-before: page;
+  page-break-before: always;
+}
+
+/* Glossaries as definition lists.
+ *
+ * Terms are defined in a definition list rather than a two-column table, so a
+ * definition is free to hold a list or a second paragraph and a long one wraps to the
+ * full measure instead of a narrow column. What the table gave for free has to be
+ * asked for here: its first column was bold, and a reader's default <dt> is not, so
+ * the term would otherwise sit in body weight directly above its own definition with
+ * nothing to separate them.
+ *
+ * The space goes above the term rather than below the definition, which keeps a term
+ * attached to the definition under it — the pair reads as one entry — and never
+ * leaves a trailing gap at the end of the list. `:first-child` spares the first term,
+ * whose heading already provides the space. */
+
+dl {
+  margin: 1em 0;
+}
+
+dt {
+  font-weight: bold;
+  margin-top: 1em;
+}
+
+dl > dt:first-child {
+  margin-top: 0;
+}
+
+dd {
+  margin: 0.15em 0 0 1.4em;
+}

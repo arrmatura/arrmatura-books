@@ -2,8 +2,7 @@ import { components as markdownComponents } from "arrmatura-markdown";
 import { launchPlatformApp } from "arrmatura-web";
 import * as registry from "./registry";
 
-export * from "arrmatura-markdown";
-export * from "./registry";
+export { launchPlatformApp } from "arrmatura-web";
 export {
   buildTree,
   prettifyName,
@@ -15,8 +14,8 @@ export {
 
 export const components = [...markdownComponents, ...Object.values(registry)];
 
-export function launchBook() {
-  launchPlatformApp({ components });
+export function launchBook(resources = {}) {
+  launchPlatformApp({ components, resources });
 }
 
 const win = window as unknown as { launchBook: unknown; autoLoad: boolean };

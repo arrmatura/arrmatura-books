@@ -35,7 +35,7 @@
     "release": "./scripts/release.sh",
     "prepublish": "npm run build && npm run gates",
     "npm:publish": "npm publish --no-git-checks",
-    "link": "./scripts/link-modules.sh arrmatura-markdown arrmatura-web ultimus"
+    "link": "./scripts/link-modules.sh arrmatura arrmatura-markdown arrmatura-web ultimus"
   },
   "devDependencies": {
     "@types/node": "^26.6.2",

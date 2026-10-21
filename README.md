@@ -47,6 +47,12 @@ document and matched against the site tree — exact id first, then file name. O
 nothing logs `No such document` and goes nowhere; a target with a host, or without an `.md`
 extension, opens in a new tab.
 
+## Book sites
+
+Content repos (engx, almaat) host their own site and book and call the tooling here from the
+sibling checkout: `site/` writes the page shell and releases, `book/` builds the EPUB and PDF.
+See [site/README.md](site/README.md) and [book/README.md](book/README.md).
+
 ## Development
 
 ```bash
