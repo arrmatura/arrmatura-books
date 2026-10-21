@@ -15,3 +15,4 @@ export { default as MDLink_Book } from "./cml/extensions/MDLink.Book.xml";
 export { default as MDSection_Book } from "./cml/extensions/MDSection.Book.xml";
 export { default as Quiz } from "./cml/components/Quiz.xml";
 export { QuizService } from "./src/QuizService";
+export { ThemeService } from "./src/ThemeService";

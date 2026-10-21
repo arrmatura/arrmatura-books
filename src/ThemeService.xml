@@ -1,0 +1,8 @@
+<Component id="ThemeService">
+  <Signature kind="service" purpose="Light or dark reading mode, remembered per reader"
+    description="Dark sets data-theme=dark on body, over the site's own light theme on html. Follows the OS colour scheme until the reader toggles; the choice is kept in localStorage under theme (dark or light)."
+    group="Books">
+    <State id="dark" type="boolean" description="True while the dark theme is on" />
+    <Method id="toggle" description="Switches between light and dark, and remembers the choice" />
+  </Signature>
+</Component>

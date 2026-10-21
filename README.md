@@ -31,6 +31,11 @@ launchBook();
 | One document | `/docs/*`, `*` substituted with the id |
 | Default document | `index.md`, when the `doc` nav param is unset |
 
+The page's `<html data-theme>` is the light theme. The sidebar's theme button switches to
+DaisyUI `dark` by setting `data-theme="dark"` on `<body>`, and keeps the choice in
+localStorage `theme` (`dark` | `light`); with none stored, the OS colour scheme decides. A page
+can apply the same rule in an inline script at the top of `<body>` to avoid a light flash.
+
 ## Two things that are easy to get wrong
 
 **`BookIndexTreeService` must be mounted as `Ref="bookIndex"`.** `DocsTree` and `MDLink.Book` bind

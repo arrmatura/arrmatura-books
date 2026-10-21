@@ -12,7 +12,8 @@
     corporate,
     caramellatte,
     bumblebee,
-    winter;
+    winter,
+    dark;
 }
 
 @layer base {
@@ -46,12 +47,18 @@
   }
 
   /* DaisyUI success/error on light bg — enforce readable contrast */
-  .text-success {
+  body:not([data-theme="dark"]) .text-success {
     color: #146c37 !important;
   }
 
-  .text-error {
+  body:not([data-theme="dark"]) .text-error {
     color: #b91820 !important;
+  }
+
+  /* Dark mode: ThemeService puts data-theme="dark" on <body>, over the light page colours above. */
+  body[data-theme="dark"] {
+    background: var(--color-base-100);
+    color: var(--color-base-content);
   }
 }
 

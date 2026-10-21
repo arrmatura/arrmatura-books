@@ -5,6 +5,7 @@
   <LocalStorage Ref="localStorage" />
   <StoredData Ref="treeState" />
   <BrowserService Ref="browser" />
+  <ThemeService Ref="theme" />
   <DropdownsPlugin />
   <PortalsPlugin />
 
@@ -29,6 +30,9 @@
         </a>
       </Bar>
       <div id="docHeader" class="flex flex-row flex-1 h-10"></div>
+      <!-- Bare span: the Loading atom drops `class`, and the spinner needs its margin and tone. -->
+      <span If="{@docs.loading}" title="Loading"
+        class="loading loading-spinner loading-sm mx-2 text-base-content/50"></span>
       <IBtn icon="chevrons-down" size="sm" title="Expand all"
         click="-> @docs.expandAll()" disabled="{@docs.expandedAll}" />
       <IBtn icon="chevrons-up" size="sm" title="Collapse all"
@@ -45,13 +49,18 @@
           <DocsTree 
             If="{!@localStorage.collapsed}" />
         </div>
-        <Bar If="{@docs.repoUrl || @docs.store}" class="px-2 py-1 border-t border-base-300">
-          <a If="{@docs.repoUrl}" href="{@docs.repoUrl}" target="_blank" rel="noopener noreferrer">
-            <IBtn icon="github" size="sm" title="Source on GitHub" />
-          </a>
-          <a If="{@docs.store}" href="{@docs.store}" target="_blank" rel="noopener noreferrer">
-            <IBtn icon="shopping-cart" size="sm" title="Buy the book" />
-          </a>
+        <Bar justify="between" class="px-2 py-1 border-t border-base-300">
+          <Bar>
+            <a If="{@docs.repoUrl}" href="{@docs.repoUrl}" target="_blank" rel="noopener noreferrer">
+              <IBtn icon="github" size="sm" title="Source on GitHub" />
+            </a>
+            <a If="{@docs.store}" href="{@docs.store}" target="_blank" rel="noopener noreferrer">
+              <IBtn icon="shopping-cart" size="sm" title="Buy the book" />
+            </a>
+          </Bar>
+          <IBtn icon="{@theme.dark ? 'sun' : 'moon'}" size="sm"
+            title="{@theme.dark ? 'Light theme' : 'Dark theme'}"
+            click="-> @theme.toggle()" />
         </Bar>
       </aside>
 
