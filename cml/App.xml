@@ -45,9 +45,12 @@
           <DocsTree 
             If="{!@localStorage.collapsed}" />
         </div>
-        <Bar If="{@docs.repoUrl}" class="px-2 py-1 border-t border-base-300">
-          <a href="{@docs.repoUrl}" target="_blank" rel="noopener noreferrer">
-            <IBtn icon="git-branch" size="sm" title="Source on GitHub" />
+        <Bar If="{@docs.repoUrl || @docs.store}" class="px-2 py-1 border-t border-base-300">
+          <a If="{@docs.repoUrl}" href="{@docs.repoUrl}" target="_blank" rel="noopener noreferrer">
+            <IBtn icon="github" size="sm" title="Source on GitHub" />
+          </a>
+          <a If="{@docs.store}" href="{@docs.store}" target="_blank" rel="noopener noreferrer">
+            <IBtn icon="shopping-cart" size="sm" title="Buy the book" />
           </a>
         </Bar>
       </aside>

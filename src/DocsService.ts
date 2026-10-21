@@ -28,6 +28,8 @@ export class DocsService extends WebClientService {
   declare opened: Record<string, boolean>;
   declare expandedAll: boolean;
   declare indexUrl: string;
+  /** Book store page; optional. */
+  declare store: string;
 
   constructor() {
     super();

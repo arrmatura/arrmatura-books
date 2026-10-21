@@ -8,6 +8,8 @@
       description="URL template for one document, '*' substituted" />
     <Prop id="indexUrl" type="string"
       description="jsDelivr listing URL of the book's GitHub repo; repoUrl is derived from it" />
+    <Prop id="store" type="string"
+      description="URL of a store page selling the book; optional, shown as a sidebar link when set" />
     <State id="repoUrl" type="string" description="The book's GitHub repo URL, from indexUrl" />
     <State id="text" type="string" description="Markdown source of the loaded document" />
     <State id="docId" type="string" description="Id of the loaded document" />
