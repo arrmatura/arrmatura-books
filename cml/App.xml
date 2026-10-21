@@ -45,6 +45,11 @@
           <DocsTree 
             If="{!@localStorage.collapsed}" />
         </div>
+        <Bar If="{@docs.repoUrl}" class="px-2 py-1 border-t border-base-300">
+          <a href="{@docs.repoUrl}" target="_blank" rel="noopener noreferrer">
+            <IBtn icon="git-branch" size="sm" title="Source on GitHub" />
+          </a>
+        </Bar>
       </aside>
 
       <main class="flex-1 overflow-y-auto min-h-0 bg-base-100">

@@ -4,6 +4,12 @@ import { markdownToNodes } from "arrmatura-markdown";
 import { XmlNode } from "ultimus";
 import { parseFrontmatter } from "arrmatura-markdown";
 
+/** The GitHub repo a jsDelivr `gh` listing URL serves: `…/packages/gh/<owner>/<repo>@<ref>…`. */
+const repoUrlOf = (indexUrl: string) => {
+  const match = /\/gh\/([^/]+)\/([^/@?]+)/.exec(indexUrl ?? "");
+  return match ? `https://github.com/${match[1]}/${match[2]}` : "";
+};
+
 /**
  * Loads the currently selected document of a markdown docs corpus (`doc`, resolved
  * through `docUrl`). The site tree it belongs to is `BookIndexTreeService`'s.
@@ -21,6 +27,7 @@ export class DocsService extends WebClientService {
   declare progress: Record<string, boolean>;
   declare opened: Record<string, boolean>;
   declare expandedAll: boolean;
+  declare indexUrl: string;
 
   constructor() {
     super();
@@ -28,6 +35,10 @@ export class DocsService extends WebClientService {
     this.__defineStoredProperty("progress", (v) => v ?? {});
     this.__defineStoredProperty("opened", (v) => v ?? {});
     this.__defineStoredProperty("expandedAll", (v) => v ?? false);
+  }
+
+  get repoUrl() {
+    return repoUrlOf(this.indexUrl);
   }
 
   toggleProgress(id: string) {
