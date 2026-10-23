@@ -1,0 +1,8 @@
+<Component id="TimeSpentService">
+  <Signature kind="service" purpose="Total time the reader has spent on the site"
+    description="Adds a second for every second the tab is visible. The total persists, so it grows across visits."
+    group="Books">
+    <State id="seconds" type="number" description="Accumulated visible seconds; persisted" />
+  </Signature>
+  <p class="error">Service TimeSpentService is not imported</p>
+</Component>

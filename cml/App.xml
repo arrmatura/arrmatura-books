@@ -14,7 +14,8 @@
       doc="{@browser.path || 'index.md'}" />
 
     <header
-      class="flex items-center h-10 px-2 py-2 border-b border-base-300">
+      class="flex items-center px-2 border-b border-base-300 transition-[height] duration-200
+      {scrolled ? 'h-10' : 'h-14'}">
       <Bar>
         <IBtn
           icon="{@localStorage.collapsed ? 'panel-left-open' : 'panel-left-close'}"
@@ -28,13 +29,11 @@
           </Bar>
         </a>
       </Bar>
-      <div id="docHeader" class="flex flex-row flex-1 h-10 
-      {@docs.loading?'loading loading-spinner loading-sm mx-2 text-base-content/50':''}">
+      <div class="flex h-4 w-4
+      {@docs.loading?'loading loading-spinner loading-xs text-base-content/50':''}">
       </div>
-      <IBtn icon="chevrons-down" size="sm" title="Expand all"
-        click="-> @docs.expandAll()" disabled="{@docs.expandedAll}" />
-      <IBtn icon="chevrons-up" size="sm" title="Collapse all"
-        click="-> @docs.collapseAll()" />
+      <div id="docHeader" class="flex flex-row flex-1 items-center h-full overflow-hidden"></div>
+      <Controls/>
     </header>
 
     <div class="relative flex flex-row flex-1 min-h-0">
@@ -50,7 +49,8 @@
         <Attribution/>
       </aside>
 
-      <main class="flex-1 overflow-y-auto min-h-0 bg-base-100">
+      <main class="flex-1 overflow-y-auto min-h-0 bg-base-100" scroll="-> scrolled = event.value > 100">
+        <div id="top"></div>
         <Skeleton If="{@docs.loading}" />
 
         <ErrorMessage
@@ -66,6 +66,10 @@
           </View>
         </Fragment>
       </main>
+
+      <FAB icon="arrow-up" title="Scroll to top"
+        class="{scrolled ? '' : 'opacity-0 translate-y-4 pointer-events-none'}"
+        action="-> @browser.scrollIntoView('top')" />
     </div>
   </div>
 </Component>

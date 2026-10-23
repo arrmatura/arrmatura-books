@@ -49,11 +49,6 @@ document and matched against the site tree — exact id first, then file name. O
 nothing logs `No such document` and goes nowhere; a target with a host, or without an `.md`
 extension, opens in a new tab.
 
-## Book sites
-
-Content repos (engx, almaat) host their own site and book and call the tooling here from the
-sibling checkout: `scripts/build.ts` bundles the UI, `scripts/serve.ts` serves `www/`, `book/`
-builds the EPUB and PDF. See [book/README.md](book/README.md).
 
 ## Development
 

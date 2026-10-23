@@ -30,7 +30,7 @@ const INDEX_FILE = "index.md";
  * Entries the tree never shows: agent and generator bookkeeping, anything a `_` marks
  * as a draft, and the dotfiles jsDelivr lists alongside the content.
  */
-const HIDDEN = new Set(["CLAUDE.md", "INDEX.md"]);
+const HIDDEN = new Set(["CLAUDE.md", "INDEX.md", INDEX_FILE]);
 const isHidden = (name: string) => HIDDEN.has(name) || name[0] === "_" || name[0] === ".";
 
 /** Directories first, then files, each alphabetical — jsDelivr returns neither ordered. */
@@ -71,7 +71,7 @@ export function docIdOf(node: TreeNode): string | undefined {
 export function prettifyName(path: string): string {
   const tail = path.split("/").pop() ?? path;
   const [base] = tail.split(".");
-  const cleaned = base.replace(/^.\d*-/, "").replaceAll(/[_]/g, " ");
+  const cleaned = base.replace(/^.\d*-/, "").replaceAll(/[_-]/g, " ");
   if (!cleaned) return base;
   return cleaned.charAt(0).toUpperCase() + cleaned.slice(1);
 }

@@ -12,7 +12,7 @@
     <button
       class="flex items-center gap-2 w-full text-left px-3 py-1.5 
       cursor-pointer
-      rounded-md transition-colors font-medium 
+      rounded-md transition-colors
       {open ? 'text-base-content' : 'text-base-content/60 '}
       hover:bg-base-200 hover:text-base-content/80">
       <span class="flex items-center gap-2 shrink-0 cursor-pointer"
@@ -25,7 +25,7 @@
       <Fragment If="doc">
         <Then>
           <span class="flex-1 truncate cursor-pointer
-            {@browser.path ==  doc ? 'text-primary font-semibold' : ''}"
+            {@browser.path ==  doc ? 'text-primary' : ''}"
             click="-> @browser.goto('/' + doc); @treeState.assign(id, true)">
             {name}
           </span>

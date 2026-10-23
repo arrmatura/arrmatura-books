@@ -5,6 +5,7 @@
 export { default as App } from "./cml/App.xml";
 export { default as Attribution } from "./cml/components/Attribution.xml";
 export { BookIndexTreeService } from "./src/BookIndexTreeService";
+export { default as Controls } from "./cml/components/Controls.xml";
 export { DocsService } from "./src/DocsService";
 export { default as DocsTree } from "./cml/doctree/DocsTree.xml";
 export { default as DocsTree_Dir } from "./cml/doctree/DocsTree.Dir.xml";
@@ -15,3 +16,5 @@ export { default as MDLink_Book } from "./cml/markdown/MDLink.Book.xml";
 export { default as MDSection_Book } from "./cml/markdown/MDSection.Book.xml";
 export { default as Quiz } from "./cml/components/Quiz.xml";
 export { QuizService } from "./src/QuizService";
+export { default as ShowTimeSpent } from "./cml/components/ShowTimeSpent.xml";
+export { TimeSpentService } from "./src/TimeSpentService";

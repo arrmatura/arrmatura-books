@@ -1,0 +1,10 @@
+<Component id="ShowTimeSpent">
+  <Signature purpose="Shows the total time the reader has spent on the site"
+    description="Self-standing widget: a clock icon and the visible time accumulated across visits, as 45s, 5m or 2h 15m."
+    group="Books" />
+  <TimeSpentService Ref="timeSpent" />
+  <div class="flex items-center gap-1 px-1 text-xs text-base-content/50" title="Time spent reading">
+    <Icon icon="clock" />
+    <span>{@timeSpent.seconds | timeSecondsFormat}</span>
+  </div>
+</Component>
