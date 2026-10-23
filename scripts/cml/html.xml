@@ -4,7 +4,6 @@
       <Slot Key="head" />
     </Head>
     <body class="{bodyClass}">
-      <script>if (localStorage.theme ? localStorage.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches) document.body.dataset.theme = 'dark';</script>
       <Slot />
     </body>
     <script src="/dist/index.js" type="module" If="!static"></script>

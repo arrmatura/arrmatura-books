@@ -24,11 +24,9 @@
     "target": "es2021"
   },
   "scripts": {
-    "prebuild": "npm run codegen",
     "build": "npx --yes npm-run-all --parallel build:*",
     "build:ts": "bun ./scripts/build.ts",
-    "build:css": "npx --yes @tailwindcss/cli -i index.css -o \"dist/index.css\"",
-    "codegen": "bun ./scripts/index-module.ts",
+    "build:codegen": "bun ./scripts/index-module.ts",
     "gates": "npx --yes npm-run-all --parallel typecheck lint",
     "lint": "biome check .",
     "typecheck": "tsc",
@@ -39,9 +37,7 @@
   },
   "devDependencies": {
     "@types/node": "^26.6.2",
-    "daisyui": "^5.7.47",
-    "esbuild": "^0.28.2",
-    "tailwindcss": "^4.3.3"
+    "esbuild": "^0.28.2"
   },
   "peerDependencies": {
     "arrmatura-markdown": "^1.0.0",

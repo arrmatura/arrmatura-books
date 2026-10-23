@@ -16,8 +16,10 @@ import { launchBook } from "arrmatura-books";
 launchBook();
 ```
 
+The page brings its own Tailwind + DaisyUI stylesheet and points `@source` at the kit's templates:
+
 ```css
-@source "arrmatura/arrmatura-books/dist/index.css";
+@source "../arrmatura-books/cml/**/*.xml";
 ```
 
 ## Configuration
@@ -31,10 +33,10 @@ launchBook();
 | One document | `/docs/*`, `*` substituted with the id |
 | Default document | `index.md`, when the `doc` nav param is unset |
 
-The page's `<html data-theme>` is the light theme. The sidebar's theme button switches to
-DaisyUI `dark` by setting `data-theme="dark"` on `<body>`, and keeps the choice in
-localStorage `theme` (`dark` | `light`); with none stored, the OS colour scheme decides. A page
-can apply the same rule in an inline script at the top of `<body>` to avoid a light flash.
+The page's `<html data-theme>` is the site's theme.
+
+A page overrides any component with a `<script type="application/cml" id="<Component>">` holding
+its template. `Attribution`, the bar under the sidebar tree, is empty until the page fills it.
 
 ## Two things that are easy to get wrong
 
@@ -50,13 +52,13 @@ extension, opens in a new tab.
 ## Book sites
 
 Content repos (engx, almaat) host their own site and book and call the tooling here from the
-sibling checkout: `site/` writes the page shell and releases, `book/` builds the EPUB and PDF.
-See [site/README.md](site/README.md) and [book/README.md](book/README.md).
+sibling checkout: `scripts/build.ts` bundles the UI, `scripts/serve.ts` serves `www/`, `book/`
+builds the EPUB and PDF. See [book/README.md](book/README.md).
 
 ## Development
 
 ```bash
-npm run codegen    # registry.ts + catalog.json — both generated, never hand-edited
-npm run build      # dist/index.cjs, the `require` condition
-npm run gates      # typecheck + lint
+npm run build:codegen  # registry.ts + catalog.json — both generated, never hand-edited
+npm run build          # dist/index.cjs, the `require` condition
+npm run gates          # typecheck + lint
 ```

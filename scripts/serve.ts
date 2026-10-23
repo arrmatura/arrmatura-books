@@ -2,13 +2,13 @@
 // Serves a content repo's www/ and rebuilds its UI bundle on change. Run in the content repo,
 // as its `npm run start:serve`:
 //
-//   bun ../arrmatura-books/site/serve.ts
+//   bun ../arrmatura-books/scripts/serve.ts
 //
 // The bundle is package.json `esbuild.entryPoints`, written to www/dist. Port: `PORT`, default 8080.
 
 import * as esbuild from "esbuild";
-import { readFileJsonContent } from "../scripts/utils/files";
-import { getEsbuildOptions } from "../scripts/utils/getEsbuildOptions";
+import { readFileJsonContent } from "./utils/files";
+import { getEsbuildOptions } from "./utils/getEsbuildOptions";
 
 async function main() {
   const { name, esbuild: packageOptions } = readFileJsonContent([`${process.cwd()}/package.json`]) ?? {};

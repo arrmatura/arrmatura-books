@@ -3,16 +3,15 @@
 // standing in for it. Registered as `Object.values(registry)`; the `index.ts` beside it is
 // where anything hand-written belongs.
 export { default as App } from "./cml/App.xml";
+export { default as Attribution } from "./cml/components/Attribution.xml";
 export { BookIndexTreeService } from "./src/BookIndexTreeService";
 export { DocsService } from "./src/DocsService";
-export { default as DocsSidebar } from "./cml/components/DocsSidebar.xml";
-export { default as DocsTree } from "./cml/components/DocsTree.xml";
-export { default as DocsTree_Dir } from "./cml/components/DocsTree.Dir.xml";
-export { default as DocsTree_File } from "./cml/components/DocsTree.File.xml";
-export { default as MDCheckbox_Book } from "./cml/extensions/MDCheckbox.Book.xml";
-export { default as MDDocument_Book } from "./cml/extensions/MDDocument.Book.xml";
-export { default as MDLink_Book } from "./cml/extensions/MDLink.Book.xml";
-export { default as MDSection_Book } from "./cml/extensions/MDSection.Book.xml";
+export { default as DocsTree } from "./cml/doctree/DocsTree.xml";
+export { default as DocsTree_Dir } from "./cml/doctree/DocsTree.Dir.xml";
+export { default as DocsTree_File } from "./cml/doctree/DocsTree.File.xml";
+export { default as MDCheckbox_Book } from "./cml/markdown/MDCheckbox.Book.xml";
+export { default as MDDocument_Book } from "./cml/markdown/MDDocument.Book.xml";
+export { default as MDLink_Book } from "./cml/markdown/MDLink.Book.xml";
+export { default as MDSection_Book } from "./cml/markdown/MDSection.Book.xml";
 export { default as Quiz } from "./cml/components/Quiz.xml";
 export { QuizService } from "./src/QuizService";
-export { ThemeService } from "./src/ThemeService";

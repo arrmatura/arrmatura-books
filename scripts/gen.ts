@@ -3,7 +3,7 @@
 // cml/, and the files in www/ beside this script (service worker, its loader). Run in the content
 // repo, as its `npm run gen`:
 //
-//   bun ../arrmatura-books/site/gen.ts
+//   bun ../arrmatura-books/scripts/gen.ts
 //
 // Everything comes from that repo: `window.R.app`, the theme and the store link from its
 // package.json; owner and repo from its git remote `origin`. The page reads the docs from jsDelivr
