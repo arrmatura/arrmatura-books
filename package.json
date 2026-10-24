@@ -26,14 +26,14 @@
   "scripts": {
     "build": "npx --yes npm-run-all --parallel build:*",
     "build:ts": "bun ./scripts/build.ts",
-    "build:codegen": "bun ./scripts/index-module.ts",
+    "build:codegen": "bun ../proton/ops/index-modules.ts",
     "gates": "npx --yes npm-run-all --parallel typecheck lint",
     "lint": "biome check .",
     "typecheck": "tsc",
     "release": "./scripts/release.sh",
     "prepublish": "npm run build && npm run gates",
     "npm:publish": "npm publish --no-git-checks",
-    "link": "./scripts/link-modules.sh arrmatura arrmatura-markdown arrmatura-web ultimus"
+    "link": "../proton/ops/link-modules.sh arrmatura arrmatura-markdown arrmatura-web ultimus"
   },
   "devDependencies": {
     "@types/node": "^26.6.2",
