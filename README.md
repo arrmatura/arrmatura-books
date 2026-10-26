@@ -35,6 +35,14 @@ The page brings its own Tailwind + DaisyUI stylesheet and points `@source` at th
 
 The page's `<html data-theme>` is the site's theme.
 
+`R.hotPort`, when set, mounts `HotReloadService` (`arrmatura-web/devops`) on that port: on
+localhost a rebuild of `www/dist` swaps the stylesheet or relaunches the app in place. The site
+runs the matching server in its `npm start`:
+
+```bash
+bun ../arrmatura-web/devops/hot/server/main.ts www/dist <hotPort>
+```
+
 A page overrides any component with a `<script type="application/cml" id="<Component>">` holding
 its template. `Attribution`, the bar under the sidebar tree, is empty until the page fills it.
 
