@@ -5,6 +5,7 @@
   <LocalStorage Ref="localStorage" />
   <StoredData Ref="treeState" />
   <BrowserService Ref="browser" />
+  <OnMount If="{@browser.isMobile}" action="-> @localStorage.collapsed = true" />
   <DropdownsPlugin />
   <PortalsPlugin />
   <HotReloadService If="{R.hotPort}" port="{R.hotPort}" />
@@ -18,10 +19,17 @@
       class="flex items-center px-2 border-b border-base-300 transition-[height] duration-200
       {scrolled ? 'h-10' : 'h-14'}">
       <Bar>
-        <IBtn
-          icon="{@localStorage.collapsed ? 'panel-left-open' : 'panel-left-close'}"
-          size="sm"
-          click="-> @localStorage.collapsed = !@localStorage.collapsed" />
+        <div class="md:hidden">
+          <MenuButton
+            opened="{!@localStorage.collapsed}"
+            click="-> @localStorage.collapsed = !@localStorage.collapsed" />
+        </div>
+        <div class="hidden md:flex">
+          <IBtn
+            icon="{@localStorage.collapsed ? 'panel-left-open' : 'panel-left-close'}"
+            size="sm"
+            click="-> @localStorage.collapsed = !@localStorage.collapsed" />
+        </div>
         <a href="/">
           <Bar
             class="text-xs font-semibold text-base-content/40 uppercase tracking-wider px-1">
@@ -38,6 +46,9 @@
     </header>
 
     <div class="relative flex flex-row flex-1 min-h-0">
+      <div If="{!@localStorage.collapsed}"
+        class="absolute inset-0 z-10 bg-black/40 md:hidden"
+        click="-> @localStorage.collapsed = true"></div>
       <aside
         class="top-0 left-0 z-20 flex flex-col bg-base-200 border-base-300 md:transition-all md:duration-200 overflow-hidden
       {@localStorage.collapsed 

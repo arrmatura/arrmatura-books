@@ -19,7 +19,7 @@
         />
     </span>
     <span class="flex-1 truncate cursor-pointer {@treeState.data[id]?'italic':''}"
-      click="-> @browser.goto('/'+id)">
+      click="-> @browser.goto('/'+id); @localStorage.collapsed = @browser.isMobile">
       {name}
     </span>
   </button>
