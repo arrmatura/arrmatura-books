@@ -40,18 +40,10 @@ const byKind = (a: SiteTreeEntry, b: SiteTreeEntry) =>
     .localeCompare((b.type === "directory" ? "0" : "1").concat(b.name));
 
 /**
- * Lifts a directory's own `index.md` onto the directory node as `doc` and drops it
- * from the children, so the tree shows one clickable folder instead of a folder
- * plus a redundant leaf. A root-level `index.md` has no folder to hang on and is
- * left as a normal leaf.
+ * Whether a listing entry is a folder's own `index.md`. Read off the raw entries, since
+ * `isHidden` drops it from the children: the folder node itself opens it, as `doc`.
  */
-function hoistIndexDoc(dir: TreeNode) {
-  const index = dir.nodes?.find((node) => node.type === "file" && node.path.split("/").pop() === INDEX_FILE);
-  if (index) {
-    dir.doc = index.id;
-    dir.nodes = dir.nodes?.filter((node) => node !== index);
-  }
-}
+const isIndexDoc = (entry: SiteTreeEntry) => entry.type === "file" && entry.name === INDEX_FILE;
 
 /**
  * Ids of every directory containing `docId` — the nodes a tree has to have open for
@@ -95,7 +87,7 @@ export function buildTree(entries: SiteTreeEntry[], parentPath = ""): TreeNode[]
       };
       if (entry.type === "directory") {
         node.nodes = buildTree(entry.files ?? [], path);
-        hoistIndexDoc(node);
+        if (entry.files?.some(isIndexDoc)) node.doc = `${path}/${INDEX_FILE}`;
       }
       return node;
     });
