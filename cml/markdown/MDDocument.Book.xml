@@ -5,7 +5,7 @@
     <Prop id="icon" type="string" description="Optional icon shown before the heading of a level 2 or 3 section" />
     <Slot name="title" description="Inline content of the heading" />
   </Signature>
-  <div class="mb-3 overflow-hidden">
+  <main class="md-document overflow-hidden">
     <div portal="docHeader"
       class="flex flex-1  items-center gap-3 px-2 py-3">
       <span
@@ -17,5 +17,5 @@
     <div class="py-4">
       <Slot />
     </div>
-  </div>
+  </main>
 </Component>

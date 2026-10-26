@@ -8,7 +8,7 @@
   </Signature>
   <Fragment If="host">
     <Then>
-      <a class="inline-block mx-1 px-1 font-bold link link-primary"
+      <a class="inline-block mx-1 px-1 font-bold link link-primary link-external"
         href="{href}" target="_blank" 
         rel="noopener noreferrer">
         <span>{text}</span>
@@ -16,7 +16,7 @@
       </a>
     </Then>
     <Else>
-      <b class="inline-block mx-1 px-1 link link-primary"
+      <b class="inline-block mx-1 px-1 link link-primary link-internal"
         click="-> @browser.goto(href)">
         {text}
       </b>
