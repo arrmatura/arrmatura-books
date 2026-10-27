@@ -24,7 +24,20 @@ export const TABLE_RULES = path.join(BOOK_DIR, "table-rules.lua");
 export const CODE_BREAKS = path.join(BOOK_DIR, "code-breaks.lua");
 export const EPUB_CSS = path.join(BOOK_DIR, "epub.css");
 
-/** Pandoc's metadata for the book: package.json `book` but `coverPhoto`, over its `author`, `copyright` and `description`. */
+// The content repo's own content model, optional: see ContentModel in build.ts.
+export const CONTENT = path.join(ROOT, "book", "content.ts");
+
+/** The cover's palette. package.json `book.coverColors` overrides any of them. */
+export interface CoverColors {
+  paper: string;
+  ink: string;
+  muted: string;
+  accent: string;
+}
+
+export const COVER_COLORS: CoverColors = { paper: "#0A1017", ink: "#F4F7FA", muted: "#8FA3B3", accent: "#4FD8E4" };
+
+/** Pandoc's metadata for the book: package.json `book` but `coverPhoto` and `coverColors`, over its `author`, `copyright` and `description`. */
 export interface Metadata {
   title: string;
   subtitle?: string;
@@ -40,6 +53,7 @@ export interface Site {
   build: string; // src/build
   metadata: Metadata;
   coverPhoto: string; // package.json `book.coverPhoto`, default src/book/cover.png
+  coverColors: CoverColors;
 }
 
 export const warn = (message: string) => console.error(message);
@@ -55,8 +69,16 @@ export function resolveSite(): Site {
   const docs = path.join(ROOT, "docs");
   if (!fs.statSync(docs, { throwIfNoEntry: false })?.isDirectory()) throw new Error(`no docs/ folder in ${ROOT}`);
   if (!book?.title) throw new Error("missing package.json `book.title`: the book's own metadata lives under `book`");
-  const { coverPhoto = "cover.png", ...fields } = book;
+  const { coverPhoto = "cover.png", coverColors, ...fields } = book;
   const metadata: Metadata = { author, rights: copyright, description, ...fields };
   fs.mkdirSync(BUILD, { recursive: true });
-  return { name, src: ROOT, docs, build: BUILD, metadata, coverPhoto: path.join(ROOT, coverPhoto) };
+  return {
+    name,
+    src: ROOT,
+    docs,
+    build: BUILD,
+    metadata,
+    coverPhoto: path.join(ROOT, coverPhoto),
+    coverColors: { ...COVER_COLORS, ...coverColors },
+  };
 }

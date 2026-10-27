@@ -179,13 +179,14 @@ function metadataFile(site: Site): string {
   return file;
 }
 
-/** Run pandoc for one output format. */
+/** Run pandoc for one output format. `extra` goes after the kit's own arguments for that format. */
 export function render(
   site: Site,
   markdownPath: string,
   target: "epub" | "pdf",
   outPath: string,
   cover: string | null,
+  extra: string[] = [],
 ): void {
   // biome-ignore format: each flag beside its value
   const args = [
@@ -222,6 +223,7 @@ export function render(
       // booktabs. This says to load them anyway.
       "--lua-filter", TABLE_RULES, "--lua-filter", CODE_BREAKS,
       "-V", "tables=true",
+      ...extra,
     );
     // A second -V of the same name: pandoc collects them, so this joins
     // PDF_HEADER_INCLUDES in the preamble rather than replacing it.
@@ -240,7 +242,7 @@ export function render(
     // than vendoring a copy that goes stale.
     const defaultCss = path.join(site.build, "epub-default.css");
     fs.writeFileSync(defaultCss, capture("pandoc", ["--print-default-data-file", "epub.css"]));
-    args.push("--to", "epub3", "--split-level=1", "--css", defaultCss, "--css", EPUB_CSS);
+    args.push("--to", "epub3", "--split-level=1", "--css", defaultCss, "--css", EPUB_CSS, ...extra);
     if (cover) args.push("--epub-cover-image", cover);
   }
   run("pandoc", args);

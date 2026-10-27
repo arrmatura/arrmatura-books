@@ -10,7 +10,7 @@
 import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
-import { ROOT, relativePosix, type Site, warn } from "./context";
+import { COVER_COLORS, type CoverColors, ROOT, relativePosix, type Site, warn } from "./context";
 import { rasterHash } from "./diagrams";
 import { CHROME, RASTER_FORMAT, RASTER_SCALE, rasterizeSvg } from "./raster";
 
@@ -22,10 +22,6 @@ export const COVER_WIDTH = 620;
 export const COVER_HEIGHT = 877;
 const COVER_FADE = 0.45;
 const COVER_MARGIN = 70;
-const COVER_PAPER = "#0A1017";
-const COVER_INK = "#F4F7FA";
-const COVER_MUTED = "#8FA3B3";
-const COVER_ACCENT = "#4FD8E4";
 
 /** [width, height] from a PNG's IHDR, which is always the first chunk. */
 export function pngSize(file: string): [number, number] {
@@ -92,7 +88,14 @@ function textLines(markup: string[], lines: string[], x: number, y: number, lead
  * top fades to nothing against the page, which is why the page is dark: the
  * photograph is, and fading it into a light page would only muddy it.
  */
-export function coverSvg(title: string, subtitle: string, author: string, photo: string, photoAspect: number): string {
+export function coverSvg(
+  title: string,
+  subtitle: string,
+  author: string,
+  photo: string,
+  photoAspect: number,
+  colors: CoverColors = COVER_COLORS,
+): string {
   const photoHeight = Math.round(COVER_WIDTH / photoAspect);
   const photoTop = COVER_HEIGHT - photoHeight;
   const titleLines = wrap(title, 16);
@@ -111,15 +114,15 @@ export function coverSvg(title: string, subtitle: string, author: string, photo:
       `height="${photoHeight}" fill="url(#fade)"/></mask>`,
     "    <style>",
     '      text { font-family: "Times New Roman", Georgia, serif; }',
-    `      .title { font-size: 58px; fill: ${COVER_INK}; }`,
-    `      .subtitle { font-size: 19px; fill: ${COVER_MUTED}; }`,
-    `      .author { font-size: 16px; fill: ${COVER_INK}; letter-spacing: 3px; text-transform: uppercase; }`,
+    `      .title { font-size: 58px; fill: ${colors.ink}; }`,
+    `      .subtitle { font-size: 19px; fill: ${colors.muted}; }`,
+    `      .author { font-size: 16px; fill: ${colors.ink}; letter-spacing: 3px; text-transform: uppercase; }`,
     "    </style>",
     "  </defs>",
-    `  <rect width="${COVER_WIDTH}" height="${COVER_HEIGHT}" fill="${COVER_PAPER}"/>`,
+    `  <rect width="${COVER_WIDTH}" height="${COVER_HEIGHT}" fill="${colors.paper}"/>`,
     `  <image href="${photo}" x="0" y="${photoTop}" width="${COVER_WIDTH}" ` +
       `height="${photoHeight}" mask="url(#fadeMask)" preserveAspectRatio="xMidYMid slice"/>`,
-    `  <rect x="${COVER_MARGIN}" y="168" width="84" height="3" fill="${COVER_ACCENT}"/>`,
+    `  <rect x="${COVER_MARGIN}" y="168" width="84" height="3" fill="${colors.accent}"/>`,
   ];
   let last = textLines(markup, titleLines, COVER_MARGIN, 226, 66, "title");
   last = textLines(markup, subtitleLines, COVER_MARGIN, last + 74, 28, "subtitle");
@@ -148,7 +151,8 @@ export async function buildCover(site: Site): Promise<string | null> {
   const covers = path.join(site.build, "cover");
   const [width, height] = pngSize(site.coverPhoto);
   const { title, subtitle = "", author = "" } = site.metadata;
-  const markup = coverSvg(title, subtitle, author, dataUri(site.coverPhoto, "image/png"), width / height);
+  const photo = dataUri(site.coverPhoto, "image/png");
+  const markup = coverSvg(title, subtitle, author, photo, width / height, site.coverColors);
   fs.mkdirSync(covers, { recursive: true });
   const destination = path.join(covers, `${rasterHash(`${RASTER_SCALE}\n${markup}`)}.${RASTER_FORMAT}`);
   if (!fs.existsSync(destination)) {

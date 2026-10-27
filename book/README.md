@@ -24,6 +24,8 @@ All paths are relative to the content repo root.
 | Book name | `package.json` `name`; it names the outputs |
 | Title, author, rights | `package.json` `book`: pandoc metadata (`title`, `subtitle`, `language`, `subject`, `identifier`…) over the top-level `author`, `copyright` (as `rights`) and `description`. Written to `build/metadata.json` for `--metadata-file`. No `book.title` → the build fails |
 | Cover photograph | `package.json` `book.coverPhoto`, default `book/cover.png`, PNG only. Missing → no cover, the build continues |
+| Cover palette | `package.json` `book.coverColors`: any of `paper`, `ink`, `muted`, `accent` over the kit's |
+| Content model | `book/content.ts`, optional: see [Content model](#content-model) |
 | Outputs | `build/<name>.md`, `.epub`, `.pdf` |
 | Caches | `build/metadata.json`, `build/cover/`, `build/epub-default.css`, `build/diagrams/` (content-addressed) |
 
@@ -31,7 +33,7 @@ All paths are relative to the content repo root.
 
 | File | Concern |
 | --- | --- |
-| `build.ts` | CLI, flags, building the book |
+| `build.ts` | CLI, flags, the `ContentModel` hook, building the book |
 | `context.ts` | `ROOT`, `BUILD`, `DIAGRAMS`, the `Site` interface, `resolveSite()`, shared helpers |
 | `assemble.ts` | frontmatter, titles, link rewriting, document anchors, reading order |
 | `markdown.ts` | line transforms that skip fenced code: setext to ATX, heading ids and levels, breaks, void tags |
@@ -44,6 +46,18 @@ All paths are relative to the content repo root.
 `resolveSite()` checks the inputs and returns a `Site` object that carries `name`, `src`
 (the repo root), `docs`, `build` and `coverPhoto`, all absolute, and the pandoc `metadata`
 object, to whatever needs them.
+
+## Content model
+
+The defaults read a plain docs tree. A repo whose pages need more (app links, app tokens, a part per scope) writes `book/content.ts`, and the builder imports it. Each export it names replaces the kit's; the rest stay the kit's.
+
+| Export | Replaces |
+| --- | --- |
+| `collectDocuments(site)` | reading `docs/` into documents in reading order |
+| `assemble(documents, site)` | turning them into one markdown document |
+| `pandocArgs(target)` | nothing: extra arguments after the kit's for `"epub"` or `"pdf"`. A repeated flag (`--toc-depth`, `--split-level`) wins; a `-V header-includes=` adds to the kit's preamble, so a `\definecolor` there overrides the kit's colour |
+
+The module imports the kit's helpers (`markdown.ts`, `context.ts`) by relative path, `../../arrmatura-books/book/…`, so it shares their module instances. taalmoed's is the worked example.
 
 ## What it does that pandoc cannot
 

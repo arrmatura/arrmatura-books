@@ -32,6 +32,23 @@ function fenceStep(fence: Fence, bare: string): [boolean, Fence] {
   return [true, fence === null ? marker : fence === marker ? null : fence];
 }
 
+/** Apply `transform` to every line outside fenced code; a null drops the line. */
+export function outsideFences(text: string, transform: (bare: string) => string | null): string {
+  let fence: Fence = null;
+  const out: string[] = [];
+  for (const bare of text.split("\n")) {
+    let isFence: boolean;
+    [isFence, fence] = fenceStep(fence, bare);
+    if (isFence || fence !== null) {
+      out.push(bare);
+      continue;
+    }
+    const line = transform(bare);
+    if (line !== null) out.push(line);
+  }
+  return out.join("\n");
+}
+
 /** The anchor a renderer generates for a heading. Mirrors check_links.slugify. */
 export function slugify(title: string): string {
   const text = title.replaceAll("*", "").replaceAll("`", "").trim().toLowerCase();

@@ -169,10 +169,11 @@ export function inReadingOrder(paths: string[]): string[] {
   return [...paths].sort((a, b) => compare(key(a), key(b)));
 }
 
-/** Every *.md under `dir`, as posix paths relative to it. */
+/** Every *.md under `dir`, as posix paths relative to it; a name starting with `.` or `_` is skipped. */
 function markdownFiles(dir: string, prefix = ""): string[] {
   const files: string[] = [];
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    if (/^[._]/.test(entry.name)) continue;
     const relative = prefix ? `${prefix}/${entry.name}` : entry.name;
     if (entry.isDirectory()) files.push(...markdownFiles(path.join(dir, entry.name), relative));
     else if (entry.name.endsWith(".md")) files.push(relative);

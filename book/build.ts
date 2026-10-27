@@ -20,9 +20,9 @@
 import { spawnSync } from "node:child_process";
 import * as fs from "node:fs";
 import * as path from "node:path";
-import { fileURLToPath } from "node:url";
-import { assemble, collectDocuments } from "./assemble";
-import { DIAGRAMS, resolveSite, type Site, warn } from "./context";
+import { fileURLToPath, pathToFileURL } from "node:url";
+import { assemble, collectDocuments, type Document } from "./assemble";
+import { CONTENT, DIAGRAMS, resolveSite, type Site, warn } from "./context";
 import { buildCover } from "./cover";
 import { resolveMermaid } from "./diagrams";
 import { duplicateAnchors } from "./markdown";
@@ -38,6 +38,29 @@ interface Options {
   epub: boolean;
   pdf: boolean;
   markdownOnly: boolean;
+}
+
+/**
+ * How the content repo's docs become one document, and what its book adds to pandoc.
+ *
+ * The kit's defaults read a plain docs tree. A repo whose pages need more — app links,
+ * app tokens, a part per scope — exports any of these from `book/content.ts`, and the
+ * rest stay the kit's.
+ */
+export interface ContentModel {
+  collectDocuments(site: Site): Document[];
+  assemble(documents: Document[], site: Site): string;
+  /** After the kit's arguments for that format: a repeated flag wins, a `-V header-includes=` adds. */
+  pandocArgs(target: "epub" | "pdf"): string[];
+}
+
+async function loadContentModel(): Promise<ContentModel> {
+  const own: Partial<ContentModel> = fs.existsSync(CONTENT) ? await import(pathToFileURL(CONTENT).href) : {};
+  return {
+    collectDocuments: own.collectDocuments ?? collectDocuments,
+    assemble: own.assemble ?? assemble,
+    pandocArgs: own.pandocArgs ?? (() => []),
+  };
 }
 
 function fail(message: string): never {
@@ -59,13 +82,13 @@ function parseArgs(argv: string[]): Options | null {
 }
 
 /** Assemble, verify and render the book. Throws on anything that stops it. */
-async function buildSite(site: Site, options: Options): Promise<void> {
-  const documents = collectDocuments(site);
+async function buildSite(site: Site, options: Options, content: ContentModel): Promise<void> {
+  const documents = content.collectDocuments(site);
 
   // Before the assembled file is written, so that what verifyAnchors checks and what
   // pandoc reads are the same document. --markdown renders diagrams too: they are
   // the markdown's own content, and a cache hit costs nothing.
-  const { markdown, diagrams, rendered } = resolveMermaid(assemble(documents, site));
+  const { markdown, diagrams, rendered } = resolveMermaid(content.assemble(documents, site));
 
   const source = path.join(site.build, `${site.name}.md`);
   fs.writeFileSync(source, markdown);
@@ -90,12 +113,12 @@ async function buildSite(site: Site, options: Options): Promise<void> {
   const both = !(options.epub || options.pdf);
   if (options.epub || both) {
     const out = path.join(site.build, `${site.name}.epub`);
-    render(site, source, "epub", out, cover);
+    render(site, source, "epub", out, cover, content.pandocArgs("epub"));
     console.log(`wrote ${out}`);
   }
   if (options.pdf || both) {
     const out = path.join(site.build, `${site.name}.pdf`);
-    render(site, source, "pdf", out, cover);
+    render(site, source, "pdf", out, cover, content.pandocArgs("pdf"));
     console.log(`wrote ${out}`);
   }
 }
@@ -112,7 +135,7 @@ export async function main(argv: string[] = process.argv.slice(2)): Promise<numb
   }
 
   try {
-    await buildSite(resolveSite(), options);
+    await buildSite(resolveSite(), options, await loadContentModel());
     return 0;
   } catch (error) {
     console.error(`  error: ${(error as Error).message}`);
