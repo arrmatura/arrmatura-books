@@ -48,7 +48,8 @@
     <div class="relative flex flex-row flex-1 min-h-0">
       <div If="{!@localStorage.collapsed}"
         class="absolute inset-0 z-10 bg-black/40 md:hidden"
-        click="-> @localStorage.collapsed = true"></div>
+        click="-> @localStorage.collapsed = true">
+      </div>
       <aside
         class="top-0 left-0 z-20 flex flex-col bg-base-200 border-base-300 md:transition-all md:duration-200 overflow-hidden
       {@localStorage.collapsed 
