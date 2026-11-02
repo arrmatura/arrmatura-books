@@ -124,8 +124,8 @@
       <Prop id="selectedId" type="string?" />
     </Signature>
 
-    <Bar align="start"
-      class="gap-3 p-4 rounded-xl border border-base-300 cursor-pointer hover:bg-base-300 transition-colors 
+    <div
+      class="flex flex-row items-start gap-3 p-4 rounded-xl border border-base-300 cursor-pointer hover:bg-base-300 transition-colors 
       {selectedId AND isCorrect ? 'answer--correct' : ''}
       {selectedId AND !isCorrect AND id == selectedId ? 'answer--wrong' : ''}
       "
@@ -140,7 +140,7 @@
           <MarkdownView text="{explanation}" />
         </div>
       </View>
-    </Bar>
+    </div>
   </Subcomponent>
 
   <Subcomponent id="Results">

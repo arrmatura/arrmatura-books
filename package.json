@@ -33,7 +33,7 @@
     "release": "./scripts/release.sh",
     "prepublish": "npm run build && npm run gates",
     "npm:publish": "npm publish --no-git-checks",
-    "link": "../proton/ops/link-modules.sh arrmatura arrmatura-markdown arrmatura-web ultimus"
+    "link": "../proton/ops/link-modules.sh arrmatura arrmatura-markdown arrmatura-web proton ultimus"
   },
   "devDependencies": {
     "@types/node": "^26.6.2",

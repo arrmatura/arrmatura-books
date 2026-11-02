@@ -1,6 +1,7 @@
 // import { arrmaturaTemplatePlugin } from "./arrmaturaTemplatePlugin";
-import cmlPlugin from "arrmatura-web/esbuild";
+
 import type { BuildOptions } from "esbuild";
+import cmlPlugin from "proton/esbuild";
 
 export function getEsbuildOptions({
   entryPoints = ["src/index.ts"],
