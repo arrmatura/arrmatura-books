@@ -59,7 +59,7 @@ const escapeRegExp = (text: string) => text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&
  * neighbours: a line is a term only because the next line is a definition, and an entry belongs to
  * the run of entries around it.
  */
-function parse(text: string): { rows: Row[]; findings: Finding[] } {
+export function parse(text: string): { rows: Row[]; findings: Finding[] } {
   const lines = splitLines(text);
   const rows: Row[] = [];
   const findings: Finding[] = [];
@@ -271,4 +271,4 @@ function main(paths: string[]): number {
   return 1;
 }
 
-process.exit(main(process.argv.slice(2)));
+if (import.meta.main) process.exit(main(process.argv.slice(2)));
