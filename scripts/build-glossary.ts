@@ -8,8 +8,8 @@
 // A term defined in several files keeps its first definition in the given order, so the earliest
 // chapter wins; each one dropped prints as a note. Relative links are reduced to their text, since
 // they resolve against the defining file and not against the page that shows the definition. Each
-// term is one key, as written, holding its `definition` and its `labels`: every other spelling a
-// page may use for it, so the reader, `glossaryDefinition`, only matches text.
+// term is one key, as written, holding its `definition` and its `labels`: the other spellings of it
+// that the docs write as a code span, so the reader, `glossaryDefinition`, only matches text.
 
 import { readFileSync, writeFileSync } from "node:fs";
 import type { Glossary } from "../src/glossary";
@@ -18,6 +18,7 @@ import { splitLines } from "./utils/splitLines";
 
 const GLOSSARY_FILE = "www/glossary.json";
 const RELATIVE_LINK_RE = /\[([^\]]+)\]\((?!https?:)[^)]*\)/g;
+const CODE_SPAN_RE = /`([^`\n]+)`/g;
 
 /** The markdown of the definition opening at `start`: its first line and its indented blocks. */
 function definitionAt(lines: string[], start: number): string {
@@ -56,9 +57,11 @@ function labelsOf(term: string): string[] {
 function main(paths: string[]) {
   const glossary: Glossary = {};
   const sources = new Map<string, string>();
+  const texts = paths.map((path) => readFileSync(path, "utf8"));
+  const spans = new Set(texts.flatMap((text) => [...text.matchAll(CODE_SPAN_RE)].map(([, span]) => span)));
 
-  for (const path of paths) {
-    const text = readFileSync(path, "utf8");
+  for (const [index, path] of paths.entries()) {
+    const text = texts[index];
     const lines = splitLines(text);
     for (const { term, line } of parse(text).rows) {
       const source = sources.get(term);
@@ -67,7 +70,8 @@ function main(paths: string[]) {
         continue;
       }
       sources.set(term, `${path}:${line}`);
-      glossary[term] = { labels: labelsOf(term), definition: definitionAt(lines, line - 1) };
+      const labels = labelsOf(term).filter((label) => spans.has(label));
+      glossary[term] = { labels, definition: definitionAt(lines, line - 1) };
     }
   }
 
