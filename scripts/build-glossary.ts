@@ -8,9 +8,11 @@
 // A term defined in several files keeps its first definition in the given order, so the earliest
 // chapter wins; each one dropped prints as a note. Relative links are reduced to their text, since
 // they resolve against the defining file and not against the page that shows the definition. Each
-// term is one key, as written; the reader resolves other spellings with `glossaryDefinition`.
+// term is one key, as written, holding its `definition` and its `labels`: every other spelling a
+// page may use for it, so the reader, `glossaryDefinition`, only matches text.
 
 import { readFileSync, writeFileSync } from "node:fs";
+import type { Glossary } from "../src/glossary";
 import { parse } from "./check-glossary";
 import { splitLines } from "./utils/splitLines";
 
@@ -26,8 +28,33 @@ function definitionAt(lines: string[], start: number): string {
   return body.join("\n").trimEnd().replace(RELATIVE_LINK_RE, "$1");
 }
 
+/** The singular of `word`, by spelling alone: `Goals` -> `Goal`, `Weaknesses` -> `Weakness`, `Success` and `Bias` stay. */
+function singular(word: string): string {
+  if (word.endsWith("ies")) return `${word.slice(0, -3)}y`;
+  if (word.endsWith("sses")) return word.slice(0, -2);
+  return /[^suia]s$/.test(word) ? word.slice(0, -1) : word;
+}
+
+/** The plural of a singular `word`, by spelling alone: `Policy` -> `Policies`, `Process` -> `Processes`. */
+function plural(word: string): string {
+  if (/(s|x|z|ch|sh)$/.test(word)) return `${word}es`;
+  return /[^aeiou]y$/.test(word) ? `${word.slice(0, -1)}ies` : `${word}s`;
+}
+
+/**
+ * Every other spelling of `term`: its singular or plural, or, for an `A (B)` or `A/B` term, each
+ * name it goes by in both — `Identity Provider (IdP)` -> `Identity Provider`, `Identity Providers`, `IdP`, `IdPs`.
+ */
+function labelsOf(term: string): string[] {
+  const names = (term.match(/^(.+?)\s*\((.+)\)$/)?.slice(1) ?? [term])
+    .flatMap((name) => name.split(/\s*\/\s*/))
+    .map((name) => name.replaceAll("`", ""));
+  const forms = names.flatMap((name) => [name, singular(name) === name ? plural(name) : singular(name)]);
+  return [...new Set(forms)].filter((form) => form !== term);
+}
+
 function main(paths: string[]) {
-  const glossary: Record<string, string> = {};
+  const glossary: Glossary = {};
   const sources = new Map<string, string>();
 
   for (const path of paths) {
@@ -40,7 +67,7 @@ function main(paths: string[]) {
         continue;
       }
       sources.set(term, `${path}:${line}`);
-      glossary[term] = definitionAt(lines, line - 1);
+      glossary[term] = { labels: labelsOf(term), definition: definitionAt(lines, line - 1) };
     }
   }
 

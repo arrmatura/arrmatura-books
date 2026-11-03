@@ -1,11 +1,10 @@
-/** The singular of `word`, by spelling alone: `Goals` -> `Goal`, `Weaknesses` -> `Weakness`, `Success` stays. */
-export function lemma(word: string): string {
-  if (word.endsWith("ies")) return `${word.slice(0, -3)}y`;
-  if (word.endsWith("sses")) return word.slice(0, -2);
-  return /[^sui]s$/.test(word) ? word.slice(0, -1) : word;
-}
+/** A book's terms, each keyed as written, with every other spelling a page may use for it. */
+export type Glossary = Record<string, { labels: string[]; definition: string }>;
 
-/** The definition of `text`: its own spelling first, since `Parameters` can mean more than `Parameter` does. */
-export function glossaryDefinition(glossary: Record<string, string>, text: string): string | undefined {
-  return [text, lemma(text)].filter((key) => Object.hasOwn(glossary, key)).map((key) => glossary[key])[0];
+/** The definition of `text`: a term's own key wins over another term's label; among labels, the earliest term wins. */
+export function glossaryDefinition(glossary: Glossary, text: string): string | undefined {
+  const entry = Object.hasOwn(glossary, text)
+    ? glossary[text]
+    : Object.values(glossary).find(({ labels }) => labels.includes(text));
+  return entry?.definition;
 }
