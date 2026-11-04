@@ -26,6 +26,12 @@ import {
 // the content rulebook, and a hand-written index the rendered table of contents
 // replaces. Every other root file is back matter — see inReadingOrder.
 const NOT_CONTENT = new Set(["CLAUDE.md", "INDEX.md"]);
+/** A file or folder name the book leaves out on purpose: hidden (`.`) or private (`_`), such as `_references`. */
+const LEFT_OUT_NAME_RE = /^[._]/;
+
+/** True for a docs path the book leaves out on purpose: a top-level NOT_CONTENT file, or anything under a left-out name. */
+const isLeftOut = (key: string): boolean =>
+  NOT_CONTENT.has(key) || key.split("/").some((name) => LEFT_OUT_NAME_RE.test(name));
 
 const LINK_RE = /(!?)\[([^\]]*)\]\(([^)\s]*)\)/g;
 const TITLE_RE = /^title:[ \t]*(.+?)[ \t]*$/m;
@@ -124,7 +130,7 @@ export function rewriteLinks(
       const key = relativePosix(site.docs, resolved);
       const targetAnchor = anchors[key];
       // Kept out of the book on purpose: keep the words, drop the link.
-      if (targetAnchor === undefined && NOT_CONTENT.has(path.basename(key)) && !key.includes("/")) return label;
+      if (targetAnchor === undefined && isLeftOut(key)) return label;
       if (targetAnchor === undefined) throw new Error(`${source} links to unknown document ${key}`);
       return anchor ? `${bang}[${label}](#${targetAnchor}--${anchor})` : `${bang}[${label}](#${targetAnchor})`;
     }
@@ -173,7 +179,7 @@ export function inReadingOrder(paths: string[]): string[] {
 function markdownFiles(dir: string, prefix = ""): string[] {
   const files: string[] = [];
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-    if (/^[._]/.test(entry.name)) continue;
+    if (LEFT_OUT_NAME_RE.test(entry.name)) continue;
     const relative = prefix ? `${prefix}/${entry.name}` : entry.name;
     if (entry.isDirectory()) files.push(...markdownFiles(path.join(dir, entry.name), relative));
     else if (entry.name.endsWith(".md")) files.push(relative);
