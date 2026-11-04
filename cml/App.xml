@@ -62,7 +62,7 @@
         <Attribution/>
       </aside>
 
-      <main class="flex-1 overflow-y-auto min-h-0 bg-base-100" scroll="-> scrolled = event.value > 100">
+      <main class="flex-1 overflow-y-auto min-h-0 bg-base-100" scroll="-> scrolled = event.value > 200; upward = event.value > 500">
         <div id="top"></div>
         <Skeleton If="{@docs.loading}" />
 
@@ -78,11 +78,13 @@
             <Block Nodes="{@docs.nodes}" />
           </View>
         </Fragment>
+        <div id="bottom"></div>
       </main>
 
-      <FAB icon="arrow-up" title="Scroll to top"
+      <FAB icon="{upward ? 'arrow-up' : 'arrow-down'}"
+        title="{upward ? 'Scroll to top' : 'Scroll to bottom'}"
         class="{scrolled ? '' : 'opacity-0 translate-y-4 pointer-events-none'}"
-        action="-> @browser.scrollIntoView('top')" />
+        action="-> @browser.scrollIntoView(upward ? 'top' : 'bottom')" />
     </div>
   </div>
 </Component>
