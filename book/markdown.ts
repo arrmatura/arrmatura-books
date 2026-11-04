@@ -121,8 +121,8 @@ export function topHeading(body: string): string | null {
  * parsing it. A bare `<br>` in a table cell therefore reaches the EPUB as a
  * mismatched tag, and a conforming reader abandons the rest of that page. The
  * glossary convention asks authors for `<br>` in a multi-line cell, so the builder is
- * the right place to make it well-formed. Fences are skipped: mermaid uses `<br/>` in
- * labels, and a fence is not HTML.
+ * the right place to make it well-formed. Fences are skipped: a fence is code, not
+ * HTML, and a ```svg fence is XML, where a bare `<br>` would not parse.
  */
 export function closeVoidTags(text: string): string {
   let fence: Fence = null;

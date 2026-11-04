@@ -1,8 +1,8 @@
 # The book builder
 
 `book/build.ts` turns a content repo's markdown into a single document and renders it as
-an EPUB and a PDF. It runs on bun with Node built-ins only. pandoc does the rendering, and
-xelatex does the PDF. It has no tests at present.
+an EPUB and a PDF. It runs on bun with Node built-ins, plus esbuild for the diagram page. pandoc does the
+rendering, and xelatex does the PDF. It has no tests at present.
 
 It runs in the content repo, the sibling checkout beside this one, as that repo's
 `npm run book` (`bun ../arrmatura-books/book/build.ts`). The working directory is the repo
@@ -25,6 +25,7 @@ All paths are relative to the content repo root.
 | Title, author, rights | `package.json` `book`: pandoc metadata (`title`, `subtitle`, `language`, `subject`, `identifier`…) over the top-level `author`, `copyright` (as `rights`) and `description`. Written to `build/metadata.json` for `--metadata-file`. No `book.title` → the build fails |
 | Cover photograph | `package.json` `book.coverPhoto`, default `book/cover.png`, PNG only. Missing → no cover, the build continues |
 | Cover palette | `package.json` `book.coverColors`: any of `paper`, `ink`, `muted`, `accent` over the kit's |
+| Diagram theme | `www/dist/index.css`, the site's compiled stylesheet (`npm run build:css`). Missing → diagrams stay as code, the build continues |
 | Content model | `book/content.ts`, optional: see [Content model](#content-model) |
 | Outputs | `build/<name>.md`, `.epub`, `.pdf` |
 | Caches | `build/metadata.json`, `build/cover/`, `build/epub-default.css`, `build/diagrams/` (content-addressed) |
@@ -34,11 +35,12 @@ All paths are relative to the content repo root.
 | File | Concern |
 | --- | --- |
 | `build.ts` | CLI, flags, the `ContentModel` hook, building the book |
-| `context.ts` | `ROOT`, `BUILD`, `DIAGRAMS`, the `Site` interface, `resolveSite()`, shared helpers |
+| `context.ts` | `ROOT`, `BUILD`, `DIAGRAMS`, `SITE_CSS`, the `Site` interface, `resolveSite()`, shared helpers |
 | `assemble.ts` | frontmatter, titles, link rewriting, document anchors, reading order |
 | `markdown.ts` | line transforms that skip fenced code: setext to ATX, heading ids and levels, breaks, void tags |
-| `diagrams.ts` | mermaid extraction and the `mermaid-cli` run |
-| `raster.ts` | headless Chrome rasterizer |
+| `diagrams.ts` | ```` ```svg ```` extraction, the diagram pages and their Chrome runs |
+| `diagram-page.ts` | browser entry, bundled per run: draws one diagram with the markdown kit |
+| `raster.ts` | headless Chrome: screenshot a page, dump its DOM, rasterize an SVG |
 | `cover.ts` | the cover SVG and its cache |
 | `render.ts` | the PDF preamble, `verifyAnchors`, the pandoc calls |
 | `table-widths.lua`, `table-rules.lua`, `code-breaks.lua`, `epub.css` | pandoc filters and the EPUB stylesheet |
@@ -95,14 +97,18 @@ The module imports the kit's helpers (`markdown.ts`, `context.ts`) by relative p
   delimiter. Read as the last of those, it swallows every following heading into table
   cells, with a zero exit code. The builder emits `***` instead. Then `verifyAnchors` re-renders the assembled file and fails the
   build if any declared heading id or link target did not survive.
-- **Mermaid diagrams.** Neither format renders a mermaid fence; pandoc prints it as code.
-  So diagrams are rasterized first, by `mermaid-cli` under `npx` at a pinned version. Each
-  PNG is named for a digest of its own source and cached in `build/diagrams/`, so an
-  unchanged diagram is never re-rendered. All pending
-  diagrams go through one `mermaid-cli` run, because it numbers its output by each block's
-  *position in the input*, not by the order renders finish. That is what makes the rename
-  to `<hash>.png` safe. If `npx` is missing or a diagram will not parse, that block stays a
-  code block with a warning and the build continues.
+- **Diagrams.** A site draws a ```` ```svg ```` fence live, with the markdown kit's
+  components (`MDCode.Svg` and the `SVG.*` templates) in its DaisyUI theme. Neither format can
+  run that, and xelatex cannot embed SVG, so each fence is rasterized first, in headless
+  Chrome, by the kit itself: esbuild bundles `diagram-page.ts`, which launches
+  arrmatura-web's platform with the kit's `components`, and one page per diagram loads that
+  bundle, the site's `www/dist/index.css` and the fence's source, in the default theme on
+  white. Chrome runs each page twice, up to four pages at a time: `--dump-dom` reads back the
+  drawn figure's size, which depends on the site's fonts, and `--screenshot` shoots it at that
+  size and scale 3. Each PNG is named for a digest of the scale and the source and cached in
+  `build/diagrams/`, so an unchanged diagram is never re-rendered. If Chrome or the
+  stylesheet is missing, or a fence has errors (the problems `SvgDiagramService` lists),
+  that block stays a code block with a warning and the build continues.
 - **The cover.** Generated, not drawn: an SVG built from the title, subtitle and author in
   `package.json` `book`, over the cover photograph, which sits flush with the bottom edge at its own aspect
   ratio and fades into the dark page across the top 45% of itself. Headless Chrome
@@ -137,7 +143,7 @@ than serving images made at the old setting.
 
 **No SVG in the content.** xelatex cannot embed SVG, so an SVG figure in a content repo is
 dropped from the PDF. The only SVG in the build is the cover, which the builder generates.
-Content should use a mermaid diagram or a PNG.
+Content should use a ```` ```svg ```` diagram, which the builder rasterizes, or a PNG.
 
 ## Table column widths
 

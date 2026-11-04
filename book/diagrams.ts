@@ -1,28 +1,39 @@
 /**
- * Mermaid diagrams, rasterized before pandoc sees them.
+ * ```svg diagrams, rasterized before pandoc sees them.
  *
- * Neither EPUB nor PDF can render a mermaid fence; pandoc prints it as a verbatim
- * code block. So the diagrams are rendered to PNG by mermaid-cli under npx — an
- * external renderer invoked the same way as pandoc and xelatex — and cached in
- * build/diagrams.
+ * A site draws a ```svg fence live, with the markdown kit's components and its own
+ * theme. Neither EPUB nor PDF can run that, and xelatex cannot embed SVG, so each
+ * fence is drawn the same way in headless Chrome — the kit's real templates on
+ * arrmatura-web's platform (diagram-page.ts), under the site's compiled stylesheet —
+ * and screenshotted to PNG, cached in build/diagrams.
  */
 
-import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import * as fs from "node:fs";
+import * as os from "node:os";
 import * as path from "node:path";
-import { BUILD, DIAGRAMS, ROOT, relativePosix, warn } from "./context";
+import { pathToFileURL } from "node:url";
+import * as esbuild from "esbuild";
+import { getEsbuildOptions } from "../scripts/utils/getEsbuildOptions";
+import { DIAGRAM_PAGE, DIAGRAMS, ROOT, relativePosix, SITE_CSS, warn } from "./context";
+import { CHROME, dumpDom, screenshot } from "./raster";
 
-// The version is pinned so a rebuild cannot silently change the diagrams' appearance.
 // Scale 3 is legible in print without being heavy.
-const MERMAID_CLI = "@mermaid-js/mermaid-cli@11.17.0";
 const DIAGRAM_SCALE = 3;
 
-const MERMAID_FENCE_RE = /^```[ \t]*mermaid[ \t]*\n([\s\S]*?)\n[ \t]*```[ \t]*$/gm;
+// Virtual time: Chrome runs the page's scripts and animation frames as fast as they
+// go, for up to this much page time, before it dumps or shoots. Nothing on the page
+// waits on a timer, so the budget is only a ceiling.
+const RENDER_BUDGET = "--virtual-time-budget=10000";
 
-/** The source of every mermaid block, in document order. */
-export function extractMermaid(markdown: string): string[] {
-  return [...markdown.matchAll(MERMAID_FENCE_RE)].map((match) => match[1]);
+// How many Chrome runs go at once. Each is a whole browser, so more would mostly contend.
+const CONCURRENCY = 4;
+
+const SVG_FENCE_RE = /^```[ \t]*svg[ \t]*\n([\s\S]*?)\n[ \t]*```[ \t]*$/gm;
+
+/** The source of every ```svg block, in document order. */
+export function extractDiagrams(markdown: string): string[] {
+  return [...markdown.matchAll(SVG_FENCE_RE)].map((match) => match[1]);
 }
 
 /**
@@ -49,70 +60,121 @@ function diagramPath(source: string): string {
 }
 
 /**
- * Swap each mermaid block for its rendered image, positionally.
+ * Swap each ```svg block for its rendered image, positionally.
  *
  * A `null` image leaves that block as it was: a diagram that would not render stays
- * a code block, which is what the book prints today, so a renderer that is missing
- * or broken degrades the output instead of failing the build.
+ * a code block, so a renderer that is missing or broken degrades the output instead
+ * of failing the build.
  */
-export function replaceMermaid(markdown: string, images: (string | null)[]): string {
-  const sources = extractMermaid(markdown);
+export function replaceDiagrams(markdown: string, images: (string | null)[]): string {
+  const sources = extractDiagrams(markdown);
   if (images.length !== sources.length) {
-    throw new Error(`${sources.length} mermaid blocks but ${images.length} images`);
+    throw new Error(`${sources.length} svg blocks but ${images.length} images`);
   }
   let index = 0;
   // Empty alt text: pandoc turns an image *with* alt text into a captioned,
   // floating figure, which would reorder the diagrams away from their prose.
-  return markdown.replace(MERMAID_FENCE_RE, (whole) => {
+  return markdown.replace(SVG_FENCE_RE, (whole) => {
     const image = images[index++];
     return image === null ? whole : `![](${image})`;
   });
 }
 
 /**
- * Render `jobs`, a list of [destination, source], in one mermaid-cli run.
+ * The page that draws one diagram: the bundle, the site's stylesheet, the source as `R`.
  *
- * Given a markdown input, mermaid-cli renders every block it finds in a single
- * browser launch and numbers the output files by each block's *position in the
- * input* — not by the order the concurrent renders finish. That is what makes the
- * rename to <hash>.png safe, and it is why the diagrams are batched through a
- * scratch document rather than invoked one at a time.
+ * The figure is drawn at its natural width (`max-content`), flush with the top-left
+ * corner (no margins), on white, so a window of the figure's own size frames exactly
+ * it. No `data-theme`: the site's default theme.
  */
-function runMermaidCli(jobs: [string, string][]): void {
-  const scratch = path.join(BUILD, "diagrams-pending.md");
-  const rendered = path.join(BUILD, "diagrams-rendered.md");
-  const stem = "diagrams-rendered";
-  // An interrupted earlier run can leave numbered PNGs behind, and this run's
-  // numbering means something different. Clear them or one could be renamed to a
-  // hash it is not a render of.
-  for (const stale of fs.readdirSync(BUILD)) {
-    if (stale.startsWith(`${stem}-`) && stale.endsWith(".png")) fs.unlinkSync(path.join(BUILD, stale));
+function diagramPage(source: string, bundle: string): string {
+  // `<` escaped, so no source can close the <script> it sits in.
+  const resources = JSON.stringify({ diagram: source }).replaceAll("<", "\\u003c");
+  return `<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="${pathToFileURL(SITE_CSS).href}">
+<style>html, body { margin: 0; background: #fff; } body { width: max-content; } body > * { margin: 0; }</style>
+<script id="R" type="application/json">${resources}</script>
+</head>
+<body><script src="${pathToFileURL(bundle).href}"></script></body>
+</html>
+`;
+}
+
+/**
+ * Draw one diagram page to `destination`. True if the PNG was written.
+ *
+ * Two Chrome runs, because a screenshot is the size of its window and the figure's
+ * height is only known once drawn — the caption's line height and wrapping are the
+ * site's. The first dumps the drawn page, on which diagram-page.ts left the size or
+ * the source's problems; the second shoots at that size.
+ */
+async function rasterizeDiagram(page: string, destination: string, profile: string): Promise<boolean> {
+  const url = pathToFileURL(page).href;
+  const dom = (await dumpDom(url, profile, [RENDER_BUDGET])) ?? "";
+  const error = /\bdata-error="([^"]*)"/.exec(dom)?.[1];
+  if (error) {
+    const lines = decodeURIComponent(error).replaceAll("\n", "\n    ");
+    warn(`  warning: a diagram has errors, so it stays a code block\n    ${lines}`);
+    return false;
   }
-  fs.writeFileSync(scratch, `${jobs.map(([, source]) => `\`\`\`mermaid\n${source}\n\`\`\``).join("\n\n")}\n`);
-  // biome-ignore format: each flag beside its value
-  const args = [
-    "-y", "-p", MERMAID_CLI, "mmdc",
-    "-i", scratch, "-o", rendered,
-    "-e", "png", "--scale", String(DIAGRAM_SCALE), "--backgroundColor", "white",
-  ];
+  const drawn = /\bdata-size="(\d+) (\d+)"/.exec(dom);
+  if (!drawn) return false;
+  const size: [number, number] = [Number(drawn[1]), Number(drawn[2])];
+  return screenshot(url, destination, { size, scale: DIAGRAM_SCALE, profile, args: [RENDER_BUDGET] });
+}
+
+/** diagram-page.ts as one classic script, built as the site builds its own. Null if it would not bundle. */
+async function bundleDiagramPage(outdir: string): Promise<string | null> {
   try {
-    const result = spawnSync("npx", args, { cwd: ROOT, encoding: "utf8" });
-    if (result.error) {
-      warn("  warning: npx is not installed, so diagrams stay as code blocks");
-      return;
-    }
-    if (result.status !== 0) {
-      warn(`  warning: mermaid-cli failed, so diagrams stay as code blocks\n${result.stderr.trim()}`);
-      return;
-    }
-  } finally {
-    fs.rmSync(scratch, { force: true });
-    fs.rmSync(rendered, { force: true });
+    // A classic script: Chrome refuses a module script on a file: page.
+    await esbuild.build(
+      getEsbuildOptions({ entryPoints: { page: DIAGRAM_PAGE }, outdir, format: "iife", logLevel: "silent" }),
+    );
+    return path.join(outdir, "page.js");
+  } catch (error) {
+    warn(`  warning: the diagram page did not bundle, so diagrams stay as code blocks\n${(error as Error).message}`);
+    return null;
   }
-  jobs.forEach(([destination], index) => {
-    const produced = path.join(BUILD, `${stem}-${index + 1}.png`);
-    if (fs.existsSync(produced)) fs.renameSync(produced, destination);
-  });
+}
+
+/**
+ * Render `jobs`, a list of [destination, source], CONCURRENCY at a time.
+ *
+ * Everything but the PNGs lives in a scratch directory that is removed afterwards:
+ * the bundle, a page per diagram, and a profile per diagram, since Chrome locks its
+ * profile and parallel runs cannot share one.
+ */
+async function runChrome(jobs: [string, string][]): Promise<void> {
+  if (!fs.existsSync(CHROME)) {
+    warn("  warning: Chrome is missing, so diagrams stay as code blocks");
+    return;
+  }
+  if (!fs.existsSync(SITE_CSS)) {
+    const css = relativePosix(ROOT, SITE_CSS);
+    warn(`  warning: ${css} is missing, so diagrams stay as code blocks; run the site's \`npm run build:css\``);
+    return;
+  }
+  const scratch = fs.mkdtempSync(path.join(os.tmpdir(), "book-diagrams-"));
+  try {
+    const bundle = await bundleDiagramPage(scratch);
+    if (!bundle) return;
+    let next = 0;
+    const worker = async () => {
+      while (next < jobs.length) {
+        const index = next++;
+        const [destination, source] = jobs[index];
+        const page = path.join(scratch, `${index}.html`);
+        fs.writeFileSync(page, diagramPage(source, bundle));
+        await rasterizeDiagram(page, destination, path.join(scratch, `profile-${index}`));
+      }
+    };
+    await Promise.all(Array.from({ length: Math.min(CONCURRENCY, jobs.length) }, worker));
+  } finally {
+    fs.rmSync(scratch, { recursive: true, force: true });
+  }
 }
 
 /**
@@ -122,14 +184,14 @@ function runMermaidCli(jobs: [string, string][]): void {
  * Paths come back relative to ROOT, which is on pandoc's resource path, alongside
  * the number of PNGs this run actually produced.
  */
-function renderDiagrams(sources: string[]): { paths: (string | null)[]; rendered: number } {
+async function renderDiagrams(sources: string[]): Promise<{ paths: (string | null)[]; rendered: number }> {
   fs.mkdirSync(DIAGRAMS, { recursive: true });
   const pending = new Map<string, string>();
   for (const source of sources) {
     const destination = diagramPath(source);
     if (!fs.existsSync(destination) && !pending.has(destination)) pending.set(destination, source);
   }
-  if (pending.size) runMermaidCli([...pending.entries()]);
+  if (pending.size) await runChrome([...pending.entries()]);
   const paths = sources.map((source) => {
     const file = diagramPath(source);
     return fs.existsSync(file) ? relativePosix(ROOT, file) : null;
@@ -139,18 +201,20 @@ function renderDiagrams(sources: string[]): { paths: (string | null)[]; rendered
 }
 
 /**
- * Replace every mermaid block with a rendered PNG.
+ * Replace every ```svg block with a rendered PNG.
  *
  * Returns the markdown, how many blocks became images, and how many of those cost a
  * render rather than a cache hit.
  */
-export function resolveMermaid(markdown: string): { markdown: string; diagrams: number; rendered: number } {
-  const sources = extractMermaid(markdown);
+export async function resolveDiagrams(
+  markdown: string,
+): Promise<{ markdown: string; diagrams: number; rendered: number }> {
+  const sources = extractDiagrams(markdown);
   if (!sources.length) return { markdown, diagrams: 0, rendered: 0 };
-  const { paths, rendered } = renderDiagrams(sources);
+  const { paths, rendered } = await renderDiagrams(sources);
   const unresolved = paths.filter((image) => image === null).length;
   if (unresolved) {
     warn(`  warning: ${unresolved} of ${sources.length} diagrams did not render and stay as code blocks`);
   }
-  return { markdown: replaceMermaid(markdown, paths), diagrams: sources.length - unresolved, rendered };
+  return { markdown: replaceDiagrams(markdown, paths), diagrams: sources.length - unresolved, rendered };
 }

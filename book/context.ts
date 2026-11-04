@@ -18,11 +18,15 @@ export const BUILD = path.join(ROOT, "build");
 // unchanged diagram is never rendered twice.
 export const DIAGRAMS = path.join(BUILD, "diagrams");
 
+// The site's compiled stylesheet (its `npm run build:css`): the diagrams are drawn in its theme.
+export const SITE_CSS = path.join(ROOT, "www", "dist", "index.css");
+
 const BOOK_DIR = path.dirname(fileURLToPath(import.meta.url));
 export const TABLE_WIDTHS = path.join(BOOK_DIR, "table-widths.lua");
 export const TABLE_RULES = path.join(BOOK_DIR, "table-rules.lua");
 export const CODE_BREAKS = path.join(BOOK_DIR, "code-breaks.lua");
 export const EPUB_CSS = path.join(BOOK_DIR, "epub.css");
+export const DIAGRAM_PAGE = path.join(BOOK_DIR, "diagram-page.ts");
 
 // The content repo's own content model, optional: see ContentModel in build.ts.
 export const CONTENT = path.join(ROOT, "book", "content.ts");

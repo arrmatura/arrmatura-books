@@ -2,11 +2,11 @@
 /**
  * Assemble a content repo's markdown into one document and render it as an EPUB and a PDF.
  *
- * Node built-ins only. Pandoc does the rendering. The modules beside this one do the
- * part pandoc cannot: put the files in reading order, demote their headings so a
- * folder reads as a chapter, turn cross-document links into intra-document anchors so
+ * Node built-ins, and esbuild for the diagram page. Pandoc does the rendering. The
+ * modules beside this one do the part pandoc cannot: put the files in reading order,
+ * demote their headings so a folder reads as a chapter, turn cross-document links into intra-document anchors so
  * navigation still works when many files become one (assemble.ts), and rasterize the
- * mermaid diagrams (diagrams.ts) and the cover (cover.ts), which neither output format
+ * ```svg diagrams (diagrams.ts) and the cover (cover.ts), which neither output format
  * can draw.
  *
  * Run in the content repo, as its `npm run book`:
@@ -24,7 +24,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import { assemble, collectDocuments, type Document } from "./assemble";
 import { CONTENT, DIAGRAMS, resolveSite, type Site, warn } from "./context";
 import { buildCover } from "./cover";
-import { resolveMermaid } from "./diagrams";
+import { resolveDiagrams } from "./diagrams";
 import { duplicateAnchors } from "./markdown";
 import { render, verifyAnchors } from "./render";
 
@@ -88,14 +88,14 @@ async function buildSite(site: Site, options: Options, content: ContentModel): P
   // Before the assembled file is written, so that what verifyAnchors checks and what
   // pandoc reads are the same document. --markdown renders diagrams too: they are
   // the markdown's own content, and a cache hit costs nothing.
-  const { markdown, diagrams, rendered } = resolveMermaid(content.assemble(documents, site));
+  const { markdown, diagrams, rendered } = await resolveDiagrams(content.assemble(documents, site));
 
   const source = path.join(site.build, `${site.name}.md`);
   fs.writeFileSync(source, markdown);
   const words = markdown.split(/\s+/).filter(Boolean).length;
   console.log(`assembled ${documents.length} documents, ${words.toLocaleString("en-US")} words -> ${source}`);
   if (diagrams) {
-    console.log(`  ${diagrams} mermaid diagram(s): ${rendered} rendered, ${diagrams - rendered} cached -> ${DIAGRAMS}`);
+    console.log(`  ${diagrams} svg diagram(s): ${rendered} rendered, ${diagrams - rendered} cached -> ${DIAGRAMS}`);
   }
 
   for (const slug of duplicateAnchors(markdown)) warn(`  warning: heading slug '${slug}' occurs more than once`);

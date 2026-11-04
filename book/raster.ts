@@ -1,11 +1,11 @@
 /**
- * Rasterize an SVG with headless Chrome.
+ * Rasterize with headless Chrome: the cover's SVG, and the diagram pages.
  *
- * The cover is the one image this builder rasterizes itself, and it uses headless
- * Chrome rather than a standalone rasterizer: Chrome is already on the machine, so
- * this costs no install, and it is the engine the cover was drawn against, with the
- * gradient mask and the system fonts it names already in hand. If it is missing the
- * book is built without a cover.
+ * Headless Chrome rather than a standalone rasterizer: Chrome is already on the
+ * machine, so this costs no install, and it is the engine both were drawn against —
+ * the cover's gradient mask and system fonts, and the diagrams' live components and
+ * the site's stylesheet. If it is missing the book is built without a cover and its
+ * diagrams stay as code blocks.
  */
 
 import { type ChildProcess, spawn } from "node:child_process";
@@ -80,24 +80,35 @@ async function settled(file: string, child: ChildProcess): Promise<boolean> {
   return false;
 }
 
+/** The flags every Chrome run takes: headless, quiet, on a throwaway profile (see RASTER_TIMEOUT_MS). */
+const chromeArgs = (profile: string) => [
+  "--headless",
+  "--disable-gpu",
+  "--hide-scrollbars",
+  "--no-first-run",
+  "--no-default-browser-check",
+  `--user-data-dir=${profile}`,
+];
+
+/** How a page is shot: its window in CSS pixels, the device scale, the profile, any extra flags. */
+export interface Shot {
+  size: [number, number];
+  scale: number;
+  profile: string;
+  args?: string[];
+}
+
 /**
- * Screenshot one SVG with headless Chrome. True if the image was written.
+ * Screenshot the page at `url` with headless Chrome. True if the image was written.
  *
  * `profile` is a throwaway user-data directory, and the screenshot lands on a
  * partial path that is renamed into place only once complete — see RASTER_TIMEOUT_MS
  * for why, and note that a half-written file left in the cache would otherwise be
  * served as a hit forever.
  */
-export async function rasterizeSvg(svg: string, destination: string, profile: string): Promise<boolean> {
+export async function screenshot(url: string, destination: string, shot: Shot): Promise<boolean> {
   if (!fs.existsSync(CHROME)) return false;
-  let width: number;
-  let height: number;
-  try {
-    [width, height] = svgSize(fs.readFileSync(svg, "utf8"));
-  } catch (error) {
-    warn(`  warning: cannot size ${path.basename(svg)}: ${(error as Error).message}`);
-    return false;
-  }
+  const [width, height] = shot.size;
   // Chrome picks the format from the extension and refuses anything it does not
   // know, so the in-progress name keeps the real extension last rather than
   // appending .part to it.
@@ -106,15 +117,13 @@ export async function rasterizeSvg(svg: string, destination: string, profile: st
   fs.rmSync(partial, { force: true });
   const child = spawn(
     CHROME,
-    // biome-ignore format: flags grouped by purpose
     [
-      "--headless", "--disable-gpu", "--hide-scrollbars",
-      "--no-first-run", "--no-default-browser-check",
-      `--user-data-dir=${profile}`,
+      ...chromeArgs(shot.profile),
+      ...(shot.args ?? []),
       `--window-size=${width},${height}`,
-      `--force-device-scale-factor=${RASTER_SCALE}`,
+      `--force-device-scale-factor=${shot.scale}`,
       `--screenshot=${partial}`,
-      pathToFileURL(svg).href,
+      url,
     ],
     { stdio: "ignore", cwd: ROOT },
   );
@@ -125,10 +134,44 @@ export async function rasterizeSvg(svg: string, destination: string, profile: st
     child.kill();
   }
   if (!written) {
-    warn(`  warning: rasterizing ${path.basename(svg)} did not finish within ${RASTER_TIMEOUT_MS / 1000}s`);
+    warn(`  warning: rasterizing ${path.basename(destination)} did not finish within ${RASTER_TIMEOUT_MS / 1000}s`);
     fs.rmSync(partial, { force: true });
     return false;
   }
   fs.renameSync(partial, destination);
   return true;
+}
+
+/**
+ * The page at `url` as Chrome serializes it once its scripts have run, or null.
+ *
+ * Unlike a screenshot, --dump-dom prints and exits, so the exit is what is waited
+ * on; the timeout is the same backstop.
+ */
+export async function dumpDom(url: string, profile: string, args: string[] = []): Promise<string | null> {
+  if (!fs.existsSync(CHROME)) return null;
+  const child = spawn(CHROME, [...chromeArgs(profile), ...args, "--dump-dom", url], {
+    stdio: ["ignore", "pipe", "ignore"],
+    cwd: ROOT,
+  });
+  let dom = "";
+  child.stdout.setEncoding("utf8").on("data", (chunk: string) => {
+    dom += chunk;
+  });
+  const timer = setTimeout(() => child.kill(), RASTER_TIMEOUT_MS);
+  const code = await new Promise<number | null>((resolve) => child.on("close", resolve));
+  clearTimeout(timer);
+  return code === 0 ? dom : null;
+}
+
+/** Screenshot one SVG file at its own size. True if the image was written. */
+export async function rasterizeSvg(svg: string, destination: string, profile: string): Promise<boolean> {
+  let size: [number, number];
+  try {
+    size = svgSize(fs.readFileSync(svg, "utf8"));
+  } catch (error) {
+    warn(`  warning: cannot size ${path.basename(svg)}: ${(error as Error).message}`);
+    return false;
+  }
+  return screenshot(pathToFileURL(svg).href, destination, { size, scale: RASTER_SCALE, profile });
 }
