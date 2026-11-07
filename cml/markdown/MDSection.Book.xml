@@ -22,37 +22,30 @@
       </div>
     </article>
     <Else>
-      <Fragment If="!@docs.progress[key]">
-        <section class="level-{level} overflow-hidden rounded-r-box
+      <section class="level-{level} overflow-hidden rounded-r-box
           {level==2 ? 'mb-3 border-l-4 border-primary/80' : 'mb-2 border-l-2 border-primary/40'}">
-          <header
-            class="flex group items-center gap-3 px-4 cursor-pointer transition-colors
+        <header
+          class="flex group items-center gap-3 px-4 cursor-pointer 
+          transition-colors
             {level==2 ? 'py-3 bg-base-200/70 hover:bg-base-200' : 'py-2 bg-base-200/35 hover:bg-base-200/60'}">
-            <Icon icon="{icon}" class="text-base-content/50 shrink-0" size="18" />
-            <span
-              class="{level==2 ? 'text-xl tracking-[0.08em]' : 'tracking-[0.04em]'} {( @docs.expandedAll OR @docs.opened[key]  ) ? 'font-semibold' : 'font-light'} flex-1"
-              click="-> @docs.toggleOpened(key)">
-              <Slot Key="title" />
-            </span>
-            <Checkbox
-              value="false"
-              change="-> @docs.toggleProgress(key)"
-              />
-            <Icon icon="chevron-right"
-              class="text-base-content/40 transition-transform group-hover:translate-x-1  details-chevron shrink-0 {(@docs.opened[key] ?? @docs.expandedAll)?'rotate-90':''}"
-              size="16" />
-          </header>
-          <div class="pl-4 py-4 bg-base-100" If="@docs.expandedAll OR @docs.opened[key]">
-            <Slot />
-          </div>
-        </section>
-        <Else>
-          <Btn type="outline" size="xs" class="m-1"
-            action="-> @docs.toggleProgress(key)">
+          <Icon icon="{icon}" class="text-base-content/50 shrink-0" size="18" />
+          <span
+            class="{level==2 ? 'text-xl tracking-[0.07em]' : 'tracking-[0.04em]'} {( @docs.expandedAll OR @docs.opened[key]  ) ? 'font-semibold' : 'font-light'} flex-1"
+            click="-> @docs.toggleOpened(key)">
             <Slot Key="title" />
-          </Btn>
-        </Else>
-      </Fragment>
+          </span>
+          <IBtn type="{@docs.progress[key]? 'success': 'soft'}" 
+            icon="{@docs.progress[key]? 'circle-check': 'circle'}"
+            title="{@docs.progress[key]? 'Marked as read': 'Mark as read'}"
+            action="-> @docs.toggleProgress(key)" />
+          <Icon icon="chevron-right"
+            class="text-base-content/40 transition-transform group-hover:translate-x-1  details-chevron shrink-0 {(@docs.opened[key] OR @docs.expandedAll)?'rotate-90':''}"
+            size="16" />
+        </header>
+        <div class="pl-4 py-4 bg-base-100/80" If="@docs.expandedAll OR @docs.opened[key]">
+          <Slot />
+        </div>
+      </section>
     </Else>
   </Fragment>
 </Component>

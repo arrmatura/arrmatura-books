@@ -3,5 +3,5 @@
   <IBtn icon="chevrons-down" size="sm" title="Expand all"
     click="-> @docs.expandAll()" disabled="{@docs.expandedAll}" />
   <IBtn icon="chevrons-up" size="sm" title="Collapse all"
-    click="-> @docs.collapseAll()" />
+    click="-> @docs.collapseAll()" disabled="{!keysOf(@docs.opened).length}" />
 </Component>

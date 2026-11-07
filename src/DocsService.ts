@@ -48,8 +48,8 @@ export class DocsService extends WebClientService {
   }
 
   toggleOpened(id: string) {
-    const current = this.opened[id] ?? this.expandedAll ?? false;
-    this.up({ opened: { ...this.opened, [id]: !current } });
+    const current = this.opened[id] || this.expandedAll || false;
+    this.up({ opened: { ...this.opened, [id]: !current }, ...(current ? { expandedAll: false } : {}) });
   }
 
   expandAll() {
