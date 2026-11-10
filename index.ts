@@ -14,10 +14,10 @@ export {
   type TreeNode,
 } from "./src/siteTree";
 
-export function launchBook({ components: customComponents = {}, ...resources }: any = {}) {
-  const components = [...markdownComponents, ...devopsComponents, ...Object.values(registry), customComponents];
+export const components = [...markdownComponents, ...devopsComponents, ...Object.values(registry)];
 
-  launchPlatformApp({ components, resources, functions: { glossaryDefinition } });
+export function launchBook({ components: customComponents = {}, ...resources }: any = {}) {
+  launchPlatformApp({ components: [...components, customComponents], resources, functions: { glossaryDefinition } });
 }
 
 const win = window as unknown as { launchBook: unknown; autoLoad: boolean };
