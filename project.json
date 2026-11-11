@@ -1,0 +1,13 @@
+{
+  "id": "arrmatura-books",
+  "name": "arrmatura-books",
+  "description": "Arrmatura books-site kit",
+  "purpose": "Make a book site quick to build, without starting from scratch.",
+  "goals": [
+    "Provide a ready kit to build book sites on Arrmatura"
+  ],
+  "status": "maintain",
+  "domain": "dev",
+  "symbol": "📖",
+  "repoUrl": "https://github.com/arrmatura/arrmatura-books"
+}
