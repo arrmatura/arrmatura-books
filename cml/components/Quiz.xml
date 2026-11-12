@@ -8,7 +8,7 @@
   <QuizService Ref="service"
     name="{name||''}Quiz"
     quiz="{data}"
-    activeDomain="{@nav.params.id || '1'}" />
+    activeDomain="{@browser.params.id || '1'}" />
 
   <Container class="">
 
