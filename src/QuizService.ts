@@ -167,7 +167,9 @@ export class QuizService extends WebClientService {
 
   openLink(src) {
     if (src.type === "doc") {
-      window.location.hash = `/?doc=${encodeURIComponent(src.ref)}`;
+      // The book's doc is the url path; `@browser` routes on popstate, which pushState alone does not fire.
+      window.history.pushState({}, "", `/${src.ref}`);
+      window.dispatchEvent(new PopStateEvent("popstate"));
     } else {
       window.open(src.ref, "_blank", "noopener");
     }
