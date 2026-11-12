@@ -1,6 +1,6 @@
 import { components as markdownComponents } from "arrmatura-markdown";
 import { launchPlatformApp } from "arrmatura-web";
-import { components as devopsComponents } from "proton/devops";
+import { components as devopsComponents } from "proton/hot";
 import * as registry from "./registry";
 import { glossaryDefinition } from "./src/glossary";
 

@@ -3,6 +3,14 @@
 The docs-site kit: everything needed to turn a folder of markdown into a browsable
 site.
 
+## Purpose
+
+Make a book site quick to build, without starting from scratch.
+
+## Goals
+
+- Provide a ready kit to build book sites on Arrmatura
+
 ## Install
 
 ```bash
@@ -35,12 +43,12 @@ The page brings its own Tailwind + DaisyUI stylesheet and points `@source` at th
 
 The page's `<html data-theme>` is the site's theme.
 
-`R.hotPort`, when set, mounts `HotReloadService` (`proton/devops`) on that port: on
+`R.hotPort`, when set, mounts `HotReloadService` (`proton/hot`) on that port: on
 localhost a rebuild of `www/dist` swaps the stylesheet or relaunches the app in place. The site
 runs the matching server in its `npm start`:
 
 ```bash
-bun ../proton/devops/hot/server/main.ts www/dist <hotPort>
+bun ../proton/hot/server/main.ts www/dist <hotPort>
 ```
 
 A page overrides any component with a `<script type="application/cml" id="<Component>">` holding
