@@ -6,7 +6,6 @@
   <StoredData Ref="treeState" />
   <BrowserService Ref="browser" />
   <OnMount If="{@browser.isMobile}" action="-> @localStorage.collapsed = true" />
-  <DropdownsPlugin />
   <PortalsPlugin />
   <HotReloadService If="{R.hotPort}" port="{R.hotPort}" />
 
