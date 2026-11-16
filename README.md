@@ -48,7 +48,7 @@ localhost a rebuild of `www/dist` swaps the stylesheet or relaunches the app in 
 runs the matching server in its `npm start`:
 
 ```bash
-bun ../proton/hot/server/main.ts www/dist <hotPort>
+proton hot www/dist <hotPort>
 ```
 
 A page overrides any component with a `<script type="application/cml" id="<Component>">` holding
