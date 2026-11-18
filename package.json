@@ -30,16 +30,16 @@
     "gates": "npx --yes npm-run-all --parallel typecheck lint",
     "lint": "biome check .",
     "typecheck": "tsc",
-    "release": "./scripts/release.sh",
-    "prepublish": "npm run build && npm run gates",
-    "npm:publish": "npm publish --no-git-checks"
+    "release": "proton release"
   },
   "devDependencies": {
-    "@types/node": "^26.6.2",
-    "esbuild": "^0.28.2",
-    "arrmatura-markdown": "file://../arrmatura-markdown",
-    "arrmatura-web": "file://../arrmatura-web",
-    "proton": "file://../proton",
-    "ultimus": "file://../ultimus"
+    "esbuild": "^0.28.2"
+  },
+  "peerDependencies": {
+    "@types/bun": "^1.4.4",
+    "arrmatura-markdown": "file:../arrmatura-markdown",
+    "arrmatura-web": "file:../arrmatura-web",
+    "proton": "file:../proton",
+    "ultimus": "file:../ultimus"
   }
 }
