@@ -25,7 +25,7 @@
   },
   "scripts": {
     "build": "npx --yes npm-run-all --parallel build:*",
-    "build:ts": "bun ./scripts/build.ts",
+    "build:ts": "proton build",
     "build:codegen": "proton index-modules",
     "gates": "npx --yes npm-run-all --parallel typecheck lint",
     "lint": "biome check .",

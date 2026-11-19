@@ -7,7 +7,7 @@
   <BrowserService Ref="browser" />
   <OnMount If="{@browser.isMobile}" action="-> @localStorage.collapsed = true" />
   <PortalsPlugin />
-  <HotReloadService If="{R.hotPort}" port="{R.hotPort}" />
+  <HotReloadService />
 
   <div class="flex flex-col h-screen" >
     <DocsService Ref="docs"

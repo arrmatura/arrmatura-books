@@ -43,12 +43,12 @@ The page brings its own Tailwind + DaisyUI stylesheet and points `@source` at th
 
 The page's `<html data-theme>` is the site's theme.
 
-`R.hotPort`, when set, mounts `HotReloadService` (`proton/hot`) on that port: on
-localhost a rebuild of `www/dist` swaps the stylesheet or relaunches the app in place. The site
-runs the matching server in its `npm start`:
+The app mounts `HotReloadService` (`arrmatura-web/hot`): on localhost a rebuild of `www/dist` swaps the
+stylesheet or relaunches the app in place. It follows `/__hot` of the page's own server, which the
+site runs in its `npm start`:
 
 ```bash
-proton hot www/dist <hotPort>
+proton serve --hot
 ```
 
 A page overrides any component with a `<script type="application/cml" id="<Component>">` holding

@@ -14,7 +14,7 @@ import * as os from "node:os";
 import * as path from "node:path";
 import { pathToFileURL } from "node:url";
 import * as esbuild from "esbuild";
-import { getEsbuildOptions } from "../scripts/utils/getEsbuildOptions";
+import { getEsbuildOptions } from "proton/getEsbuildOptions";
 import { DIAGRAM_PAGE, DIAGRAMS, ROOT, relativePosix, SITE_CSS, warn } from "./context";
 import { CHROME, dumpDom, screenshot } from "./raster";
 
